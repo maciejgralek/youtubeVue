@@ -74,8 +74,8 @@ export default function useYoutubePlayer() {
 			});
 		}
 		else if (size == 2) {
-			let w = window.innerWidth/2;
-			let h = window.innerHeight/2;
+			let w = window.innerWidth/1.8;
+			let h = window.innerHeight/1.8;
 			let l = (window.innerWidth - w)/2
 			let t = (window.innerHeight - h)/2 - 40
 			player.getIframe().then(el => {
