@@ -20,7 +20,11 @@ let player = YouTubePlayer('video-player', {
 });	
 
 export default function useYoutubePlayer() {
-	let { findPlaylistIndex, findVideoIndex, getComments } = useYoutube();
+	let { 
+		findPlaylistIndex, 
+		findVideoIndex, 
+		getComments 
+	} = useYoutube();
 
 	function play() {
 		player.playVideo();

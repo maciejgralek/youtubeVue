@@ -170,6 +170,7 @@ export default function useYoutube() {
 		findPlaylistIndex,
 		findVideoIndex,
 		getComments,
+		comments,
 	}
 
 }

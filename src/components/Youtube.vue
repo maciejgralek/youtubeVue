@@ -18,6 +18,8 @@
 		</div>
 	</div>
 
+	<YoutubeComments v-show="comments.length"></YoutubeComments>
+
 	<div style="min-height: 90px"></div>
 </template>
 
@@ -28,6 +30,7 @@ import YoutubePlaylist from './YoutubePlaylist.vue'
 import YoutubeSearch from './YoutubeSearch.vue'
 import useYoutube from '../use-youtube.js'
 import useYoutubePlayer from '../use-youtube-player.js'
+import YoutubeComments from './YoutubeComments.vue'
 import axios from 'axios'
 
 export default {
@@ -35,6 +38,7 @@ export default {
 		AddPlaylist,
 		YoutubePlaylist,
 		YoutubeSearch,
+		YoutubeComments,
 	},
 	props: {
 		params: String,
@@ -56,6 +60,7 @@ export default {
 			playlists, 
 			loadPlaylistsRequest,
 			searchRes,
+			comments,
 		} = useYoutube();
 
 		let {
@@ -80,6 +85,7 @@ export default {
 			setColumns,
 			searchRes,
 			playerWindowState,
+			comments,
 		}
 	}
 }
