@@ -63,8 +63,8 @@
 					<img 
 						:src="item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : ''" 
 						class="pr-2" 
-						width="80" 
-						height="50" 
+						:width="thumbnailWidth"
+						:height="thumbnailHeight"
 						alt=""
 						>
 					{{ item.snippet.title }}
@@ -80,6 +80,7 @@ import { ref, computed, onMounted } from 'vue'
 import Icon from './Icon.vue'
 import useYoutube from '../use-youtube.js'
 import useYoutubePlayer from '../use-youtube-player.js'
+import useUI from '../use-UI.js'
 import useStore from '../use-store.js'
 
 export default {
@@ -104,6 +105,11 @@ export default {
 			play,
 			loadVideo,
 		} = useYoutubePlayer();
+
+		let {
+			thumbnailWidth,
+			thumbnailHeight,
+		}	= useUI();
 
 		let state = useStore();
 
@@ -130,6 +136,8 @@ export default {
 			move,
 			play,
 			handleClickPlaylistItem,
+			thumbnailWidth,
+			thumbnailHeight,
 		}
 	}
 }

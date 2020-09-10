@@ -18,6 +18,9 @@
 		<div class="col-auto">
 			<button @click="addPlaylist(playlistId)" class="btn btn-primary btn-sm">Add Playlist</button>
 		</div>
+		<div class="col-auto pr-3">
+			<i @click="setCompact" class="mdi mdi-view-headline mdi-24px"></i>
+		</div>
 	</div>
 
 </template>
@@ -25,6 +28,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import useYoutube from '../use-youtube.js'
+import useUI from '../use-UI.js'
 import useStore from '../use-store.js'
 import Icon from './Icon.vue'
 
@@ -37,6 +41,11 @@ export default {
 		let searchString = ref('');
 
 		let { addPlaylist, search } = useYoutube();
+
+		let {
+			setCompact,
+		}	= useUI();
+
 		let state = useStore();
 
 		function setColumns(value) {
@@ -50,6 +59,7 @@ export default {
 			// youtube
 			addPlaylist,
 			setColumns,
+			setCompact,
 			search,
 		}
 	}
