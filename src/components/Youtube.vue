@@ -18,7 +18,7 @@
 		</div>
 	</div>
 
-	<YoutubeComments v-show="comments.length"></YoutubeComments>
+	<YoutubeComments v-show="comments.length && showComments && showCommentsPause"></YoutubeComments>
 
 	<div style="min-height: 90px"></div>
 </template>
@@ -31,6 +31,7 @@ import YoutubeSearch from './YoutubeSearch.vue'
 import useYoutube from '../use-youtube.js'
 import useYoutubePlayer from '../use-youtube-player.js'
 import YoutubeComments from './YoutubeComments.vue'
+import useUI from '../use-UI.js'
 import axios from 'axios'
 
 export default {
@@ -67,6 +68,11 @@ export default {
 			playerWindowState,
 		} = useYoutubePlayer();
 
+		let {
+			showComments,
+			showCommentsPause,
+		} = useUI();
+
 		// METHODS
 
 		onMounted(() => {
@@ -86,6 +92,8 @@ export default {
 			searchRes,
 			playerWindowState,
 			comments,
+			showComments,
+			showCommentsPause,
 		}
 	}
 }

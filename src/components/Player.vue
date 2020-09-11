@@ -80,6 +80,8 @@ export default {
 
 		let { 
 			setPlayerHeight,
+			showComments,
+			setComments,
 		} = useUI();
 
 		// COMPUTED
@@ -143,6 +145,8 @@ export default {
 			actionPause,
 			handleYoutubeWindowClick,
 			scrollToCurrentVideo,
+			showComments,
+			setComments,
 		}
 	}
 }

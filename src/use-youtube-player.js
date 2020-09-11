@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import YouTubePlayer from 'youtube-player';
 import useYoutube from './use-youtube.js'
+import useUI from './use-UI.js'
 
 let currentVideo = ref({});
 let currentPlaylistId = ref("");
@@ -25,6 +26,10 @@ export default function useYoutubePlayer() {
 		findVideoIndex, 
 		getComments 
 	} = useYoutube();
+
+	let { 
+		showCommentsPause, 
+	} = useUI();
 
 	function play() {
 		player.playVideo();
@@ -107,12 +112,14 @@ export default function useYoutubePlayer() {
 					currentTime.value = time
 				});
 			}, 100);
+			showCommentsPause.value = true;
 		}
 
 		// paused
 
 		if (ev.data == 2) {
 			playerState.value = 2;
+			showCommentsPause.value = false;
 		}
 
 		if (ev.data == -1 || ev.data == 0) {

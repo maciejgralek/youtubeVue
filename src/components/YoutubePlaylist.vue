@@ -97,7 +97,8 @@ export default {
 
 		let { 
 			removePlaylist, 
-			move 
+			move,
+			showComments,
 		} = useYoutube();
 
 		let { 
