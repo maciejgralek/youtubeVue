@@ -44,6 +44,10 @@ export default function useYoutubePlayer() {
 		player.pauseVideo();
 	}
 
+	function seekTo(seconds) {
+		player.seekTo(seconds);
+	}
+
 	function loadVideo(video, playlistId) {
 		let id;
 		if (video.resourceId) {
@@ -142,6 +146,7 @@ export default function useYoutubePlayer() {
 		play,
 		stop,
 		pause,
+		seekTo,
 		loadVideo,
 		getTime,
 		setYoutubeWindow,

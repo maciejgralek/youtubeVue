@@ -21,16 +21,19 @@
 			</div>
 
 			<div class="col-auto ml-auto mr-1">
+				<i v-if="showComments" @click="setComments" class="mdi mdi-comment-outline mdi-player-icon-mini"></i>
+				<i v-else @click="setComments" class="mdi mdi-comment-remove-outline mdi-player-icon-mini"></i>
 				<i v-if="playerWindowState == 1" @click="handleYoutubeWindowClick" class="mdi mdi-square-rounded-outline mdi-player-icon"></i>
 				<i v-else @click="handleYoutubeWindowClick" class="mdi mdi-arrow-top-left-thick mdi-player-icon"></i>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col mx-1">
-				<div class="progress bg-secondary my-2">
+				<div @mousemove="handleMouseMoveProgress" @click="handleClickProgress" class="progress bg-secondary my-2">
 					<div 
 						class="progress-bar bg-danger" 
 						role="progressbar" 
+						style="pointer-events: none"
 						:style="{'width': (currentTime/duration) * 100 +'%'}" 
 						aria-valuenow="0" 
 						aria-valuemin="0" 
@@ -70,6 +73,7 @@ export default {
 			play, 
 			stop, 
 			pause,
+			seekTo,
 			getTime,
 			setYoutubeWindow,
 		} = useYoutubePlayer();
@@ -125,6 +129,18 @@ export default {
 			setYoutubeWindow(3);
 		}
 
+		function handleClickProgress(ev) {
+			if (!currentVideo.value) return;
+			let w = ev.target.clientWidth;
+			let seconds = ((ev.x - ev.target.offsetLeft)/w) * duration.value;
+			console.log(ev, seconds)
+			seekTo(seconds);
+		}
+
+		function handleMouseMoveProgress(ev) {
+			let w = ev.target.clientWidth;
+		}
+
 		function scrollToCurrentVideo() {
 			findVideoElement(currentVideo.value);
 		}
@@ -139,11 +155,11 @@ export default {
 			duration,
 			playerState,
 			playerWindowState,
-			play,
-			stop,
 			actionPlay,
 			actionPause,
 			handleYoutubeWindowClick,
+			handleMouseMoveProgress,
+			handleClickProgress,
 			scrollToCurrentVideo,
 			showComments,
 			setComments,
@@ -170,17 +186,28 @@ export default {
 	font-size: 2.2em;
 	line-height: normal;
 }
+.mdi-player-icon-mini:before {
+	font-size: 2em;
+	line-height: normal;
+}
+.mdi-player-icon-play:before {
+	font-size: 36px;
+	line-height: normal;
+}
 .progress {
 	height: 0.4rem !important;
+}
+.progress-bar {
+	transition: none;
 }
 .video-title {
 	font-size: 1em;
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .7s;
+  transition: opacity .3s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 </style>
