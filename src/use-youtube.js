@@ -78,7 +78,6 @@ export default function useYoutube() {
 		let queryUrl = createUrl(googleApiUrl+'commentThreads?', query);
 		let res = await axios.get(queryUrl);
 		comments.value = res.data.items;
-		console.log(comments.value)
 	}
 
 	function addPlaylist(id ) {
