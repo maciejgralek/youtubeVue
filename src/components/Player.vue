@@ -1,6 +1,7 @@
 <template>
 	<div ref="playerRef" class="player w-100 p-2">
 		<div class="row align-items-center py-0">
+
 			<div class="col-auto border-right border-secondary pr-1">
 				<i v-if="playerState == 2 || playerState == -1" @click="actionPlay" class="mdi mdi-play mdi-36px" style="line-height: normal"></i>
 				<i v-else @click="actionPause" class="mdi mdi-pause mdi-36px" style="line-height: normal"></i>
@@ -10,6 +11,11 @@
 				<span class="timer text-dark font-weight-bold mx-3">
 					{{ formatedTime }} - {{ durationTime }}
 				</span>
+			</div>
+
+			<div class="col-auto border-right border-secondary">
+				<i class="mdi mdi-skip-previous mdi-player-icon-play"></i>
+				<i class="mdi mdi-skip-next mdi-player-icon-play"></i>
 			</div>
 
 			<div class="col-auto">
