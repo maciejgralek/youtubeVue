@@ -56,9 +56,9 @@
 			<ul v-else class="list-unstyled p-3">
 				<li 
 					v-for="(item, index) in filteredPlaylist" 
-					@click="handleClickPlaylistItem(item.snippet)" 
+					@click="handleClickPlaylistItem(item)" 
 					class="playlist-item text-truncate p-1" 
-					:class="{ 'font-weight-bold': item.snippet == currentVideo, 'playlist-item-play': item.snippet == currentVideo}"
+					:class="classListPlaylistItem(item)"
 					>
 					<img 
 						:src="item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : ''" 
@@ -123,9 +123,16 @@ export default {
 
 		// METHODS
 
+		function classListPlaylistItem(item) {
+			return {
+				'font-weight-bold': item.snippet == currentVideo.value,
+				'playlist-item-play': item.snippet == currentVideo.value,
+			}
+		} 
+
 		function handleClickPlaylistItem(video) {
-			if (video != currentVideo.value) {
-				loadVideo(video, props.playlistId);
+			if (video.snippet != currentVideo.value) {
+				loadVideo(video.snippet, props.playlistId);
 				play();
 			}
 		}
@@ -139,6 +146,7 @@ export default {
 			handleClickPlaylistItem,
 			thumbnailWidth,
 			thumbnailHeight,
+			classListPlaylistItem,
 		}
 	}
 }
