@@ -4,43 +4,57 @@
 				<!-- <span class="text&#45;light font&#45;weight&#45;bold"> -->
 				<span class="font-weight-bold">
 					{{ playlist.title }} 
-					<span class="badge bg-secondary ml-1">
+					<span class="badge bg-secondary mx-1">
 						{{ playlist.items.length }}
 					</span>
+					<i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
 				</span>
 				<div class="ml-auto">
 					<div class="dropdown">
 						<i class="mdi mdi-dots-vertical" style="font-size: 1.45em" data-toggle="dropdown"></i>
 						<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-							<li class="align-middle">
+							<li>
 								<a class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-close mdi-24px pr-1"></i>
+									<i class="mdi mdi-close mdi-dropdown-icon pr-1"></i>
 									Close playlist
 								</a>
 							</li>
 							<li><hr class="dropdown-divider"></li>
+							<li v-if="!playlist.local">
+								<a @click="handleSavePlaylist" class="dropdown-item d-flex align-items-center" href="#">
+									<i class="mdi mdi-star mdi-dropdown-icon pr-1"></i>
+									Save playlist
+								</a>
+							</li>
+							<li v-else>
+								<a @click="handleSavePlaylist" class="dropdown-item d-flex align-items-center" href="#">
+									<i class="mdi mdi-star-outline mdi-dropdown-icon pr-1"></i>
+									Delete playlist
+								</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
 							<li>
-								<a class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-menu-right mdi-24px pr-1"></i>
+								<a class="dropdown-item d-flex align-items-center" :class="{ disabled: !playlist.local }" href="#">
+									<i class="mdi mdi-chevron-right mdi-dropdown-icon pr-1"></i>
 									Move to right
 								</a>
 							</li>
 							<li>
-								<a class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-menu-left mdi-24px pr-1"></i>
+								<a class="dropdown-item d-flex align-items-center" :class="{ disabled: !playlist.local }" href="#">
+									<i class="mdi mdi-chevron-left mdi-dropdown-icon pr-1"></i>
 									Move to left
 								</a>
 							</li>
 							<li><hr class="dropdown-divider"></li>
 							<li>
 								<a class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-youtube mdi-24px pr-1"></i>
+									<i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
 									Open in youtube
 								</a>
 							</li>
 							<li>
 								<a class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-youtube mdi-24px pr-1"></i>
+									<i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
 									Edit in youtube
 								</a>
 							</li>
@@ -99,6 +113,7 @@ export default {
 			removePlaylist, 
 			move,
 			showComments,
+			savePlaylist,
 		} = useYoutube();
 
 		let { 
@@ -130,6 +145,10 @@ export default {
 			}
 		} 
 
+		function handleSavePlaylist() {
+			savePlaylist(props.playlist);
+		}
+
 		function handleClickPlaylistItem(video) {
 			if (video.snippet != currentVideo.value) {
 				loadVideo(video.snippet, props.playlistId);
@@ -147,6 +166,7 @@ export default {
 			thumbnailWidth,
 			thumbnailHeight,
 			classListPlaylistItem,
+			handleSavePlaylist,
 		}
 	}
 }
