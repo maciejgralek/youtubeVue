@@ -80,15 +80,23 @@ export default function useYoutube() {
 		comments.value = res.data.items;
 	}
 
-	function addPlaylist(id ) {
+	function addPlaylist(id, local) {
 		let playlist = {
 			id: id,
+			local: local || 0,
 			title: ref([]),
 			items: ref([]),
 		}
 		getPlaylist(playlist, id);
 		playlists.value.push(playlist);
 		// savePlaylists();
+	}
+
+	function addSavedPlaylists() {
+		let pl = loadPlaylists();
+		for (let p of pl) {
+			addPlaylist(p.id, true);
+		}
 	}
 
 	function removePlaylist(playlist) {
@@ -134,6 +142,15 @@ export default function useYoutube() {
 
 	// LOCAL STORAGE
 
+	function savePlaylist(playlist) {
+		let savedPlaylists = loadPlaylists();
+		if (!savedPlaylists.some(item => item.id == playlist.id)) {
+			savedPlaylists.push(playlist);
+			savedPlaylists = JSON.stringify(savedPlaylists, ['id', 'title'], 1);
+			localStorage.setItem('playlists', savedPlaylists);
+		}
+	}
+
 	function savePlaylists() {
 		let pl = JSON.stringify(playlists.value, ['id', 'title'], 1);
 		localStorage.setItem('playlists', pl);
@@ -141,11 +158,8 @@ export default function useYoutube() {
 
 	function loadPlaylists() {
 		let pl = localStorage.getItem('playlists');
-		if (!pl) return;
 		pl = JSON.parse(pl);
-		for (let i of pl) {
-			addPlaylist(i.id, i.title);
-		}
+		return pl || [];
 	}
 
 	function loadPlaylistsRequest(request) {
@@ -158,6 +172,7 @@ export default function useYoutube() {
 		playlists,
 		getPlaylist,
 		addPlaylist,
+		addSavedPlaylists,
 		getChannelPlaylists,
 		loadPlaylists,
 		loadPlaylistsRequest,
