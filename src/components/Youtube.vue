@@ -18,7 +18,9 @@
 		</div>
 	</div>
 
-	<YoutubeComments v-show="comments.length && showComments && showCommentsPause"></YoutubeComments>
+	<transition name="fade-comment" mode="out-in">
+		<YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
+	</transition>
 
 	<div style="min-height: 90px"></div>
 </template>
@@ -113,9 +115,16 @@ export default {
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .7s;
+  transition: opacity .7s !important;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+.fade-comment-enter-active, .fade-comment-leave-active {
+  transition: opacity .3s !important;
+}
+.fade-comment-enter-from, .fade-comment-leave-to {
   opacity: 0;
 }
 </style>
