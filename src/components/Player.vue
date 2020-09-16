@@ -7,7 +7,7 @@
 				<i v-else @click="actionPause" class="mdi mdi-pause mdi-36px" style="line-height: normal"></i>
 			</div>
 
-			<div class="col-auto border-right border-secondary">
+			<div v-if="currentVideo.title && duration" class="col-auto border-right border-secondary">
 				<span class="timer text-dark font-weight-bold mx-3">
 					{{ formatedTime }} - {{ durationTime }}
 				</span>
@@ -64,6 +64,9 @@ export default {
 	},
 	setup(props) {
 
+		let showHours = false;
+		let showMinutes = false;
+
 		// DATA
 
 		let playerRef = ref(null);
@@ -94,6 +97,15 @@ export default {
 			setComments,
 		} = useUI();
 
+		watchEffect(() => {
+			showHours = false;
+			showMinutes = false;
+			let hours = Math.trunc((Math.floor(duration.value) / 60 / 60) % 60);
+			let minutes = Math.trunc((duration.value / 60) % 60);
+			if (hours) showHours = true;
+			if (minutes) showMinutes = true;
+		})
+
 		// COMPUTED
 
 		let durationTime = computed(() => {
@@ -107,14 +119,21 @@ export default {
 		})
 
 		let formatedTime = computed(() => {
+			let time = "";
 			if (currentTime.value == undefined) currentTime.value = 0;
-			let hours = Math.trunc((Math.floor(currentTime.value) / 60 / 60) % 60);
-			let minutes = Math.trunc((Math.floor(currentTime.value) / 60) % 60);
+			if (showHours) {
+				let hours = Math.trunc((Math.floor(currentTime.value) / 60 / 60) % 60);
+				hours = hours < 10 ? '0' + hours : hours;
+				time = hours + ':';
+			}
+			if (showMinutes) {
+				let minutes = Math.trunc((Math.floor(currentTime.value) / 60) % 60);
+				minutes = minutes < 10 ? '0' + minutes : minutes;
+				time += minutes + ':';
+			}
 			let seconds = Math.floor(currentTime.value) % 60;
-			hours = hours < 10 ? '0' + hours : hours;
-			minutes = minutes < 10 ? '0' + minutes : minutes;
 			seconds = seconds < 10 ? '0' + seconds : seconds;
-			return hours + ':' + minutes + ':' + seconds;
+			return time + seconds;
 		})
 
 		// METHODS
