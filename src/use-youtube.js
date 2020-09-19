@@ -9,7 +9,9 @@ let playlists = ref([]);
 let channelPlaylists = ref([]);
 let searchRes = ref([]);
 let comments = ref([]);
-let commentsNextPageToken;
+let commentsNextPageToken = null;
+let searchNextPageToken = null;
+let searchLast = "";
 
 export default function useYoutube() {
 
@@ -117,17 +119,27 @@ export default function useYoutube() {
 		// savePlaylists();
 	}
 
-	async function search(value) {
+	async function search(value, nextPage) {
+		searchLast = nextPage ? searchLast : value;
 		let query = {
 			part: 'snippet',
-			q: value,
+			q: value ? value : searchLast,
 			key: apiKey,
 			maxResults: 50,
+		}
+		if (nextPage && searchNextPageToken) {
+			query.pageToken = searchNextPageToken;
 		}
 		let queryUrl = createUrl(googleApiUrl+'search?', query);
 
 		let res = await axios.get(queryUrl);
-		searchRes.value = res.data.items.filter(item => item.id.kind == "youtube#video");
+		if (nextPage) {
+			searchRes.value = searchRes.value.concat(res.data.items.filter(item => item.id.kind == "youtube#video"));
+		}
+		else {
+			searchRes.value = res.data.items.filter(item => item.id.kind == "youtube#video");
+		}
+		searchNextPageToken = res.data.nextPageToken;
 	}
 
 	function move(playlist, dir) {
