@@ -62,27 +62,30 @@
 					</div>
 				</div>
 		</div>
-		<div class="playlist-div playlist">
-		<div v-if="!filteredPlaylist.length" class="p-3">
-			No items
-		</div>
+		<div ref="playlistElem" class="playlist-div playlist">
+			<div v-if="!filteredPlaylist.length" class="p-3">
+				No items
+			</div>
 			<!-- <ul v&#45;else class="playlist list&#45;unstyled text&#45;light p&#45;3"> -->
 			<ul v-else class="list-unstyled p-3">
-				<li 
-					v-for="(item, index) in filteredPlaylist" 
-					@click="handleClickPlaylistItem(item)" 
-					class="playlist-item text-truncate p-1" 
-					:class="classListPlaylistItem(item)"
-					>
-					<img 
-						:src="item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : ''" 
-						class="pr-2" 
-						:width="thumbnailWidth"
-						:height="thumbnailHeight"
-						alt=""
+				<transition-group name="list" tag="p">
+					<li 
+						v-for="(item, index) in filteredPlaylist" 
+						@click="handleClickPlaylistItem(item)" 
+						class="playlist-item text-truncate p-1" 
+						:class="classListPlaylistItem(item)"
+						:key="item.id"
 						>
-					{{ item.snippet.title }}
-				</li>
+						<img 
+							:src="item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : ''" 
+							class="pr-2" 
+							:width="thumbnailWidth"
+							:height="thumbnailHeight"
+							alt=""
+							>
+						{{ item.snippet.title }}
+					</li>
+				</transition-group>
 			</ul>
 		</div>
 
@@ -109,6 +112,7 @@ export default {
 
 		// COMPOSITION
 
+		let playlistElem = ref(null);
 		let { 
 			removePlaylist, 
 			move,
@@ -167,6 +171,7 @@ export default {
 			thumbnailHeight,
 			classListPlaylistItem,
 			handleSavePlaylist,
+			playlistElem,
 		}
 	}
 }
@@ -203,9 +208,28 @@ export default {
     background-color: #F5F5F5;
 }
 .playlist::-webkit-scrollbar-thumb {
-    background-color: darken($light, 4);
+    background-color: darken($light, 10);
 }
-.icon {
-	cursor: pointer;
+.mdi-dropdown-icon:before {
+	font-size: 1.2em;
+	line-height: normal;
+}
+.mdi-icon-playlist:before {
+	color: orange;
+}
+
+.list-enter-active {
+	transition: all .3s ease;
+}
+.list-leave-active {
+	transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.list-enter-from {
+	transform: translateX(10px);
+	opacity: 0;
+}
+.list-leave-to {
+	transform: translateX(10px);
+	opacity: 0;
 }
 </style>

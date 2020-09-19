@@ -9,6 +9,7 @@ let playlists = ref([]);
 let channelPlaylists = ref([]);
 let searchRes = ref([]);
 let comments = ref([]);
+let commentsNextPageToken;
 
 export default function useYoutube() {
 
@@ -68,16 +69,27 @@ export default function useYoutube() {
 		}
 	}
 
-	async function getComments(videoId) {
+	async function getComments(videoId, nextPage) {
+		if (nextPage && !commentsNextPageToken) return;
+
 		let query = {
 			part: 'snippet',
 			videoId: videoId,
 			key: apiKey,
 			maxResults: 50,
 		}
+		if (nextPage && commentsNextPageToken) {
+			query.nextPageToken = commentsNextPageToken;
+		}
 		let queryUrl = createUrl(googleApiUrl+'commentThreads?', query);
 		let res = await axios.get(queryUrl);
-		comments.value = res.data.items;
+		if (nextPage && commentsNextPageToken) {
+			comments.value = comments.value.concat(res.data.items);
+		}
+		else {
+			comments.value = res.data.items;
+		}
+		commentsNextPageToken = res.data.nextPageToken;
 	}
 
 	function addPlaylist(id, local) {
@@ -102,7 +114,7 @@ export default function useYoutube() {
 	function removePlaylist(playlist) {
 		let index = playlists.value.indexOf(playlist);
 		playlists.value.splice(index, 1);
-		savePlaylists();
+		// savePlaylists();
 	}
 
 	async function search(value) {
@@ -162,7 +174,7 @@ export default function useYoutube() {
 		return pl || [];
 	}
 
-	function loadPlaylistsRequest(request) {
+	function addUrlPlaylists(request) {
 		for (let i of request) {
 			addPlaylist(i);
 		}
@@ -175,7 +187,7 @@ export default function useYoutube() {
 		addSavedPlaylists,
 		getChannelPlaylists,
 		loadPlaylists,
-		loadPlaylistsRequest,
+		addUrlPlaylists,
 		removePlaylist,
 		move,
 		search,
@@ -185,6 +197,7 @@ export default function useYoutube() {
 		findVideoIndex,
 		getComments,
 		comments,
+		savePlaylist,
 	}
 
 }

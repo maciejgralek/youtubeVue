@@ -44,6 +44,15 @@ export default function useYoutubePlayer() {
 		player.pauseVideo();
 	}
 
+	function togglePlayPause() {
+		if (playerState.value == 2) {
+			play();
+		}
+		else if (playerState.value == 1) {
+			pause();
+		}
+	}
+
 	function seekTo(seconds) {
 		player.seekTo(seconds);
 	}
@@ -59,8 +68,15 @@ export default function useYoutubePlayer() {
 			currentVideo.value = video.snippet;
 		}
 		if (playlistId) currentPlaylistId.value = playlistId;
-		player.loadVideoById(id);
-		getComments(id);
+		player.loadVideoById(id).then(() => {
+			getComments(id, false);
+			if (video.resourceId) {
+				currentVideo.value = video;
+			}
+			else {
+				currentVideo.value = video.snippet;
+			}
+		});
 	}
 
 	function getTime() {
@@ -75,6 +91,9 @@ export default function useYoutubePlayer() {
 			else
 				size = 1;
 		}
+		else {
+			size = state;
+		}
 		if (size == 1) {
 			player.getIframe().then(el => {
 				// el.style.transition = "top 2s,right 2s,bottom 2s,left 2s";
@@ -87,10 +106,11 @@ export default function useYoutubePlayer() {
 			});
 		}
 		else if (size == 2) {
-			let w = window.innerWidth/1.8;
+			let w = document.body.clientWidth/1.8;
 			let h = window.innerHeight/1.8;
-			let l = (window.innerWidth - w)/2
+			let l = (document.body.clientWidth - w)/2
 			let t = (window.innerHeight - h)/2 - 40
+
 			player.getIframe().then(el => {
 				// el.style.transition = "top 2s,right 2s,bottom 2s,left 2s";
 				player.setSize(w, h);
@@ -105,7 +125,14 @@ export default function useYoutubePlayer() {
 
 	// player events
 
+	window.addEventListener('resize', () => {
+		if (playerWindowState.value == 2) {
+			setYoutubeWindow(playerWindowState.value);
+		}
+	})
+
 	player.on('stateChange', ev => {
+		console.log(ev.data)
 		if (ev.data == 1) {
 			player.getDuration().then(time => {
 				duration.value = Math.floor(time);
@@ -146,6 +173,7 @@ export default function useYoutubePlayer() {
 		play,
 		stop,
 		pause,
+		togglePlayPause,
 		seekTo,
 		loadVideo,
 		getTime,

@@ -1,14 +1,22 @@
 <template>
 
-	<div class="row align-items-center py-3">
-		<div class="col-3 border-right">
+	<div class="row align-items-center py-3 pt-4 pr-3">
+		<div class="col-4 ml-auto border-right">
 			<input v-model="state.filter" type="search" class="form-control form-control-sm" placeholder="Filter">
 		</div>
 
-		<div class="col ml-auto">
-			<input v-model="searchString" type="search" class="form-control form-control-sm" placeholder="">
+		<div class="col-4">
+				<input v-model="searchString" type="search" class="form-control form-control-sm" placeholder="">
+			<!-- <div class="input&#45;group"> -->
+			<!-- 	<input v&#45;model="searchString" type="search" class="form&#45;control form&#45;control&#45;sm" placeholder=""> -->
+			<!-- 	<button class="btn btn&#45;secondary btn&#45;sm dropdown&#45;toggle" type="button" data&#45;toggle="dropdown" aria&#45;expanded="false">Type</button> -->
+			<!-- 	<ul class="dropdown&#45;menu"> -->
+			<!-- 		<li><a class="dropdown&#45;item" href="#">Video</a></li> -->
+			<!-- 		<li><a class="dropdown&#45;item" href="#">Playlist</a></li> -->
+			<!-- 	</ul> -->
+			<!-- </div> -->
 		</div>
-		<div class="col-auto border-right">
+		<div class="col-auto">
 			<button @click="search(searchString)" class="btn btn-primary btn-sm">Search</button>
 		</div>
 
@@ -19,7 +27,7 @@
 		<!-- 	<button @click="addPlaylist(playlistId)" class="btn btn&#45;primary btn&#45;sm">Add Playlist</button> -->
 		<!-- </div> -->
 
-		<div class="col-auto ml-auto border-left pr-1">
+		<div class="col-auto ml-auto pr-1">
 			<div class="dropdown">
 				<i @click="setCompact" class="mdi mdi-playlist-music mdi-24px" id="dropdownMenuButton" data-toggle="dropdown"></i>
 				<div class="dropdown-menu" style="width: 500px">
@@ -34,24 +42,32 @@
 						</div>
 					</div>
 					<div class="dropdown-divider p-0"></div>
-					<ul class="list-group list-group-flush px-3">
-						<li v-for="item in savedPlaylists" class="list-group-item px-0 border-0">
-							{{ item.title }}
-							<i class="mdi mdi-star mdi-icon-addplaylist"></i>
+					<ul class="list-group">
+						<li class="list-group-item d-flex border-0">
+							<label @click.prevent="setCompact" class="form-check-label">
+								Compact view
+							</label>
+							<input v-model="compactMode" @click="setCompact" class="form-check-input ml-auto" type="checkbox" id="checkboxCompactMode">
 						</li>
-						<template v-for="item in playlists">
-							<li v-if="!item.local" class="list-group-item px-0 border-0">
-								{{ item.title }}
-							<i class="mdi mdi-star" style="color: #909090"></i>
-							</li>
-						</template>
 					</ul>
+					<!-- <div class="dropdown&#45;divider p&#45;0"></div> -->
+					<!-- <ul class="list&#45;group list&#45;group&#45;flush"> -->
+					<!-- 	<li v&#45;for="item in savedPlaylists" class="list&#45;group&#45;item list&#45;group&#45;item&#45;action px&#45;3 border&#45;0"> -->
+					<!-- 		{{ item.title }} -->
+					<!-- 		<i class="mdi mdi&#45;star mdi&#45;icon&#45;addplaylist"></i> -->
+					<!-- 	</li> -->
+					<!-- 	<template v&#45;for="item in playlists"> -->
+					<!-- 		<li v&#45;if="!item.local" class="list&#45;group&#45;item list&#45;group&#45;item&#45;action px&#45;3 border&#45;0"> -->
+					<!-- 			{{ item.title }} -->
+					<!-- 		</li> -->
+					<!-- 	</template> -->
+					<!-- </ul> -->
 				</div>
 			</div>
 		</div>
-		<div class="col-auto pr-3">
-			<i @click="setCompact" class="mdi mdi-view-headline mdi-24px"></i>
-		</div>
+		<!-- <div class="col&#45;auto px&#45;0"> -->
+		<!-- 	<i @click="setCompact" class="mdi mdi&#45;view&#45;headline mdi&#45;24px"></i> -->
+		<!-- </div> -->
 	</div>
 
 </template>
@@ -80,6 +96,7 @@ export default {
 		} = useYoutube();
 
 		let {
+			compactMode,
 			setCompact,
 		}	= useUI();
 
@@ -102,6 +119,7 @@ export default {
 			addPlaylist,
 			setColumns,
 			setCompact,
+			compactMode,
 			search,
 			savedPlaylists,
 		}
@@ -111,5 +129,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.mdi-icon-addplaylist:before {
+	color: orange;
+}
 </style>

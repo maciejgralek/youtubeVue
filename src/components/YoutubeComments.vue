@@ -1,13 +1,17 @@
 <template>
-	<div v-if="comments.length" class="row comments shadow p-2 g-2">
+	<div v-if="comments.length" class="row comments shadow p-2 g-2 rounded">
 		<div class="col-auto">
 			<img :src="comments[commentIndex].snippet.topLevelComment.snippet.authorProfileImageUrl" alt="">
 		</div>
 		<div class="col">
-			<span class="font-weight-bold">
-				{{ comments[commentIndex].snippet.topLevelComment.snippet.authorDisplayName }}
-			</span>
-			{{ comments[commentIndex].snippet.topLevelComment.snippet.textOriginal }}
+			<transition name="fade" mode="out-in">
+				<span :key="comments[commentIndex].id">
+					<span class="font-weight-bold">
+						{{ comments[commentIndex].snippet.topLevelComment.snippet.authorDisplayName }}
+					</span>
+					{{ comments[commentIndex].snippet.topLevelComment.snippet.textOriginal }}
+				</span>
+			</transition>
 		</div>
 	</div>
 </template>
@@ -29,6 +33,7 @@ export default {
 
 		let { 
 			comments,
+			getComments,
 		} = useYoutube();
 
 		let { 
@@ -37,11 +42,14 @@ export default {
 
 		// COMPUTED
 
-		watch(comments, () => {
+		watch(currentVideo, () => {
 			commentIndex.value = 0;
 			clearInterval(commentTimer);
 			commentTimer = setInterval(() => {
 				commentIndex.value++;
+				if (commentIndex.value > comments.value.length - 5) {
+					getComments(currentVideo.value.resourceId.videoId, true);
+				}
 				if (commentIndex.value > comments.value.length - 1) {
 					commentIndex.value = 0;
 				}
@@ -70,5 +78,12 @@ export default {
 	bottom: 100px;
 	background-color: $light;
 	overflow: hidden;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>

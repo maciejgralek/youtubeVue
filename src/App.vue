@@ -1,27 +1,31 @@
 <template>
   <div id="app">
 		<div class="container-app">
-			
-				<Navbar />
-				
-				<div class="container-fluid">
-						<router-view></router-view>
-					</div>
+
+			<Navbar />
+
+			<div class="container-fluid">
+				<router-view></router-view>
+			</div>
 		</div>
 
 		<Player />
-  </div>
+	</div>
 </template>
 
 <script>
 import Navbar from './components/Navbar.vue'
 import Player from './components/Player.vue'
+import useKey from './use-key.js'
 
 export default {
 	components: {
 		Navbar,
 		Player,
 	},
+	setup() {
+		useKey();
+	}
 }
 </script>
 
@@ -38,6 +42,10 @@ body {
 
 i {
 	cursor: pointer;
+}
+
+.bg-dark-l10 {
+	background-color: lighten($dark, 10);
 }
 
 // PLAYER

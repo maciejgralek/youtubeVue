@@ -2,9 +2,11 @@
 	<div ref="playerRef" class="player w-100 p-2">
 		<div class="row align-items-center py-0">
 
+			<!-- PLAY -->
+
 			<div class="col-auto border-right border-secondary pr-1">
-				<i v-if="playerState == 2 || playerState == -1" @click="actionPlay" class="mdi mdi-play mdi-36px" style="line-height: normal"></i>
-				<i v-else @click="actionPause" class="mdi mdi-pause mdi-36px" style="line-height: normal"></i>
+				<i v-if="playButtonMode" @click="actionPlay" class="mdi mdi-play mdi-player-icon-play" style="line-height: normal"></i>
+				<i v-else @click="actionPause" class="mdi mdi-pause mdi-player-icon-play" ></i>
 			</div>
 
 			<div v-if="currentVideo.title && duration" class="col-auto border-right border-secondary">
@@ -13,7 +15,7 @@
 				</span>
 			</div>
 
-			<div class="col-auto border-right border-secondary">
+			<div v-if="currentVideo.title" class="col-auto border-right border-secondary">
 				<i class="mdi mdi-skip-previous mdi-player-icon-play"></i>
 				<i class="mdi mdi-skip-next mdi-player-icon-play"></i>
 			</div>
@@ -33,9 +35,10 @@
 				<i v-else @click="handleYoutubeWindowClick" class="mdi mdi-arrow-top-left-thick mdi-player-icon"></i>
 			</div>
 		</div>
+
 		<div class="row">
 			<div class="col mx-1">
-				<div @mousemove="handleMouseMoveProgress" @click="handleClickProgress" class="progress bg-secondary my-2">
+				<div @mousemove="handleMouseMoveProgress" @click="handleClickProgress" class="progress bg-secondary mt-2 mb-1">
 					<div 
 						class="progress-bar bg-danger" 
 						role="progressbar" 
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watchEffect } from 'vue'
 import Icon from './Icon.vue'
 import useYoutubePlayer from '../use-youtube-player.js'
 import useYoutube from '../use-youtube.js'
@@ -136,6 +139,10 @@ export default {
 			return time + seconds;
 		})
 
+		let playButtonMode = computed(() => {
+			return playerState.value == 2 || playerState.value == -1 || playerState.value == 0;
+		})
+
 		// METHODS
 
 		onMounted(() => {
@@ -158,7 +165,6 @@ export default {
 			if (!currentVideo.value) return;
 			let w = ev.target.clientWidth;
 			let seconds = ((ev.x - ev.target.offsetLeft)/w) * duration.value;
-			console.log(ev, seconds)
 			seekTo(seconds);
 		}
 
@@ -180,6 +186,7 @@ export default {
 			duration,
 			playerState,
 			playerWindowState,
+			playButtonMode,
 			actionPlay,
 			actionPause,
 			handleYoutubeWindowClick,
@@ -197,9 +204,9 @@ export default {
 .player {
 	position: fixed;
 	bottom: 0px;
-	-webkit-box-shadow: 0px -7px 12px -11px rgba(0,0,0,0.6);
-	-moz-box-shadow: 0px -7px 12px -11px rgba(0,0,0,0.6);
-	box-shadow: 0px -7px 12px -11px rgba(0,0,0,0.6);
+	-webkit-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
+	box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
 	/* width: 80% !important; */
 	/* left: 50%; */
 	/* transform: translateX(-50%); */
@@ -221,6 +228,7 @@ export default {
 }
 .progress {
 	height: 0.4rem !important;
+	cursor: pointer;
 }
 .progress-bar {
 	transition: none;

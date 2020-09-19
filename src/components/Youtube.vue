@@ -12,7 +12,7 @@
 
 		<div 
 			v-for="(playlist, index) in playlists" 
-			class="col text-left bg-light text-body border-right"
+			class="col text-left text-body border-right"
 			>
 			<YoutubePlaylist :playlist="playlist" :playlistId="playlist.id"/>
 		</div>
@@ -34,7 +34,6 @@ import useYoutube from '../use-youtube.js'
 import useYoutubePlayer from '../use-youtube-player.js'
 import YoutubeComments from './YoutubeComments.vue'
 import useUI from '../use-UI.js'
-import axios from 'axios'
 
 export default {
 	components: {
@@ -61,7 +60,9 @@ export default {
 
 		let { 
 			playlists, 
-			loadPlaylistsRequest,
+			loadPlaylists,
+			addUrlPlaylists,
+			addSavedPlaylists,
 			searchRes,
 			comments,
 		} = useYoutube();
@@ -78,8 +79,9 @@ export default {
 		// METHODS
 
 		onMounted(() => {
+			addSavedPlaylists();
 			if (playlistRequest) {
-				loadPlaylistsRequest(playlistRequest);
+				addUrlPlaylists(playlistRequest);
 			}
 		})
 
@@ -102,7 +104,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 .backdrop {
     position: fixed;
     left: 0;

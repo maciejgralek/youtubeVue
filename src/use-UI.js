@@ -16,16 +16,16 @@ export default function useUI() {
 		playerHeight = h;
 	}
 
-	function setCompact(value) {
+	function setCompact() {
 		if (compactMode.value) {
 			thumbnailWidth.value = _normalThumbnailWidth;
 			thumbnailHeight.value = _normalThumbnailHeight;
-			compactMode.value = 0;
+			compactMode.value = false;
 		}
 		else {
 			thumbnailWidth.value = _compactThumbnailWidth;
 			thumbnailHeight.value = _compactThumbnailHeight;
-			compactMode.value = 1;
+			compactMode.value = true;
 		}
 	}
 
@@ -36,7 +36,6 @@ export default function useUI() {
 		else {
 			showComments.value = true;
 		}
-		console.log(showComments.value)
 	}
 
 	return {
@@ -48,5 +47,6 @@ export default function useUI() {
 		showComments,
 		showCommentsPause,
 		setComments,
+		compactMode,
 	}
 }

@@ -23,13 +23,13 @@
 					v-for="(item, index) in items" 
 					@click="handleClickPlaylistItem(item)" 
 					class="playlist-item text-truncate p-1" 
-					:class="{ 'font-weight-bold': item.snippet == currentVideo, 'playlist-item-play': item.snippet == currentVideo}"
+					:class="classListPlaylistItem(item)"
 					>
 					<img 
 						:src="item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : ''" 
 						class="pr-2" 
-						width="80" 
-						height="50" 
+						:width="thumbnailWidth" 
+						:height="thumbnailHeight" 
 						alt=""
 						>
 					{{ item.snippet.title }}
@@ -45,6 +45,7 @@ import { ref, computed, onMounted } from 'vue'
 import Icon from './Icon.vue'
 import useYoutube from '../use-youtube.js'
 import useYoutubePlayer from '../use-youtube-player.js'
+import useUI from '../use-UI.js'
 import useStore from '../use-store.js'
 
 export default {
@@ -69,6 +70,11 @@ export default {
 			loadVideo,
 		} = useYoutubePlayer();
 
+		let {
+			thumbnailWidth,
+			thumbnailHeight,
+		}	= useUI();
+
 		let state = useStore();
 
 		// COMPUTED
@@ -79,6 +85,13 @@ export default {
 		})
 
 		// METHODS
+
+		function classListPlaylistItem(item) {
+			return {
+				'font-weight-bold': item.snippet == currentVideo.value,
+				'playlist-item-play': item.snippet == currentVideo.value,
+			}
+		} 
 
 		function handleClickPlaylistItem(video) {
 			if (video != currentVideo.value) {
@@ -94,6 +107,9 @@ export default {
 			move,
 			play,
 			handleClickPlaylistItem,
+			thumbnailWidth,
+			thumbnailHeight,
+			classListPlaylistItem,
 		}
 	}
 }
