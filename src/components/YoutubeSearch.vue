@@ -116,6 +116,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$input-bg: var(--input-background-color);
+$input-color: var(--input-color);
+$input-border-color: var(--input-border-color);
+$dropdown-bg: var(--input-background-color);
+$dropdown-color: var(--input-color);
+$dropdown-border-color: var(--input-border-color);
+$dropdown-link-color: var(--input-color);
+
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .playlist-div {
@@ -138,17 +146,35 @@ export default {
 	background-color: $gray-200;
 }
 .playlist::-webkit-scrollbar-track {
-	/* background-color: $dark; */
-	background-color: $light;
+	background-color: var(--scroll-track);
 }
 .playlist::-webkit-scrollbar {
     width: 8px;
-    background-color: #F5F5F5;
+		background-color: var(--scroll);
 }
 .playlist::-webkit-scrollbar-thumb {
-    background-color: darken($light, 4);
+	background-color: var(--scroll-thumb);
 }
-.icon {
-	cursor: pointer;
+.mdi-dropdown-icon:before {
+	font-size: 1.2em;
+	line-height: normal;
+}
+.mdi-icon-playlist:before {
+	color: orange;
+}
+
+.list-enter-active {
+	transition: all .3s ease;
+}
+.list-leave-active {
+	transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.list-enter-from {
+	transform: translateX(10px);
+	opacity: 0;
+}
+.list-leave-to {
+	transform: translateX(10px);
+	opacity: 0;
 }
 </style>

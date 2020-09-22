@@ -178,6 +178,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$input-bg: var(--input-background-color);
+$input-color: var(--input-color);
+$input-border-color: var(--input-border-color);
+$dropdown-bg: var(--input-background-color);
+$dropdown-color: var(--input-color);
+$dropdown-border-color: var(--input-border-color);
+$dropdown-link-color: var(--input-color);
+
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .playlist-div {
@@ -200,15 +208,14 @@ export default {
 	background-color: $gray-200;
 }
 .playlist::-webkit-scrollbar-track {
-	/* background-color: $dark; */
-	background-color: $light;
+	background-color: var(--scroll-track);
 }
 .playlist::-webkit-scrollbar {
     width: 8px;
-    background-color: #F5F5F5;
+		background-color: var(--scroll);
 }
 .playlist::-webkit-scrollbar-thumb {
-    background-color: darken($light, 10);
+	background-color: var(--scroll-thumb);
 }
 .mdi-dropdown-icon:before {
 	font-size: 1.2em;

@@ -47,7 +47,13 @@
 							<label @click.prevent="setCompact" class="form-check-label">
 								Compact view
 							</label>
-							<input v-model="compactMode" @click="setCompact" class="form-check-input ml-auto" type="checkbox" id="checkboxCompactMode">
+							<input v-model="compactMode" @click="setCompact" class="ml-auto" type="checkbox" id="checkboxCompactMode">
+						</li>
+						<li class="list-group-item d-flex align-items-center border-0">
+							<label @click.prevent="setCompact" class="form-check-label">
+								Dark theme
+							</label>
+							<input v-model="currentTheme" @click="setTheme" true-value="dark" false-value="light" class="ml-auto" type="checkbox" id="checkboxCompactMode">
 						</li>
 					</ul>
 					<!-- <div class="dropdown&#45;divider p&#45;0"></div> -->
@@ -98,6 +104,8 @@ export default {
 		let {
 			compactMode,
 			setCompact,
+			setTheme,
+			currentTheme,
 		}	= useUI();
 
 		let state = useStore();
@@ -119,7 +127,9 @@ export default {
 			addPlaylist,
 			setColumns,
 			setCompact,
+			setTheme,
 			compactMode,
+			currentTheme,
 			search,
 			savedPlaylists,
 		}
@@ -129,6 +139,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.border-right {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: var(--border-color) !important;
+}
 .mdi-icon-addplaylist:before {
 	color: orange;
 }

@@ -67,6 +67,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$input-bg:                var(--input-background-color);
+$input-color:             var(--input-color);
+$input-border-color:      var(--input-border-color);
+$dropdown-bg:             var(--input-background-color);
+$dropdown-color:          var(--input-color);
+$dropdown-border-color:   var(--input-border-color);
+$dropdown-link-color:     var(--input-color);
+
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .comments {
@@ -76,7 +84,8 @@ export default {
 	left: 50%;
 	transform: translateX(-50%);
 	bottom: 100px;
-	background-color: $light;
+	color: var(--text-color);
+	background-color: var(--background);
 	overflow: hidden;
 }
 
