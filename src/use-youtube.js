@@ -123,7 +123,7 @@ export default function useYoutube() {
 		searchLast = nextPage ? searchLast : value;
 		let query = {
 			part: 'snippet',
-			q: value ? value : searchLast,
+			q: searchLast,
 			key: apiKey,
 			maxResults: 50,
 		}
