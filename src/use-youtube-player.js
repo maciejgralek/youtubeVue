@@ -96,10 +96,8 @@ export default function useYoutubePlayer() {
 		}
 		if (size == 1) {
 			player.getIframe().then(el => {
-				// el.style.transition = "top 2s,right 2s,bottom 2s,left 2s";
+				el.style.transition = "right 0.3s,bottom 0.3s";
 				player.setSize(_playerDefaultWidth, _playerDefaultHeight);
-				el.style.left = "";
-				el.style.top = "";
 				el.style.right = _playerDefaultRight+"px";
 				el.style.bottom = _playerDefaultBottom+"px";
 				playerWindowState.value = 1;
@@ -109,15 +107,13 @@ export default function useYoutubePlayer() {
 			let w = document.body.clientWidth/1.8;
 			let h = window.innerHeight/1.8;
 			let l = (document.body.clientWidth - w)/2
-			let t = (window.innerHeight - h)/2 - 40
+			let t = (window.innerHeight - h)/2 + 40
 
 			player.getIframe().then(el => {
-				// el.style.transition = "top 2s,right 2s,bottom 2s,left 2s";
+				el.style.transition = "right 0.3s,bottom 0.3s";
 				player.setSize(w, h);
-				el.style.right = "";
-				el.style.bottom = "";
-				el.style.left = l+"px";
-				el.style.top = t+"px";
+				el.style.right = l+"px";
+				el.style.bottom = t+"px";
 				playerWindowState.value = 2;
 			});
 		}
