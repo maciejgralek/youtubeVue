@@ -144,6 +144,11 @@ export default {
 	border-right-style: solid;
 	border-right-color: var(--border-color) !important;
 }
+
+input[type=checkbox] {
+	transform: scale(1.2);
+}
+
 .mdi-icon-addplaylist:before {
 	color: orange;
 }
