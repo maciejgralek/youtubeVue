@@ -116,6 +116,12 @@ export default {
 		pointer-events: none;
 }
 
+.playlist {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: var(--border-color);
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .7s !important;
 }
