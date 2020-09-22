@@ -10,7 +10,7 @@
 			</div>
 
 			<div v-if="currentVideo.title && duration" class="col-auto border-right border-secondary">
-				<span class="timer text-dark font-weight-bold mx-3">
+				<span class="timer font-weight-bold mx-3">
 					{{ formatedTime }} - {{ durationTime }}
 				</span>
 			</div>
