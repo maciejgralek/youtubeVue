@@ -128,7 +128,6 @@ export default function useYoutubePlayer() {
 	})
 
 	player.on('stateChange', ev => {
-		console.log(ev.data)
 		if (ev.data == 1) {
 			player.getDuration().then(time => {
 				duration.value = Math.floor(time);
