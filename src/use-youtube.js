@@ -236,6 +236,7 @@ export default function useYoutube() {
 		getPlaylist,
 		addPlaylist,
 		addSavedPlaylists,
+		getPlaylist,
 		getChannelPlaylists,
 		loadPlaylists,
 		addUrlPlaylists,
