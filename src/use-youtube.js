@@ -209,9 +209,14 @@ export default function useYoutube() {
 		}
 	}
 
-	function savePlaylists() {
-		let pl = JSON.stringify(playlists.value, ['id', 'title'], 1);
-		localStorage.setItem('playlists', pl);
+	function deleteSavedPlaylist(playlist) {
+		let savedPlaylists = loadPlaylists();
+		let index = savedPlaylists.findIndex(item => item.id == playlist.id);
+		if (index != -1) {
+			savedPlaylists.splice(index, 1);
+			savedPlaylists = JSON.stringify(savedPlaylists, ['id', 'title'], 1);
+			localStorage.setItem('playlists', savedPlaylists);
+		}
 	}
 
 	function loadPlaylists() {
@@ -244,6 +249,7 @@ export default function useYoutube() {
 		getComments,
 		comments,
 		savePlaylist,
+		deleteSavedPlaylist,
 	}
 
 }

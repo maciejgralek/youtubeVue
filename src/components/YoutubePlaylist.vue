@@ -27,7 +27,7 @@
 								</a>
 							</li>
 							<li v-else>
-								<a @click="handleSavePlaylist" class="dropdown-item d-flex align-items-center" href="#">
+								<a @click="handleDeletePlaylist" class="dropdown-item d-flex align-items-center" href="#">
 									<i class="mdi mdi-star-outline mdi-dropdown-icon pr-1"></i>
 									Delete playlist
 								</a>
@@ -119,6 +119,7 @@ export default {
 			move,
 			showComments,
 			savePlaylist,
+			deleteSavedPlaylist,
 		} = useYoutube();
 
 		let { 
@@ -160,6 +161,10 @@ export default {
 			savePlaylist(props.playlist);
 		}
 
+		function handleDeletePlaylist() {
+			deleteSavedPlaylist(toRef(props.playlist));
+		}
+
 		function handleClickPlaylistItem(video) {
 			if (video.snippet != currentVideo.value) {
 				loadVideo(video.snippet, props.playlistId);
@@ -179,6 +184,7 @@ export default {
 			classListPlaylistItem,
 			handleScroll,
 			handleSavePlaylist,
+			handleDeletePlaylist,
 			playlistElem,
 		}
 	}
