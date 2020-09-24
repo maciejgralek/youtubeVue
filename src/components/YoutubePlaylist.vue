@@ -62,7 +62,7 @@
 					</div>
 				</div>
 		</div>
-		<div ref="playlistElem" class="playlist-div playlist">
+		<div ref="playlistElem" v-scroll="handleScroll" class="playlist-div playlist">
 			<div v-if="!filteredPlaylist.length" class="p-3">
 				No items
 			</div>
@@ -114,6 +114,7 @@ export default {
 
 		let playlistElem = ref(null);
 		let { 
+			getPlaylist,
 			removePlaylist, 
 			move,
 			showComments,
@@ -149,6 +150,12 @@ export default {
 			}
 		} 
 
+		function handleScroll(ev) {
+			if (ev.target.scrollTop >= ev.target.scrollHeight - ev.target.offsetHeight) {
+				getPlaylist(props.playlist, true);
+			}
+		}
+
 		function handleSavePlaylist() {
 			savePlaylist(props.playlist);
 		}
@@ -170,6 +177,7 @@ export default {
 			thumbnailWidth,
 			thumbnailHeight,
 			classListPlaylistItem,
+			handleScroll,
 			handleSavePlaylist,
 			playlistElem,
 		}

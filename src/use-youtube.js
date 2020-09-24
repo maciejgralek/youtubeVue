@@ -43,10 +43,43 @@ export default function useYoutube() {
 		_getPlaylistProperties(playlist, id);
 	}
 
-	async function _getPlaylistProperties(playlist, id) {
+	async function getPlaylist(playlist, nextPage) {
+		if (nextPage && !playlist.nextPageToken) return;
+
 		let query = {
 			part: 'snippet',
-			id: id,
+			playlistId: playlist.id,
+			key: apiKey,
+			maxResults: 50,
+		}
+		if (nextPage && playlist.nextPageToken) {
+			query.pageToken = playlist.nextPageToken;
+		}
+		let queryUrl = createUrl(googleApiUrl+'playlistItems?', query);
+
+		playlist.nextPageToken = null;
+
+		let res = await axios.get(queryUrl);
+
+		if (nextPage) {
+			playlist.items = playlist.items.concat(res.data.items.filter(item => 
+				item.snippet.title != "Private video"
+			));
+		}
+		else {
+			playlist.items.value = res.data.items.filter(item => 
+				item.snippet.title != "Private video"
+			);
+			_getPlaylistProperties(playlist);
+		}
+
+		playlist.nextPageToken = res.data.nextPageToken;
+	}
+
+	async function _getPlaylistProperties(playlist) {
+		let query = {
+			part: 'snippet',
+			id: playlist.id,
 			key: apiKey,
 		}
 
@@ -99,9 +132,10 @@ export default function useYoutube() {
 			id: id,
 			local: local || 0,
 			title: ref([]),
-			items: ref([]),
+			items: shallowRef([]),
+			nextPageToken: null,
 		}
-		getPlaylist(playlist, id);
+		getPlaylist(playlist);
 		playlists.value.push(playlist);
 		// savePlaylists();
 	}
