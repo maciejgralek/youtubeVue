@@ -7,7 +7,7 @@
 
 	<div class="row g-4 pt-1" :class="'row-cols-' + columns">
 		<div v-if="searchRes.length" class="col border-right">
-			<YoutubeSearch :items="searchRes"></YoutubeSearch>
+			<YoutubeSearch :items="searchRes" />
 		</div>
 
 		<div 
@@ -22,7 +22,7 @@
 		<YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
 	</transition>
 
-	<div style="min-height: 90px"></div>
+	<div :style="{'min-height': playerHeight + 20 + 'px'}"></div>
 </template>
 
 <script>
@@ -74,6 +74,7 @@ export default {
 		let {
 			showComments,
 			showCommentsPause,
+			playerHeight,
 		} = useUI();
 
 		// METHODS
@@ -98,6 +99,7 @@ export default {
 			comments,
 			showComments,
 			showCommentsPause,
+			playerHeight,
 		}
 	}
 }

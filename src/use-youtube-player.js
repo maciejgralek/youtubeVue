@@ -14,11 +14,17 @@ let _playerDefaultBottom = 96;
 let _playerDefaultWidth = 320;
 let _playerDefaultHeight = 180;
 let timer = null;
+let volume = ref(0);
 
 let player = YouTubePlayer('video-player', {
 	width: _playerDefaultWidth,
 	height: _playerDefaultHeight,
 });	
+
+player.getVolume().then((res) => {
+	volume.value = res;
+});
+console.log(volume.value)
 
 export default function useYoutubePlayer() {
 	let { 
@@ -29,6 +35,7 @@ export default function useYoutubePlayer() {
 
 	let { 
 		showCommentsPause, 
+		playerHeight,
 	} = useUI();
 
 	function play() {
@@ -107,8 +114,7 @@ export default function useYoutubePlayer() {
 			let w = document.body.clientWidth/1.8;
 			let h = window.innerHeight/1.8;
 			let l = (document.body.clientWidth - w)/2
-			let t = (window.innerHeight - h)/2 + 40
-
+			let t = (window.innerHeight - h)/2 + playerHeight.value/2 + 35;
 			player.getIframe().then(el => {
 				el.style.transition = "right 0.3s,bottom 0.3s";
 				player.setSize(w, h);

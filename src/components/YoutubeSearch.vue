@@ -17,7 +17,7 @@
 					</div>
 				</div>
 		</div>
-		<div class="playlist-div playlist">
+		<div v-scroll="handleScroll" class="playlist-div playlist">
 			<ul class="list-unstyled p-3">
 				<li 
 					v-for="(item, index) in items" 
@@ -61,7 +61,8 @@ export default {
 
 		let { 
 			removePlaylist, 
-			move 
+			move ,
+			search,
 		} = useYoutube();
 
 		let { 
@@ -93,6 +94,12 @@ export default {
 			}
 		} 
 
+		function handleScroll(ev) {
+			if (ev.target.scrollTop >= ev.target.scrollHeight - ev.target.offsetHeight) {
+				search(null, true);
+			}
+		}
+
 		function handleClickPlaylistItem(video) {
 			if (video != currentVideo.value) {
 				loadVideo(video);
@@ -107,6 +114,7 @@ export default {
 			move,
 			play,
 			handleClickPlaylistItem,
+			handleScroll,
 			thumbnailWidth,
 			thumbnailHeight,
 			classListPlaylistItem,
@@ -116,14 +124,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$input-bg: var(--input-background-color);
-$input-color: var(--input-color);
-$input-border-color: var(--input-border-color);
-$dropdown-bg: var(--input-background-color);
-$dropdown-color: var(--input-color);
-$dropdown-border-color: var(--input-border-color);
-$dropdown-link-color: var(--input-color);
-
+@import '../theme.scss';
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .playlist-div {

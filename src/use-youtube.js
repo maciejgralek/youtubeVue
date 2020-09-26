@@ -1,9 +1,12 @@
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, shallowRef } from 'vue'
 import axios from 'axios'
 import createUrl from './tools.js'
 
 let googleApiUrl = 'https://www.googleapis.com/youtube/v3/'
-let apiKey = ''
+let apiKey = 'AIzaSyCVH7XmPcXi3HW0OjtDCQ2h2VDtlf6EE4o'
+let googleApiPlaylistItems = googleApiUrl + 'playlistItems?';
+let googleApiPlaylists = googleApiUrl + 'playlists?';
+let googleApiCommentThreads = googleApiUrl + 'commentThreads?';
 
 let playlists = ref([]);
 let channelPlaylists = ref([]);
@@ -17,14 +20,14 @@ export default function useYoutube() {
 
 	// YOUTUBE API
 
-	async function getPlaylist(playlist, id) {
+	async function getPlaylistAll(playlist, id) {
 		let query = {
 			part: 'snippet',
 			playlistId: id,
 			key: apiKey,
 			maxResults: 50,
 		}
-		let queryUrl = createUrl(googleApiUrl+'playlistItems?', query);
+		let queryUrl = createUrl(googleApiPlaylistItems, query);
 
 		let res = await axios.get(queryUrl);
 		playlist.items.value = res.data.items.filter(item => 
@@ -33,7 +36,7 @@ export default function useYoutube() {
 
 		while (res.data.nextPageToken) {
 			query.pageToken = res.data.nextPageToken;
-			queryUrl = createUrl(googleApiUrl+'playlistItems?', query);
+			queryUrl = createUrl(googleApiPlaylistItems, query);
 
 			res = await axios.get(queryUrl);
 			playlist.items.value = playlist.items.value.concat(res.data.items.filter(item => 
@@ -55,7 +58,7 @@ export default function useYoutube() {
 		if (nextPage && playlist.nextPageToken) {
 			query.pageToken = playlist.nextPageToken;
 		}
-		let queryUrl = createUrl(googleApiUrl+'playlistItems?', query);
+		let queryUrl = createUrl(googleApiPlaylistItems, query);
 
 		playlist.nextPageToken = null;
 
@@ -83,7 +86,7 @@ export default function useYoutube() {
 			key: apiKey,
 		}
 
-		let queryUrl = createUrl(googleApiUrl+'playlists?', query);
+		let queryUrl = createUrl(googleApiPlaylists, query);
 
 		let res = await axios.get(queryUrl);
 		playlist.title.value = res.data.items[0].snippet.title;
@@ -96,7 +99,7 @@ export default function useYoutube() {
 			key: apiKey,
 			maxResults: 50,
 		}
-		let queryUrl = createUrl(googleApiUrl+'playlists?', query);
+		let queryUrl = createUrl(googleApiPlaylists, query);
 		let res = await axios.get(queryUrl);
 		channelPlaylists = res.data.items;
 		for (let i of channelPlaylists) {
@@ -116,7 +119,7 @@ export default function useYoutube() {
 		if (nextPage && commentsNextPageToken) {
 			query.nextPageToken = commentsNextPageToken;
 		}
-		let queryUrl = createUrl(googleApiUrl+'commentThreads?', query);
+		let queryUrl = createUrl(googleApiCommentThreads, query);
 		let res = await axios.get(queryUrl);
 		if (nextPage && commentsNextPageToken) {
 			comments.value = comments.value.concat(res.data.items);
@@ -131,26 +134,39 @@ export default function useYoutube() {
 		let playlist = {
 			id: id,
 			local: local || 0,
-			title: ref([]),
-			items: shallowRef([]),
+			title: ref(""),
+			channel: '',
+			items: ref([]),
 			nextPageToken: null,
 		}
 		getPlaylist(playlist);
-		playlists.value.push(playlist);
-		// savePlaylists();
+		return playlist;
 	}
 
 	function addSavedPlaylists() {
 		let pl = loadPlaylists();
 		for (let p of pl) {
-			addPlaylist(p.id, true);
+			let playlist = addPlaylist(p.id, true);
+			playlists.value.push(playlist);
+		}
+	}
+
+	function addUrlPlaylists(request) {
+		for (let i of request) {
+			let playlist = addPlaylist(i);
+			playlists.value.push(playlist);
 		}
 	}
 
 	function removePlaylist(playlist) {
 		let index = playlists.value.indexOf(playlist);
 		playlists.value.splice(index, 1);
-		// savePlaylists();
+	}
+
+	function reloadPlaylist(playlist) {
+		let index = findPlaylistIndex(playlist.id);
+		let reloadedPlaylist = addPlaylist(playlist.id)
+		playlists.value.splice(index, 1, reloadedPlaylist);
 	}
 
 	async function search(value, nextPage) {
@@ -225,31 +241,26 @@ export default function useYoutube() {
 		return pl || [];
 	}
 
-	function addUrlPlaylists(request) {
-		for (let i of request) {
-			addPlaylist(i);
-		}
-	}
-
 	return {
 		playlists,
 		getPlaylist,
 		addPlaylist,
 		addSavedPlaylists,
-		getPlaylist,
 		getChannelPlaylists,
-		loadPlaylists,
 		addUrlPlaylists,
 		removePlaylist,
 		move,
+		reloadPlaylist,
 		search,
 		searchRes,
+		comments,
+		getComments,
 		findVideoElement,
 		findPlaylistIndex,
 		findVideoIndex,
-		getComments,
-		comments,
+		// local
 		savePlaylist,
+		loadPlaylists,
 		deleteSavedPlaylist,
 	}
 

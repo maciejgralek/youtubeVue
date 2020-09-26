@@ -14,20 +14,27 @@
 						<i class="mdi mdi-dots-vertical" style="font-size: 1.45em" data-toggle="dropdown"></i>
 						<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
 							<li>
-								<a class="dropdown-item d-flex align-items-center" href="#">
+								<a @click.prevent="handleClosePlaylist" class="dropdown-item d-flex align-items-center" href="#">
 									<i class="mdi mdi-close mdi-dropdown-icon pr-1"></i>
 									Close playlist
 								</a>
 							</li>
 							<li><hr class="dropdown-divider"></li>
+							<li>
+								<a @click.prevent="handleReloadPlaylist" class="dropdown-item d-flex align-items-center" href="#">
+									<i class="mdi mdi-reload mdi-dropdown-icon pr-1"></i>
+									Reload playlist
+								</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
 							<li v-if="!playlist.local">
-								<a @click="handleSavePlaylist" class="dropdown-item d-flex align-items-center" href="#">
+								<a @click.prevent="handleSavePlaylist" class="dropdown-item d-flex align-items-center" href="#">
 									<i class="mdi mdi-star mdi-dropdown-icon pr-1"></i>
 									Save playlist
 								</a>
 							</li>
 							<li v-else>
-								<a @click="handleDeletePlaylist" class="dropdown-item d-flex align-items-center" href="#">
+								<a @click.prevent="handleDeletePlaylist" class="dropdown-item d-flex align-items-center" href="#">
 									<i class="mdi mdi-star-outline mdi-dropdown-icon pr-1"></i>
 									Delete playlist
 								</a>
@@ -53,7 +60,7 @@
 								</a>
 							</li>
 							<li>
-								<a class="dropdown-item d-flex align-items-center" href="#">
+								<a @click.prevent="handleEditInYoutube" class="dropdown-item d-flex align-items-center" href="#">
 									<i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
 									Edit in youtube
 								</a>
@@ -62,7 +69,7 @@
 					</div>
 				</div>
 		</div>
-		<div ref="playlistElem" v-scroll="handleScroll" class="playlist-div playlist">
+		<div v-scroll="handleScroll" class="playlist-div playlist">
 			<div v-if="!filteredPlaylist.length" class="p-3">
 				No items
 			</div>
@@ -110,13 +117,15 @@ export default {
 	},
 	setup(props) {
 
+		let youtubeUrl = "http://youtube.com/";
+
 		// COMPOSITION
 
-		let playlistElem = ref(null);
 		let { 
 			getPlaylist,
 			removePlaylist, 
 			move,
+			reloadPlaylist,
 			showComments,
 			savePlaylist,
 			deleteSavedPlaylist,
@@ -145,6 +154,7 @@ export default {
 		// METHODS
 
 		function classListPlaylistItem(item) {
+			if (!currentVideo.value.resourceId) return;
 			return {
 				'font-weight-bold': item.snippet == currentVideo.value,
 				'playlist-item-play': item.snippet == currentVideo.value,
@@ -157,12 +167,24 @@ export default {
 			}
 		}
 
+		function handleReloadPlaylist() {
+			reloadPlaylist(props.playlist);
+		}
+
+		function handleClosePlaylist() {
+			removePlaylist(props.playlist);
+		}
+
+		function handleEditInYoutube() {
+			window.open(youtubeUrl + "playlist?list=" + props.playlist.id);
+		}
+
 		function handleSavePlaylist() {
 			savePlaylist(props.playlist);
 		}
 
 		function handleDeletePlaylist() {
-			deleteSavedPlaylist(toRef(props.playlist));
+			deleteSavedPlaylist(props.playlist);
 		}
 
 		function handleClickPlaylistItem(video) {
@@ -179,27 +201,22 @@ export default {
 			move,
 			play,
 			handleClickPlaylistItem,
-			thumbnailWidth,
-			thumbnailHeight,
-			classListPlaylistItem,
+			handleReloadPlaylist,
 			handleScroll,
 			handleSavePlaylist,
 			handleDeletePlaylist,
-			playlistElem,
+			handleClosePlaylist,
+			handleEditInYoutube,
+			thumbnailWidth,
+			thumbnailHeight,
+			classListPlaylistItem,
 		}
 	}
 }
 </script>
 
 <style scoped lang="scss">
-$input-bg: var(--input-background-color);
-$input-color: var(--input-color);
-$input-border-color: var(--input-border-color);
-$dropdown-bg: var(--input-background-color);
-$dropdown-color: var(--input-color);
-$dropdown-border-color: var(--input-border-color);
-$dropdown-link-color: var(--input-color);
-
+@import '../theme.scss';
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .playlist-div {
@@ -225,8 +242,8 @@ $dropdown-link-color: var(--input-color);
 	background-color: var(--scroll-track);
 }
 .playlist::-webkit-scrollbar {
-    width: 8px;
-		background-color: var(--scroll);
+	width: 8px;
+	background-color: var(--scroll);
 }
 .playlist::-webkit-scrollbar-thumb {
 	background-color: var(--scroll-thumb);

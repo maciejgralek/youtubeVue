@@ -1,12 +1,9 @@
 <template>
   <div id="app">
-		<div class="container-app">
+		<Navbar />
 
-			<Navbar />
-
-			<div class="container-fluid">
-				<router-view></router-view>
-			</div>
+		<div class="container-fluid">
+			<router-view></router-view>
 		</div>
 
 		<Player />
@@ -30,18 +27,11 @@ export default {
 </script>
 
 <style lang="scss">
-$input-bg:                var(--input-background-color);
-$input-color:             var(--input-color);
-$input-border-color:      var(--input-border-color);
-$dropdown-bg:             var(--input-background-color);
-$dropdown-color:          var(--input-color);
-$dropdown-border-color:   var(--input-border-color);
-$dropdown-link-color:     var(--input-color);
-
+@import './theme.scss';
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 
 $light-d-3: darken($light, 3);
-$light-d-6: darken($light, 10);
+$light-d-6: darken($light, 6);
 $dark-d-3: darken($dark, 3);
 $dark-l-2: lighten($dark, 2);
 $dark-l-10: lighten($dark, 10);
@@ -49,6 +39,7 @@ $dark-d-6: darken($dark, 6);
 
 :root {
 	// light
+
 	--bg-light:                       #{$light};
 	--background-player-light:        #eaeaea;
 	--text-color-light:               #212529;
@@ -61,6 +52,7 @@ $dark-d-6: darken($dark, 6);
 	--input-border-color-light:       #ced4da;
 
 	// dark
+
 	--bg-dark:                       #{$dark};
 	--background-player-dark:        #{$dark-l-2};
 	--text-color-dark:               #{$light-d-3};
@@ -73,6 +65,7 @@ $dark-d-6: darken($dark, 6);
 	--input-border-color-dark:       #{$dark-l-10};
 
 	// theme
+
 	--background:               var(--bg-light);
 	--text-color:               var(--text-color-light);
 	--icon-color:               var(--icon-color-liht);
@@ -89,8 +82,6 @@ $dark-d-6: darken($dark, 6);
 body {
 	background-color: var(--background);
 	color: var(--text-color);
-.container-app {
-	overflow-y: hidden;
 }
 
 i {
@@ -103,6 +94,10 @@ i {
 
 .dropdown-menu .list-group-item {
 	background-color: var(--input-background-color) !important;
+}
+
+.container-fluid {
+	width: 99% !important;
 }
 
 .bg-dark-l10 {
