@@ -1,7 +1,6 @@
 <template>
 	<div class="rounded">
 		<div class="d-flex align-items-center w-100 playlist-header pl-3 py-2 mb-1">
-				<!-- <span class="text&#45;light font&#45;weight&#45;bold"> -->
 				<span class="font-weight-bold">
 					Search
 					<span class="badge bg-secondary ml-1">
@@ -10,9 +9,14 @@
 				</span>
 				<div class="ml-auto">
 					<div class="dropdown">
-						<Icon data-toggle="dropdown" class="" name="dots" width="1.2em" height="1.2em" fill="#303030"/>
+						<i class="mdi mdi-dots-vertical" style="font-size: 1.45em" data-toggle="dropdown"></i>
 						<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-							<li><a class="dropdown-item" href="#">Close search</a></li>
+							<li>
+								<a @click.prvent="handleCloseSearch" class="dropdown-item" href="#">
+									<i class="mdi mdi-close mdi-dropdown-icon pr-1"></i>
+									Close search
+								</a>
+						</li>
 						</ul>
 					</div>
 				</div>
@@ -42,16 +46,12 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import Icon from './Icon.vue'
 import useYoutube from '../use-youtube.js'
 import useYoutubePlayer from '../use-youtube-player.js'
 import useUI from '../use-UI.js'
 import useStore from '../use-store.js'
 
 export default {
-	components: {
-		Icon
-	},
 	props: {
 		items: Array,
 	},
@@ -60,9 +60,9 @@ export default {
 		// COMPOSITION
 
 		let { 
-			removePlaylist, 
-			move ,
+			move,
 			search,
+			removeSearch, 
 		} = useYoutube();
 
 		let { 
@@ -100,6 +100,10 @@ export default {
 			}
 		}
 
+		function handleCloseSearch() {
+			removeSearch();
+		}
+
 		function handleClickPlaylistItem(video) {
 			if (video != currentVideo.value) {
 				loadVideo(video);
@@ -109,11 +113,11 @@ export default {
 
 		return {
 			currentVideo,
-			removePlaylist,
 			filteredPlaylist,
 			move,
 			play,
 			handleClickPlaylistItem,
+			handleCloseSearch,
 			handleScroll,
 			thumbnailWidth,
 			thumbnailHeight,

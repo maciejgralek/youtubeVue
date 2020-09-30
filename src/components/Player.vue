@@ -1,24 +1,51 @@
 <template>
-	<div ref="playerRef" class="player w-100 p-2">
+	<div 
+		ref="playerRef" 
+		@wheel.prevent="handleWheel" 
+		class="player w-100 p-2"
+	>
 		<div class="row align-items-center py-0">
 
 			<!-- PLAY -->
 
 			<div class="col-auto border-right border-secondary pr-1">
-				<i v-if="playButtonMode" @click="actionPlay" class="mdi mdi-play mdi-player-icon-play" style="line-height: normal"></i>
-				<i v-else @click="actionPause" class="mdi mdi-pause mdi-player-icon-play" ></i>
+				<i 
+					v-if="playButtonMode" 
+					@click="handleClickPlay" 
+					class="mdi mdi-play mdi-player-icon-play" 
+				></i>
+				<i 
+					v-else 
+					@click="handleClickPause" 
+					class="mdi mdi-pause mdi-player-icon-play"
+				></i>
 			</div>
 
-			<div v-if="currentVideo.title && duration" class="col-auto border-right border-secondary">
+			<!-- TIMER -->
+
+			<div 
+				v-if="currentVideo.title && duration" 
+				class="col-auto border-right border-secondary"
+			>
 				<span class="timer font-weight-bold mx-3">
 					{{ formatedTime }} - {{ durationTime }}
 				</span>
 			</div>
 
-			<div v-if="currentVideo.title" class="col-auto border-right border-secondary">
+			<!-- NEXT -->
+
+			<div 
+				v-if="currentVideo.title" 
+				class="col-auto border-right border-secondary"
+			>
 				<i class="mdi mdi-skip-previous mdi-player-icon-play"></i>
 				<i class="mdi mdi-skip-next mdi-player-icon-play"></i>
+				<i v-if="playMode == 1" @click="handleClickPlayMode" class="mdi mdi-shuffle-disabled mdi-player-icon"></i>
+				<i v-else-if="playMode == 2" @click="handleClickPlayMode" class="mdi mdi-shuffle mdi-player-icon"></i>
+				<i v-else @click="handleClickPlayMode" class="mdi mdi-repeat mdi-player-icon"></i>
 			</div>
+			
+			<!-- TITLE -->
 
 			<div class="col-auto">
 				<transition name="fade" mode="out-in">
@@ -28,7 +55,34 @@
 				</transition>
 			</div>
 
-			<div class="col-auto ml-auto mr-1">
+			<!-- VOLUME -->
+
+			<div class="col-auto ml-auto pr-0">
+				<i v-if="volume > 50" class="mdi mdi-volume-high mdi-player-icon"></i>
+				<i v-else-if="volume <= 50 && volume > 0" class="mdi mdi-volume-medium mdi-player-icon"></i>
+				<i v-else class="mdi mdi-volume-off mdi-player-icon"></i>
+			</div>
+			<div class="col-auto">
+				<div 
+					@click="handleClickVolume" 
+					class="progress bg-secondary" 
+					style="width: 150px"
+				>
+					<div 
+						class="progress-bar bg-danger" 
+						role="progressbar" 
+						style="pointer-events: none"
+						:style="{'width': volume +'%'}" 
+						aria-valuenow="0" 
+						aria-valuemin="0" 
+						aria-valuemax="100">
+					</div>
+				</div>
+			</div>
+
+			<!-- COMMENTS FULLSCREEN -->
+
+			<div class="col-auto mr-1">
 				<i v-if="showComments" @click="setComments" class="mdi mdi-comment-outline mdi-player-icon-mini"></i>
 				<i v-else @click="setComments" class="mdi mdi-comment-remove-outline mdi-player-icon-mini"></i>
 				<i v-if="playerWindowState == 1" @click="handleYoutubeWindowClick" class="mdi mdi-square-rounded-outline mdi-player-icon"></i>
@@ -56,15 +110,11 @@
 
 <script>
 import { ref, computed, onMounted, watchEffect } from 'vue'
-import Icon from './Icon.vue'
 import useYoutubePlayer from '../use-youtube-player.js'
 import useYoutube from '../use-youtube.js'
 import useUI from '../use-UI.js'
 
 export default {
-	components: {
-		Icon
-	},
 	setup(props) {
 
 		let showHours = false;
@@ -80,13 +130,16 @@ export default {
 			currentVideo, 
 			currentTime, 
 			duration, 
+			volume,
 			playerState, 
 			playerWindowState,
 			play, 
 			stop, 
 			pause,
 			seekTo,
+			playMode,
 			getTime,
+			setVolume,
 			setYoutubeWindow,
 		} = useYoutubePlayer();
 
@@ -100,12 +153,17 @@ export default {
 			setComments,
 		} = useUI();
 
+		// WATCH
+		
 		watchEffect(() => {
 			showHours = false;
 			showMinutes = false;
 			let hours = Math.trunc((Math.floor(duration.value) / 60 / 60) % 60);
 			let minutes = Math.trunc((duration.value / 60) % 60);
-			if (hours) showHours = true;
+			if (hours) {
+				showHours = true;
+				showMinutes = true;
+			}
 			if (minutes) showMinutes = true;
 		})
 
@@ -149,11 +207,11 @@ export default {
 			setPlayerHeight(playerRef.value.clientHeight);
 		})
 
-		function actionPlay() {
+		function handleClickPlay() {
 			play(currentVideo.value);
 		}
 
-		function actionPause() {
+		function handleClickPause() {
 			pause();
 		}
 
@@ -172,8 +230,27 @@ export default {
 			let w = ev.target.clientWidth;
 		}
 
+		function handleWheel(ev) {
+			let i = volume.value + ev.deltaY/200 * -1 * 5;
+			setVolume(i > 100 ? 100 : i < 0 ? 0 : i);
+		}
+
+		function handleClickPlayMode() {
+			playMode.value++;
+			if (playMode.value > 3) {
+				playMode.value = 1;
+			}
+		}
+
+		function handleClickVolume(ev) {
+			let w = ev.target.clientWidth;
+			let volume = ((ev.x - ev.target.offsetLeft)/w) * 100;
+			setVolume(volume);
+		}
+
 		function scrollToCurrentVideo() {
-			findVideoElement(currentVideo.value);
+			// let el = findVideoElement(currentVideo.value);
+			// currentVideo.value.el.scrollIntoView({ block: "center" });
 		}
 
 		return {
@@ -184,14 +261,19 @@ export default {
 			formatedTime,
 			durationTime,
 			duration,
+			volume,
 			playerState,
 			playerWindowState,
 			playButtonMode,
-			actionPlay,
-			actionPause,
+			handleClickPlay,
+			handleClickPause,
+			playMode,
 			handleYoutubeWindowClick,
 			handleMouseMoveProgress,
 			handleClickProgress,
+			handleWheel,
+			handleClickVolume,
+			handleClickPlayMode,
 			scrollToCurrentVideo,
 			showComments,
 			setComments,
@@ -207,9 +289,6 @@ export default {
 	-webkit-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
 	-moz-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
 	box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
-	/* width: 80% !important; */
-	/* left: 50%; */
-	/* transform: translateX(-50%); */
 }
 .timer {
 	font-size: 1.55em;

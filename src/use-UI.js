@@ -35,7 +35,6 @@ export default function useUI() {
 			document.documentElement.style.setProperty('--background', 'var(--bg-dark)');
 			document.documentElement.style.setProperty('--text-color', 'var(--text-color-dark)');
 			document.documentElement.style.setProperty('--background-player', 'var(--background-player-dark)');
-			document.documentElement.style.setProperty('--scroll', 'var(--scroll-color-dark)');
 			document.documentElement.style.setProperty('--scroll-track', 'var(--scroll-track-color-dark)');
 			document.documentElement.style.setProperty('--scroll-thumb', 'var(--scroll-thumb-color-dark)');
 			document.documentElement.style.setProperty('--border-color', 'var(--border-color-dark)');
@@ -49,7 +48,6 @@ export default function useUI() {
 			document.documentElement.style.setProperty('--background', 'var(--bg-light)');
 			document.documentElement.style.setProperty('--text-color', 'var(--text-color-light)');
 			document.documentElement.style.setProperty('--background-player', 'var(--background-player-light)');
-			document.documentElement.style.setProperty('--scroll', 'var(--scroll-color-light)');
 			document.documentElement.style.setProperty('--scroll-track', 'var(--scroll-track-color-light)');
 			document.documentElement.style.setProperty('--scroll-thumb', 'var(--scroll-thumb-color-light)');
 			document.documentElement.style.setProperty('--border-color', 'var(--border-color-light)');

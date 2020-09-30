@@ -84,6 +84,10 @@ body {
 	color: var(--text-color);
 }
 
+.container-fluid {
+	width: 99% !important;
+}
+
 i {
 	cursor: pointer;
 }
@@ -94,10 +98,6 @@ i {
 
 .dropdown-menu .list-group-item {
 	background-color: var(--input-background-color) !important;
-}
-
-.container-fluid {
-	width: 99% !important;
 }
 
 .bg-dark-l10 {

@@ -1,95 +1,47 @@
 <template>
 	<div class="rounded">
-		<div class="d-flex align-items-center w-100 playlist-header pl-3 py-2 mb-1">
-				<!-- <span class="text&#45;light font&#45;weight&#45;bold"> -->
-				<span class="font-weight-bold">
-					{{ playlist.title }} 
-					<span class="badge bg-secondary mx-1">
-						{{ playlist.items.length }}
-					</span>
-					<i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
+		<div class="d-flex align-items-center w-100 playlist-header pl-3 py-2 mb-1" >
+			<span class="font-weight-bold">
+				{{ playlist.title }} 
+				<span class="badge bg-secondary mx-1">
+					{{ playlist.items.length }}
 				</span>
-				<div class="ml-auto">
-					<div class="dropdown">
-						<i class="mdi mdi-dots-vertical" style="font-size: 1.45em" data-toggle="dropdown"></i>
-						<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-							<li>
-								<a @click.prevent="handleClosePlaylist" class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-close mdi-dropdown-icon pr-1"></i>
-									Close playlist
-								</a>
-							</li>
-							<li><hr class="dropdown-divider"></li>
-							<li>
-								<a @click.prevent="handleReloadPlaylist" class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-reload mdi-dropdown-icon pr-1"></i>
-									Reload playlist
-								</a>
-							</li>
-							<li><hr class="dropdown-divider"></li>
-							<li v-if="!playlist.local">
-								<a @click.prevent="handleSavePlaylist" class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-star mdi-dropdown-icon pr-1"></i>
-									Save playlist
-								</a>
-							</li>
-							<li v-else>
-								<a @click.prevent="handleDeletePlaylist" class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-star-outline mdi-dropdown-icon pr-1"></i>
-									Delete playlist
-								</a>
-							</li>
-							<li><hr class="dropdown-divider"></li>
-							<li>
-								<a class="dropdown-item d-flex align-items-center" :class="{ disabled: !playlist.local }" href="#">
-									<i class="mdi mdi-chevron-right mdi-dropdown-icon pr-1"></i>
-									Move to right
-								</a>
-							</li>
-							<li>
-								<a class="dropdown-item d-flex align-items-center" :class="{ disabled: !playlist.local }" href="#">
-									<i class="mdi mdi-chevron-left mdi-dropdown-icon pr-1"></i>
-									Move to left
-								</a>
-							</li>
-							<li><hr class="dropdown-divider"></li>
-							<li>
-								<a class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
-									Open in youtube
-								</a>
-							</li>
-							<li>
-								<a @click.prevent="handleEditInYoutube" class="dropdown-item d-flex align-items-center" href="#">
-									<i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
-									Edit in youtube
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
+				<i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
+			</span>
+
+			<div class="ml-auto">
+				<PlaylistDropdown 
+					:playlist="playlist"
+					@close-playlist="handleClosePlaylist"
+					@reload-playlist="handleReloadPlaylist"
+					@save-playlist="handleSavePlaylist"
+					@delete-playlist="handleDeletePlaylist"
+					@edit-in-youtube="handleEditInYoutube"
+				/>
+			</div>
+
 		</div>
 		<div v-scroll="handleScroll" class="playlist-div playlist">
 			<div v-if="!filteredPlaylist.length" class="p-3">
 				No items
 			</div>
-			<!-- <ul v&#45;else class="playlist list&#45;unstyled text&#45;light p&#45;3"> -->
 			<ul v-else class="list-unstyled p-3">
 				<transition-group name="list" tag="p">
+					<!-- :ref="el => { playlist.items[index].snippet.el = el }" -->
 					<li 
 						v-for="(item, index) in filteredPlaylist" 
 						@click="handleClickPlaylistItem(item)" 
 						class="playlist-item text-truncate p-1" 
 						:class="classListPlaylistItem(item)"
 						:key="item.id"
-						>
+					>
 						<img 
 							:src="item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : ''" 
 							class="pr-2" 
 							:width="thumbnailWidth"
 							:height="thumbnailHeight"
 							alt=""
-							>
+						>
 						{{ item.snippet.title }}
 					</li>
 				</transition-group>
@@ -101,7 +53,7 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import Icon from './Icon.vue'
+import PlaylistDropdown from './PlaylistDropdown.vue'
 import useYoutube from '../use-youtube.js'
 import useYoutubePlayer from '../use-youtube-player.js'
 import useUI from '../use-UI.js'
@@ -109,7 +61,7 @@ import useStore from '../use-store.js'
 
 export default {
 	components: {
-		Icon
+		PlaylistDropdown,
 	},
 	props: {
 		playlist: Object,
@@ -168,6 +120,7 @@ export default {
 		}
 
 		function handleReloadPlaylist() {
+			console.log("reload ", props.playlist)
 			reloadPlaylist(props.playlist);
 		}
 

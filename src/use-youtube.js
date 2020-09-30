@@ -64,6 +64,10 @@ export default function useYoutube() {
 
 		let res = await axios.get(queryUrl);
 
+		// for(let video of res.data.items) {
+		// 	video.el = ref(null);
+		// }
+
 		if (nextPage) {
 			playlist.items = playlist.items.concat(res.data.items.filter(item => 
 				item.snippet.title != "Private video"
@@ -120,14 +124,20 @@ export default function useYoutube() {
 			query.nextPageToken = commentsNextPageToken;
 		}
 		let queryUrl = createUrl(googleApiCommentThreads, query);
-		let res = await axios.get(queryUrl);
-		if (nextPage && commentsNextPageToken) {
-			comments.value = comments.value.concat(res.data.items);
+		try {
+			let res = await axios.get(queryUrl);
+			console.log(res)
+			if (nextPage && commentsNextPageToken) {
+				comments.value = comments.value.concat(res.data.items);
+			}
+			else {
+				comments.value = res.data.items;
+			}
+			commentsNextPageToken = res.data.nextPageToken;
 		}
-		else {
-			comments.value = res.data.items;
+		catch (err) {
+			comments.value = [];
 		}
-		commentsNextPageToken = res.data.nextPageToken;
 	}
 
 	function addPlaylist(id, local) {
@@ -192,6 +202,10 @@ export default function useYoutube() {
 		searchNextPageToken = res.data.nextPageToken;
 	}
 
+	function removeSearch() {
+		searchRes.value = [];
+	}
+
 	function move(playlist, dir) {
 		let index = playlists.value.indexOf(playlist);
 		if ((index == 0 && dir == -1) || (index == playlists.value.length && dir == 1)) return;
@@ -223,6 +237,7 @@ export default function useYoutube() {
 			savedPlaylists = JSON.stringify(savedPlaylists, ['id', 'title'], 1);
 			localStorage.setItem('playlists', savedPlaylists);
 		}
+		playlist.local = 1;
 	}
 
 	function deleteSavedPlaylist(playlist) {
@@ -233,6 +248,7 @@ export default function useYoutube() {
 			savedPlaylists = JSON.stringify(savedPlaylists, ['id', 'title'], 1);
 			localStorage.setItem('playlists', savedPlaylists);
 		}
+		playlist.local = 0;
 	}
 
 	function loadPlaylists() {
@@ -249,6 +265,7 @@ export default function useYoutube() {
 		getChannelPlaylists,
 		addUrlPlaylists,
 		removePlaylist,
+		removeSearch,
 		move,
 		reloadPlaylist,
 		search,

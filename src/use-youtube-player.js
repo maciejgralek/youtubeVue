@@ -15,6 +15,7 @@ let _playerDefaultWidth = 320;
 let _playerDefaultHeight = 180;
 let timer = null;
 let volume = ref(0);
+let playMode = ref(1);
 
 let player = YouTubePlayer('video-player', {
 	width: _playerDefaultWidth,
@@ -24,7 +25,6 @@ let player = YouTubePlayer('video-player', {
 player.getVolume().then((res) => {
 	volume.value = res;
 });
-console.log(volume.value)
 
 export default function useYoutubePlayer() {
 	let { 
@@ -64,15 +64,19 @@ export default function useYoutubePlayer() {
 		player.seekTo(seconds);
 	}
 
+	function setVolume(value) {
+		player.setVolume(value).then(() => {
+			volume.value = value;
+		});
+	}
+
 	function loadVideo(video, playlistId) {
 		let id;
 		if (video.resourceId) {
 			id = video.resourceId.videoId;
-			currentVideo.value = video;
 		}
 		else {
 			id = video.id.videoId;
-			currentVideo.value = video.snippet;
 		}
 		if (playlistId) currentPlaylistId.value = playlistId;
 		player.loadVideoById(id).then(() => {
@@ -168,6 +172,7 @@ export default function useYoutubePlayer() {
 		player,
 		currentTime,
 		duration,
+		volume,
 		playerState,
 		playerWindowState,
 		// control
@@ -176,6 +181,8 @@ export default function useYoutubePlayer() {
 		pause,
 		togglePlayPause,
 		seekTo,
+		playMode,
+		setVolume,
 		loadVideo,
 		getTime,
 		setYoutubeWindow,

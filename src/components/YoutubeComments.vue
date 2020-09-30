@@ -1,5 +1,10 @@
 <template>
-	<div v-if="comments.length" class="row comments shadow p-2 g-2 rounded">
+	<div 
+		v-if="comments.length" 
+		@mouseenter="pauseComments" 
+		@mouseleave="playComments" 
+		class="row comments shadow p-2 g-2 rounded"
+	>
 		<div class="col-auto">
 			<img :src="comments[commentIndex].snippet.topLevelComment.snippet.authorProfileImageUrl" alt="">
 		</div>
@@ -44,7 +49,17 @@ export default {
 
 		watch(currentVideo, () => {
 			commentIndex.value = 0;
+			pauseComments();
+			playComments();
+		});
+
+		// METHODS
+
+		function pauseComments() {
 			clearInterval(commentTimer);
+		}
+
+		function playComments() {
 			commentTimer = setInterval(() => {
 				commentIndex.value++;
 				if (commentIndex.value > comments.value.length - 5) {
@@ -54,27 +69,20 @@ export default {
 					commentIndex.value = 0;
 				}
 			}, 6000)
-		});
-
-		// METHODS
+		}
 
 		return {
 			comments,
 			commentIndex,
+			pauseComments,
+			playComments,
 		}
 	}
 }
 </script>
 
 <style scoped lang="scss">
-$input-bg:                var(--input-background-color);
-$input-color:             var(--input-color);
-$input-border-color:      var(--input-border-color);
-$dropdown-bg:             var(--input-background-color);
-$dropdown-color:          var(--input-color);
-$dropdown-border-color:   var(--input-border-color);
-$dropdown-link-color:     var(--input-color);
-
+@import '../theme.scss';
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .comments {
