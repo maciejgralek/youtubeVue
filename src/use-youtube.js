@@ -3,7 +3,7 @@ import axios from 'axios'
 import createUrl from './tools.js'
 
 let googleApiUrl = 'https://www.googleapis.com/youtube/v3/'
-let apiKey = 'AIzaSyCVH7XmPcXi3HW0OjtDCQ2h2VDtlf6EE4o'
+let apiKey = ''
 let googleApiPlaylistItems = googleApiUrl + 'playlistItems?';
 let googleApiPlaylists = googleApiUrl + 'playlists?';
 let googleApiCommentThreads = googleApiUrl + 'commentThreads?';
