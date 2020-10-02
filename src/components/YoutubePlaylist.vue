@@ -27,9 +27,9 @@
 			</div>
 			<ul v-else class="list-unstyled p-3">
 				<transition-group name="list" tag="p">
-					<!-- :ref="el => { playlist.items[index].snippet.el = el }" -->
 					<li 
 						v-for="(item, index) in filteredPlaylist" 
+						:ref="el => { playlist.items.length && (playlist.items[index].snippet.el = el) }"
 						@click="handleClickPlaylistItem(item)" 
 						class="playlist-item text-truncate p-1" 
 						:class="classListPlaylistItem(item)"
@@ -75,6 +75,7 @@ export default {
 
 		let { 
 			getPlaylist,
+			getPlaylistRemote,
 			removePlaylist, 
 			move,
 			reloadPlaylist,
@@ -115,12 +116,11 @@ export default {
 
 		function handleScroll(ev) {
 			if (ev.target.scrollTop >= ev.target.scrollHeight - ev.target.offsetHeight) {
-				getPlaylist(props.playlist, true);
+				getPlaylistRemote(props.playlist, true);
 			}
 		}
 
 		function handleReloadPlaylist() {
-			console.log("reload ", props.playlist)
 			reloadPlaylist(props.playlist);
 		}
 

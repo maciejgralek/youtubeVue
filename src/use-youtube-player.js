@@ -30,7 +30,8 @@ export default function useYoutubePlayer() {
 	let { 
 		findPlaylistIndex, 
 		findVideoIndex, 
-		getComments 
+		getComments,
+		getCommentsRemote,
 	} = useYoutube();
 
 	let { 
@@ -80,7 +81,7 @@ export default function useYoutubePlayer() {
 		}
 		if (playlistId) currentPlaylistId.value = playlistId;
 		player.loadVideoById(id).then(() => {
-			getComments(id, false);
+			getCommentsRemote(id, false);
 			if (video.resourceId) {
 				currentVideo.value = video;
 			}

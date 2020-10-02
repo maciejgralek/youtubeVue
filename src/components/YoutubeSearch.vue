@@ -62,6 +62,7 @@ export default {
 		let { 
 			move,
 			search,
+			searchRemote,
 			removeSearch, 
 		} = useYoutube();
 
@@ -96,7 +97,7 @@ export default {
 
 		function handleScroll(ev) {
 			if (ev.target.scrollTop >= ev.target.scrollHeight - ev.target.offsetHeight) {
-				search(null, true);
+				searchRemote(null, true);
 			}
 		}
 

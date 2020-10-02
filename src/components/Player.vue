@@ -249,8 +249,7 @@ export default {
 		}
 
 		function scrollToCurrentVideo() {
-			// let el = findVideoElement(currentVideo.value);
-			// currentVideo.value.el.scrollIntoView({ block: "center" });
+			currentVideo.value.el.scrollIntoView({ block: "center" });
 		}
 
 		return {

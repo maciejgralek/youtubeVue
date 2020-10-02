@@ -39,6 +39,7 @@ export default {
 		let { 
 			comments,
 			getComments,
+			getCommentsRemote,
 		} = useYoutube();
 
 		let { 
@@ -63,7 +64,7 @@ export default {
 			commentTimer = setInterval(() => {
 				commentIndex.value++;
 				if (commentIndex.value > comments.value.length - 5) {
-					getComments(currentVideo.value.resourceId.videoId, true);
+					getCommentsRemote(currentVideo.value.resourceId.videoId, true);
 				}
 				if (commentIndex.value > comments.value.length - 1) {
 					commentIndex.value = 0;

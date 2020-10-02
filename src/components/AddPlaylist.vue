@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="col-auto">
-			<button @click="search(searchString)" class="btn btn-primary btn-sm">Search</button>
+			<button @click="searchRemote(searchString)" class="btn btn-primary btn-sm">Search</button>
 		</div>
 
 		<div class="col-auto ml-auto pr-1">
@@ -78,6 +78,7 @@ export default {
 			playlists,
 			addPlaylist, 
 			search, 
+			searchRemote,
 			loadPlaylists 
 		} = useYoutube();
 
@@ -111,6 +112,7 @@ export default {
 			compactMode,
 			currentTheme,
 			search,
+			searchRemote,
 			savedPlaylists,
 		}
 	}
