@@ -1,6 +1,7 @@
 <template>
 	<div class="rounded">
-		<div class="d-flex align-items-center w-100 playlist-header pl-3 py-2 mb-1" >
+
+		<div class="playlist-header d-flex align-items-center w-100 pl-3 py-2 mb-1" >
 			<span class="font-weight-bold">
 				{{ playlist.title }} 
 				<span class="badge bg-secondary mx-1">
@@ -8,7 +9,6 @@
 				</span>
 				<i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
 			</span>
-
 			<div class="ml-auto">
 				<PlaylistDropdown 
 					:playlist="playlist"
@@ -19,9 +19,9 @@
 					@edit-in-youtube="handleEditInYoutube"
 				/>
 			</div>
-
 		</div>
-		<div v-scroll="handleScroll" class="playlist-div playlist">
+
+		<div v-scroll="handleScroll" class="playlist">
 			<div v-if="!filteredPlaylist.length" class="p-3">
 				No items
 			</div>
@@ -74,7 +74,6 @@ export default {
 		// COMPOSITION
 
 		let { 
-			getPlaylist,
 			getPlaylistRemote,
 			removePlaylist, 
 			move,
@@ -172,7 +171,7 @@ export default {
 @import '../theme.scss';
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
-.playlist-div {
+.playlist {
 	max-height: 70vh;
 	overflow-y: scroll;
 }
@@ -201,6 +200,7 @@ export default {
 .playlist::-webkit-scrollbar-thumb {
 	background-color: var(--scroll-thumb);
 }
+
 .mdi-dropdown-icon:before {
 	font-size: 1.2em;
 	line-height: normal;

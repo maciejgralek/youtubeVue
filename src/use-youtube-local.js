@@ -2,6 +2,11 @@ import { ref, onMounted, shallowRef } from 'vue'
 import axios from 'axios'
 import createUrl from './tools.js'
 
+// let googleApiUrl = 'https://www.googleapis.com/youtube/v3/'
+let apiKey = 'AIzaSyCVH7XmPcXi3HW0OjtDCQ2h2VDtlf6EE4o'
+// let googleApiPlaylistItems = googleApiUrl + 'playlistItems?';
+// let googleApiPlaylists = googleApiUrl + 'playlists?';
+// let googleApiCommentThreads = googleApiUrl + 'commentThreads?';
 // let googleApiRemote = 'http://localhost:3000/youtubevue/'
 let googleApiRemote = 'https://youtube-vue-server.herokuapp.com/youtubevue/'
 
@@ -16,6 +21,43 @@ let searchLast = "";
 export default function useYoutube() {
 
 	// YOUTUBE API
+
+	async function getPlaylist(playlist, nextPage) {
+		if (nextPage && !playlist.nextPageToken) return;
+
+		let query = {
+			part: 'snippet',
+			playlistId: playlist.id,
+			key: apiKey,
+			maxResults: 50,
+		}
+		if (nextPage && playlist.nextPageToken) {
+			query.pageToken = playlist.nextPageToken;
+		}
+		let queryUrl = createUrl(googleApiPlaylistItems, query);
+
+		playlist.nextPageToken = null;
+
+		let res = await axios.get(queryUrl);
+
+		for(let video of res.data.items) {
+			video.snippet.el = ref(null);
+		}
+
+		if (nextPage) {
+			playlist.items = playlist.items.concat(res.data.items.filter(item => 
+				item.snippet.title != "Private video"
+			));
+		}
+		else {
+			playlist.items.value = res.data.items.filter(item => 
+				item.snippet.title != "Private video"
+			);
+			_getPlaylistProperties(playlist);
+		}
+
+		playlist.nextPageToken = res.data.nextPageToken;
+	}
 
 	async function getPlaylistRemote(playlist, nextPage) {
 		if (nextPage && !playlist.nextPageToken) return;
@@ -51,6 +93,19 @@ export default function useYoutube() {
 		playlist.nextPageToken = res.data.nextPageToken;
 	}
 
+	async function _getPlaylistProperties(playlist) {
+		let query = {
+			part: 'snippet',
+			id: playlist.id,
+			key: apiKey,
+		}
+
+		let queryUrl = createUrl(googleApiRemote + 'playlists?', query);
+
+		let res = await axios.get(queryUrl);
+		playlist.title.value = res.data.items[0].snippet.title;
+	}
+
 	async function _getPlaylistPropertiesRemote(playlist) {
 		let query = {
 			id: playlist.id,
@@ -74,6 +129,34 @@ export default function useYoutube() {
 		channelPlaylists = res.data.items;
 		for (let i of channelPlaylists) {
 			addPlaylist(i.id, i.snippet.title)
+		}
+	}
+
+	async function getComments(videoId, nextPage) {
+		if (nextPage && !commentsNextPageToken) return;
+
+		let query = {
+			part: 'snippet',
+			videoId: videoId,
+			key: apiKey,
+			maxResults: 50,
+		}
+		if (nextPage && commentsNextPageToken) {
+			query.pageToken = commentsNextPageToken;
+		}
+		let queryUrl = createUrl(googleApiCommentThreads, query);
+		try {
+			let res = await axios.get(queryUrl);
+			if (nextPage && commentsNextPageToken) {
+				comments.value = comments.value.concat(res.data.items);
+			}
+			else {
+				comments.value = res.data.items;
+			}
+			commentsNextPageToken = res.data.nextPageToken;
+		}
+		catch (err) {
+			comments.value = [];
 		}
 	}
 
@@ -102,26 +185,6 @@ export default function useYoutube() {
 		}
 	}
 
-	async function searchRemote(value, nextPage) {
-		searchLast = nextPage ? searchLast : value;
-		let query = {
-			q: searchLast,
-		}
-		if (nextPage && searchNextPageToken) {
-			query.nextPageToken = searchNextPageToken;
-		}
-		let queryUrl = createUrl(googleApiRemote + 'search?', query);
-
-		let res = await axios.get(queryUrl);
-		if (nextPage) {
-			searchRes.value = searchRes.value.concat(res.data.items.filter(item => item.id.kind == "youtube#video"));
-		}
-		else {
-			searchRes.value = res.data.items.filter(item => item.id.kind == "youtube#video");
-		}
-		searchNextPageToken = res.data.nextPageToken;
-	}
-
 	function addPlaylist(id, local) {
 		let playlist = {
 			id: id,
@@ -130,15 +193,9 @@ export default function useYoutube() {
 			channel: '',
 			items: ref([]),
 			nextPageToken: null,
-			isLoading: ref(false),
 		}
 		getPlaylistRemote(playlist);
 		return playlist;
-	}
-
-	function addPlaylistToPlaylists(id, local) {
-		let playlist = addPlaylist(id, local);
-		playlists.value.push(playlist);
 	}
 
 	function addSavedPlaylists() {
@@ -165,6 +222,50 @@ export default function useYoutube() {
 		let index = findPlaylistIndex(playlist.id);
 		let reloadedPlaylist = addPlaylist(playlist.id)
 		playlists.value[index] = reloadedPlaylist;
+		// playlists.value.splice(index, 1, reloadedPlaylist);
+	}
+
+	async function search(value, nextPage) {
+		searchLast = nextPage ? searchLast : value;
+		let query = {
+			part: 'snippet',
+			q: searchLast,
+			key: apiKey,
+			maxResults: 50,
+		}
+		if (nextPage && searchNextPageToken) {
+			query.pageToken = searchNextPageToken;
+		}
+		let queryUrl = createUrl(googleApiUrl+'search?', query);
+
+		let res = await axios.get(queryUrl);
+		if (nextPage) {
+			searchRes.value = searchRes.value.concat(res.data.items.filter(item => item.id.kind == "youtube#video"));
+		}
+		else {
+			searchRes.value = res.data.items.filter(item => item.id.kind == "youtube#video");
+		}
+		searchNextPageToken = res.data.nextPageToken;
+	}
+
+	async function searchRemote(value, nextPage) {
+		searchLast = nextPage ? searchLast : value;
+		let query = {
+			q: searchLast,
+		}
+		if (nextPage && searchNextPageToken) {
+			query.nextPageToken = searchNextPageToken;
+		}
+		let queryUrl = createUrl(googleApiRemote + 'search?', query);
+
+		let res = await axios.get(queryUrl);
+		if (nextPage) {
+			searchRes.value = searchRes.value.concat(res.data.items.filter(item => item.id.kind == "youtube#video"));
+		}
+		else {
+			searchRes.value = res.data.items.filter(item => item.id.kind == "youtube#video");
+		}
+		searchNextPageToken = res.data.nextPageToken;
 	}
 
 	function removeSearch() {
@@ -224,8 +325,9 @@ export default function useYoutube() {
 
 	return {
 		playlists,
+		getPlaylist,
 		getPlaylistRemote,
-		addPlaylistToPlaylists,
+		addPlaylist,
 		addSavedPlaylists,
 		getChannelPlaylists,
 		addUrlPlaylists,
@@ -233,9 +335,11 @@ export default function useYoutube() {
 		removeSearch,
 		move,
 		reloadPlaylist,
+		search,
 		searchRemote,
 		searchRes,
 		comments,
+		getComments,
 		getCommentsRemote,
 		findVideoElement,
 		findPlaylistIndex,

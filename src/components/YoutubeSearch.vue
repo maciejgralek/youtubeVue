@@ -61,7 +61,6 @@ export default {
 
 		let { 
 			move,
-			search,
 			searchRemote,
 			removeSearch, 
 		} = useYoutube();

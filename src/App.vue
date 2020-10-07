@@ -96,6 +96,22 @@ i {
 	color: var(--icon-color);
 }
 
+.popover, .tooltip {
+	z-index: 9000;
+}
+
+.tooltip {
+	pointer-events: none;
+}
+
+.tooltip-inner {
+	text-align: left !important;
+}
+
+.dropdown-menu {
+	z-index: 9000;
+}
+
 .dropdown-menu .list-group-item {
 	background-color: var(--input-background-color) !important;
 }
@@ -108,11 +124,13 @@ i {
 
 .player {
 	background-color: var(--background-player);
+	z-index: 6500;
 }
 
 #video-player {
 	position: fixed;
 	right: 10px;
 	bottom: 96px;
+	z-index: 6000;
 }
 </style>

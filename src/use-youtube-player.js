@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import YouTubePlayer from 'youtube-player';
 import useYoutube from './use-youtube.js'
 import useUI from './use-UI.js'
+import useStoreSettings from './use-store-settings'
 
 let currentVideo = ref({});
 let currentPlaylistId = ref("");
@@ -17,6 +18,12 @@ let timer = null;
 let volume = ref(0);
 let playMode = ref(1);
 
+let { 
+	restoreSettings 
+} = useStoreSettings('Player', { playMode });
+
+restoreSettings('Player');
+
 let player = YouTubePlayer('video-player', {
 	width: _playerDefaultWidth,
 	height: _playerDefaultHeight,
@@ -28,9 +35,6 @@ player.getVolume().then((res) => {
 
 export default function useYoutubePlayer() {
 	let { 
-		findPlaylistIndex, 
-		findVideoIndex, 
-		getComments,
 		getCommentsRemote,
 	} = useYoutube();
 

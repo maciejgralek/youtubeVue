@@ -49,8 +49,10 @@
 
 			<div class="col-auto">
 				<transition name="fade" mode="out-in">
-					<span @click="scrollToCurrentVideo" :key="currentVideo.title" class="font-weight-bold mx-3">
-						{{ currentVideo.title }}
+					<span>
+						<span @click="scrollToCurrentVideo" :key="currentVideo.title" class="video-title font-weight-bold mx-3">
+							{{ currentVideo.title }}
+						</span>
 					</span>
 				</transition>
 			</div>
@@ -83,8 +85,8 @@
 			<!-- COMMENTS FULLSCREEN -->
 
 			<div class="col-auto mr-1">
-				<i v-if="showComments" @click="setComments" class="mdi mdi-comment-outline mdi-player-icon-mini"></i>
-				<i v-else @click="setComments" class="mdi mdi-comment-remove-outline mdi-player-icon-mini"></i>
+				<i v-show="showComments" @click="setComments" class="mdi mdi-comment-outline mdi-player-icon-mini"></i>
+				<i v-show="!showComments" @click="setComments" class="mdi mdi-comment-remove-outline mdi-player-icon-mini"></i>
 				<i v-if="playerWindowState == 1" @click="handleYoutubeWindowClick" class="mdi mdi-square-rounded-outline mdi-player-icon"></i>
 				<i v-else @click="handleYoutubeWindowClick" class="mdi mdi-arrow-top-left-thick mdi-player-icon"></i>
 			</div>
@@ -109,7 +111,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watchEffect } from 'vue'
+import { ref, computed, onMounted, watchEffect, watch } from 'vue'
 import useYoutubePlayer from '../use-youtube-player.js'
 import useYoutube from '../use-youtube.js'
 import useUI from '../use-UI.js'
@@ -119,7 +121,6 @@ export default {
 
 		let showHours = false;
 		let showMinutes = false;
-
 		// DATA
 
 		let playerRef = ref(null);
@@ -254,7 +255,6 @@ export default {
 
 		return {
 			playerRef,
-			// youtube player
 			currentVideo,
 			currentTime,
 			formatedTime,
@@ -264,9 +264,9 @@ export default {
 			playerState,
 			playerWindowState,
 			playButtonMode,
+			playMode,
 			handleClickPlay,
 			handleClickPause,
-			playMode,
 			handleYoutubeWindowClick,
 			handleMouseMoveProgress,
 			handleClickProgress,
@@ -291,6 +291,13 @@ export default {
 }
 .timer {
 	font-size: 1.55em;
+}
+.video-title:hover {
+	cursor: pointer;
+}
+.mdi-player-icon-title:before {
+	font-size: 1.4em;
+	line-height: normal;
 }
 .mdi-player-icon:before {
 	font-size: 2.2em;

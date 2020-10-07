@@ -1,12 +1,12 @@
 <template>
 	<transition name="fade">
-		<div v-if="playerWindowState == 2" class="backdrop"></div>
+		<div v-if="playerWindowState == 2" class="backdrop" :style="{ opacity: overlayOpacity/100 }"></div>
 	</transition>
 
-	<AddPlaylist @set-columns="setColumns" />
+	<AddPlaylist />
 
-	<div class="row g-4 pt-1" :class="'row-cols-' + columns">
-		<div v-if="searchRes.length" class="col border-right">
+	<div class="row g-4 pt-1" :class="'row-cols-lg-' + columns">
+		<div v-if="searchRes.length" class="col search">
 			<YoutubeSearch :items="searchRes" />
 		</div>
 
@@ -22,7 +22,10 @@
 		<YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
 	</transition>
 
-	<div :style="{'min-height': playerHeight + 20 + 'px'}"></div>
+	<div 
+		:style="{'min-height': playerHeight + 20 + (showComments && showCommentsPause ? 150 : 0) + 'px'}"
+	>
+	</div>
 </template>
 
 <script>
@@ -75,6 +78,7 @@ export default {
 			showComments,
 			showCommentsPause,
 			playerHeight,
+			overlayOpacity,
 		} = useUI();
 
 		// METHODS
@@ -86,26 +90,21 @@ export default {
 			}
 		})
 
-		function setColumns(value) {
-			columns.value = value;
-		}
-
 		return {
 			playlists,
 			columns,
-			setColumns,
 			searchRes,
 			playerWindowState,
 			comments,
 			showComments,
 			showCommentsPause,
 			playerHeight,
+			overlayOpacity,
 		}
 	}
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .backdrop {
     position: fixed;
@@ -114,8 +113,14 @@ export default {
 		width: 100%;
     height: 100%;
     background: #000000;
-		opacity: 0.3;
 		pointer-events: none;
+		z-index: 5000;
+}
+
+.search {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: var(--border-color);
 }
 
 .playlist {
@@ -128,13 +133,13 @@ export default {
   transition: opacity .7s !important;
 }
 .fade-enter-from, .fade-leave-to {
-  opacity: 0;
+  opacity: 0 !important;
 }
 
 .fade-comment-enter-active, .fade-comment-leave-active {
   transition: opacity .3s !important;
 }
 .fade-comment-enter-from, .fade-comment-leave-to {
-  opacity: 0;
+  opacity: 0 !important;
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-
 	<div class="row align-items-center py-3 pt-4 pr-3">
 		<div class="col-4 ml-auto border-right">
 			<input v-model="state.filter" type="search" class="form-control form-control-sm" placeholder="Filter">
@@ -22,23 +21,29 @@
 							<input v-model="playlistId" type="email" class="form-control form-control-sm" placeholder="Playlist id">
 						</div>
 						<div class="col-auto">
-							<button @click="addPlaylist(playlistId)" class="btn btn-primary btn-sm">
+							<button @click="addPlaylistToPlaylists(playlistId)" class="btn btn-primary btn-sm">
 								Add Playlist
 							</button>
 						</div>
 					</div>
 					<ul class="list-group">
 						<li class="list-group-item d-flex align-items-center border-0">
-							<label @click="setCompact" class="form-check-label">
+							<label for="checkboxCompactMode" class="form-check-label">
 								Compact view
 							</label>
-							<input v-model="compactMode" @click="setCompact" class="ml-auto" type="checkbox" id="checkboxCompactMode">
+							<input v-model="compactMode" class="ml-auto" type="checkbox" id="checkboxCompactMode">
+						</li>
+						<li class="list-group-item d-flex align-items-center border-0">
+							<label for="checkboxDarkMode" class="form-check-label">
+								Dark theme
+							</label>
+							<input v-model="currentTheme" class="ml-auto" type="checkbox" id="checkboxDarkMode">
 						</li>
 						<li class="list-group-item d-flex align-items-center border-0">
 							<label @click="setTheme" class="form-check-label">
-								Dark theme
+								Overlay opacity
 							</label>
-							<input v-model="currentTheme" @click="setTheme" true-value="dark" false-value="light" class="ml-auto" type="checkbox" id="checkboxCompactMode">
+							<input v-model.number="overlayOpacity" class="ml-auto" type="range" min="0" max="100" step="10" id="checkboxCompactMode">
 						</li>
 						<li class="list-group-item d-flex align-items-center border-0">
 								<a href="">
@@ -70,14 +75,13 @@ export default {
 		Icon,
 	},
 	setup(props, { emit }) {
-		let playlistId = ref('PL6KKV5307aucIh814g2_yPUztUhLGCPbt');
-		let searchString = ref('pearl jam');
+		let playlistId = ref('');
+		let searchString = ref('');
 		let savedPlaylists = ref([]);
 
 		let { 
 			playlists,
-			addPlaylist, 
-			search, 
+			addPlaylistToPlaylists, 
 			searchRemote,
 			loadPlaylists 
 		} = useYoutube();
@@ -85,8 +89,8 @@ export default {
 		let {
 			compactMode,
 			setCompact,
-			setTheme,
 			currentTheme,
+			overlayOpacity,
 		}	= useUI();
 
 		let state = useStore();
@@ -95,23 +99,17 @@ export default {
 			savedPlaylists.value = loadPlaylists();
 		})
 
-		function setColumns(value) {
-			emit('set-columns', value)
-		}
-
 		return {
 			playlistId,
 			searchString,
+			overlayOpacity,
 			state,
 			// youtube
 			playlists,
-			addPlaylist,
-			setColumns,
+			addPlaylistToPlaylists,
 			setCompact,
-			setTheme,
 			compactMode,
 			currentTheme,
-			search,
 			searchRemote,
 			savedPlaylists,
 		}

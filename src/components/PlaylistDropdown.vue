@@ -28,20 +28,20 @@
 					Delete playlist
 				</a>
 			</li>
-			<li><hr class="dropdown-divider"></li>
-			<li>
-				<a class="dropdown-item d-flex align-items-center" :class="{ disabled: !playlist.local }" href="#">
+			<li ><hr class="dropdown-divider"></li>
+			<li v-show="playlist.local">
+				<a class="dropdown-item d-flex align-items-center" href="#">
 					<i class="mdi mdi-chevron-right mdi-dropdown-icon pr-1"></i>
 					Move to right
 				</a>
 			</li>
-			<li>
-				<a class="dropdown-item d-flex align-items-center" :class="{ disabled: !playlist.local }" href="#">
+			<li v-show="playlist.local">
+				<a class="dropdown-item d-flex align-items-center" href="#">
 					<i class="mdi mdi-chevron-left mdi-dropdown-icon pr-1"></i>
 					Move to left
 				</a>
 			</li>
-			<li><hr class="dropdown-divider"></li>
+			<li v-show="playlist.local"><hr class="dropdown-divider"></li>
 			<li>
 				<a class="dropdown-item d-flex align-items-center" href="#">
 					<i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
