@@ -104,10 +104,6 @@ i {
 	pointer-events: none;
 }
 
-.tooltip-inner {
-	text-align: left !important;
-}
-
 .dropdown-menu {
 	z-index: 9000;
 }
