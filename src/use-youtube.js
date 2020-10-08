@@ -32,8 +32,12 @@ export default function useYoutube() {
 
 		let res = await axios.get(queryUrl);
 
+		let regexp = /[0-9]?[0-9]?:?[0-9]?[0-9]:[0-9][0-9]/ig;
 		for(let video of res.data.items) {
 			video.snippet.el = ref(null);
+			video.snippet.description = video.snippet.description.replace(regexp, match => {
+				return '<a href="">' + match + '</a>';
+			});
 		}
 
 		if (nextPage) {

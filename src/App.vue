@@ -96,12 +96,9 @@ i {
 	color: var(--icon-color);
 }
 
-.popover, .tooltip {
-	z-index: 9000;
-}
-
-.tooltip {
-	pointer-events: none;
+.tippy-content {
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .dropdown-menu {

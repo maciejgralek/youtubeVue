@@ -1,5 +1,6 @@
 import { ref, watch } from 'vue'
 import useStoreSettings from './use-store-settings'
+import tippy from 'tippy.js';
 
 let playerHeight = ref(null);
 let compactMode = ref(true);

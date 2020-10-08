@@ -49,11 +49,9 @@
 
 			<div class="col-auto">
 				<transition name="fade" mode="out-in">
-					<span>
-						<span @click="scrollToCurrentVideo" :key="currentVideo.title" class="video-title font-weight-bold mx-3">
+					<span @click="scrollToCurrentVideo" v-tippy-player="() => currentVideo.description ? currentVideo.description.replace(/(?:\r\n|\r|\n)/g, '<br>'): ''" :key="currentVideo.title" class="video-title font-weight-bold mx-3">
 							{{ currentVideo.title }}
 						</span>
-					</span>
 				</transition>
 			</div>
 
@@ -85,16 +83,36 @@
 			<!-- COMMENTS FULLSCREEN -->
 
 			<div class="col-auto mr-1">
-				<i v-show="showComments" @click="setComments" class="mdi mdi-comment-outline mdi-player-icon-mini"></i>
-				<i v-show="!showComments" @click="setComments" class="mdi mdi-comment-remove-outline mdi-player-icon-mini"></i>
-				<i v-if="playerWindowState == 1" @click="handleYoutubeWindowClick" class="mdi mdi-square-rounded-outline mdi-player-icon"></i>
-				<i v-else @click="handleYoutubeWindowClick" class="mdi mdi-arrow-top-left-thick mdi-player-icon"></i>
+				<i 
+					v-if="showComments" 
+					@click="setComments" 
+					v-tippy="'Show comments'" 
+					class="mdi mdi-comment-outline mdi-player-icon-mini"
+				></i>
+				<i 
+					v-else 
+					@click="setComments" 
+					v-tippy="'Show comments'" 
+					class="mdi mdi-comment-remove-outline mdi-player-icon-mini"
+				></i>
+				<i 
+					v-if="playerWindowState == 1" 
+					@click="handleYoutubeWindowClick" 
+					v-tippy="'Fullscreen'" 
+					class="mdi mdi-square-rounded-outline mdi-player-icon"
+				></i>
+				<i 
+					v-else 
+					@click="handleYoutubeWindowClick" 
+					v-tippy="'Fullscreen'" 
+					class="mdi mdi-arrow-top-left-thick mdi-player-icon"
+				></i>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col mx-1">
-				<div @mousemove="handleMouseMoveProgress" @click="handleClickProgress" class="progress bg-secondary mt-2 mb-1">
+				<div ref="progressEl" @mousemove="handleProgressMouseMove" @click="handleClickProgress" v-tippy-progress="" class="progress bg-secondary mt-2 mb-1">
 					<div 
 						class="progress-bar bg-danger" 
 						role="progressbar" 
@@ -121,9 +139,11 @@ export default {
 
 		let showHours = false;
 		let showMinutes = false;
+
 		// DATA
 
 		let playerRef = ref(null);
+		let progressEl = ref(null);
 
 		// COMPOSITION
 
@@ -227,10 +247,6 @@ export default {
 			seekTo(seconds);
 		}
 
-		function handleMouseMoveProgress(ev) {
-			let w = ev.target.clientWidth;
-		}
-
 		function handleWheel(ev) {
 			let i = volume.value + ev.deltaY/200 * -1 * 5;
 			setVolume(i > 100 ? 100 : i < 0 ? 0 : i);
@@ -241,6 +257,15 @@ export default {
 			if (playMode.value > 3) {
 				playMode.value = 1;
 			}
+		}
+
+		function handleProgressMouseMove(ev) {
+			let seconds = Math.floor(((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value);
+			progressEl.value.tippyProgress.setContent((ifMinAddDigit(Math.trunc(seconds/60/60)%60)) + ':' + ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + ifMinAddDigit(Math.trunc(seconds % 60)));
+		}
+
+		function ifMinAddDigit(value) {
+			return value < 10 ? '0' + value : value;
 		}
 
 		function handleClickVolume(ev) {
@@ -268,12 +293,13 @@ export default {
 			handleClickPlay,
 			handleClickPause,
 			handleYoutubeWindowClick,
-			handleMouseMoveProgress,
 			handleClickProgress,
 			handleWheel,
 			handleClickVolume,
 			handleClickPlayMode,
+			handleProgressMouseMove,
 			scrollToCurrentVideo,
+			progressEl,
 			showComments,
 			setComments,
 		}
