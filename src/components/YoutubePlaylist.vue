@@ -55,7 +55,7 @@
 import { ref, computed, onMounted } from 'vue'
 import PlaylistDropdown from './PlaylistDropdown.vue'
 import useYoutube from '../use-youtube.js'
-import useYoutubePlayer from '../use-youtube-player.js'
+import useYoutubePlayer from '../use-youtube-player'
 import useUI from '../use-UI.js'
 import useStore from '../use-store.js'
 
@@ -87,6 +87,7 @@ export default {
 			currentVideo, 
 			play,
 			loadVideo,
+			currentPlaylistId,
 		} = useYoutubePlayer();
 
 		let {
@@ -141,7 +142,8 @@ export default {
 
 		function handleClickPlaylistItem(video) {
 			if (video.snippet != currentVideo.value) {
-				loadVideo(video.snippet, props.playlistId);
+				currentPlaylistId.value = props.playlistId;
+				loadVideo(video.snippet);
 				play();
 			}
 		}

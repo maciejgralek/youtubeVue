@@ -38,18 +38,43 @@
 				v-if="currentVideo.title" 
 				class="col-auto border-right border-secondary"
 			>
-				<i class="mdi mdi-skip-previous mdi-player-icon-play"></i>
-				<i class="mdi mdi-skip-next mdi-player-icon-play"></i>
-				<i v-if="playMode == 1" @click="handleClickPlayMode" class="mdi mdi-shuffle-disabled mdi-player-icon"></i>
-				<i v-else-if="playMode == 2" @click="handleClickPlayMode" class="mdi mdi-shuffle mdi-player-icon"></i>
-				<i v-else @click="handleClickPlayMode" class="mdi mdi-repeat mdi-player-icon"></i>
+				<i 
+					class="mdi mdi-skip-previous mdi-player-icon-play"
+				></i>
+				<i 
+					@click="handleClickNext"
+					class="mdi mdi-skip-next mdi-player-icon-play"
+				></i>
+				<i 
+					v-if="playMode == 1" 
+					@click="handleClickPlayMode" 
+					v-tippy="'Next'"
+					class="mdi mdi-shuffle-disabled mdi-player-icon"
+				></i>
+				<i 
+					v-else-if="playMode == 2" 
+					@click="handleClickPlayMode" 
+					v-tippy="'Shuffle'"
+					class="mdi mdi-shuffle mdi-player-icon"
+				></i>
+				<i 
+					v-else 
+					@click="handleClickPlayMode" 
+					v-tippy="'Repeat'"
+					class="mdi mdi-repeat mdi-player-icon"
+				></i>
 			</div>
 			
 			<!-- TITLE -->
 
 			<div class="col-auto">
 				<transition name="fade" mode="out-in">
-					<span @click="scrollToCurrentVideo" v-tippy-player="() => currentVideo.description ? currentVideo.description.replace(/(?:\r\n|\r|\n)/g, '<br>'): ''" :key="currentVideo.title" class="video-title font-weight-bold mx-3">
+					<span 
+						@click="scrollToCurrentVideo" 
+						v-tippy-player="() => currentVideo.description ? currentVideo.description.replace(/(?:\r\n|\r|\n)/g, '<br>'): 'No description'" 
+						:key="currentVideo.title" 
+						class="video-title font-weight-bold mx-3"
+					>
 							{{ currentVideo.title }}
 						</span>
 				</transition>
@@ -58,9 +83,18 @@
 			<!-- VOLUME -->
 
 			<div class="col-auto ml-auto pr-0">
-				<i v-if="volume > 50" class="mdi mdi-volume-high mdi-player-icon"></i>
-				<i v-else-if="volume <= 50 && volume > 0" class="mdi mdi-volume-medium mdi-player-icon"></i>
-				<i v-else class="mdi mdi-volume-off mdi-player-icon"></i>
+				<i 
+					v-if="volume > 50" 
+					class="mdi mdi-volume-high mdi-player-icon"
+				></i>
+				<i 
+					v-else-if="volume <= 50 && volume > 0" 
+					class="mdi mdi-volume-medium mdi-player-icon"
+				></i>
+				<i 
+					v-else 
+					class="mdi mdi-volume-off mdi-player-icon"
+				></i>
 			</div>
 			<div class="col-auto">
 				<div 
@@ -158,6 +192,8 @@ export default {
 			stop, 
 			pause,
 			seekTo,
+			next,
+			loadVideo,
 			playMode,
 			getTime,
 			setVolume,
@@ -229,7 +265,7 @@ export default {
 		})
 
 		function handleClickPlay() {
-			play(currentVideo.value);
+			play();
 		}
 
 		function handleClickPause() {
@@ -274,6 +310,12 @@ export default {
 			setVolume(volume);
 		}
 
+		function handleClickNext() {
+			let video = next();
+			loadVideo(video);
+			play();
+		}
+
 		function scrollToCurrentVideo() {
 			currentVideo.value.el.scrollIntoView({ block: "center" });
 		}
@@ -298,6 +340,7 @@ export default {
 			handleClickVolume,
 			handleClickPlayMode,
 			handleProgressMouseMove,
+			handleClickNext,
 			scrollToCurrentVideo,
 			progressEl,
 			showComments,

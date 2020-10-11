@@ -1,4 +1,4 @@
-export default function createUrl(url, query) {
+export function createUrl(url, query) {
 	let q = [];
 	for (let i in query) {
 		q.push(encodeURIComponent(i) + '=' + encodeURIComponent(query[i]))
@@ -7,3 +7,8 @@ export default function createUrl(url, query) {
 	return url
 }
 
+export function getRandomInteger(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

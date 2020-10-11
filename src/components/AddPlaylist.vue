@@ -9,7 +9,8 @@
 		</div>
 
 		<div class="col-auto">
-			<button @click="searchRemote(searchString)" class="btn btn-primary btn-sm">Search</button>
+			<!-- <button @click="searchRemote(searchString)" class="btn btn&#45;primary btn&#45;sm">Search</button> -->
+			<button @click="" class="btn btn-primary btn-sm">Search</button>
 		</div>
 
 		<div class="col-auto ml-auto pr-1">

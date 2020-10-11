@@ -96,8 +96,15 @@ i {
 	color: var(--icon-color);
 }
 
+div[data-tippy-root] {
+	overflow-y: auto;
+}
+
+div[data-tippy-root]::-webkit-scrollbar {
+	width: 0px;
+}
+
 .tippy-content {
-	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
