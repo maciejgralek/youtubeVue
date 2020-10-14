@@ -87,7 +87,7 @@ export default {
 			currentVideo, 
 			play,
 			loadVideo,
-			currentPlaylistId,
+			currentPlaylist,
 		} = useYoutubePlayer();
 
 		let {
@@ -100,7 +100,7 @@ export default {
 		// COMPUTED
 
 		let filteredPlaylist = computed(() => {
-			let regexp = new RegExp(state.filter, "i");
+			let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
 			return props.playlist.items.filter(item => item.snippet.title.search(regexp) >= 0);
 		})
 
@@ -142,7 +142,7 @@ export default {
 
 		function handleClickPlaylistItem(video) {
 			if (video.snippet != currentVideo.value) {
-				currentPlaylistId.value = props.playlistId;
+				currentPlaylist.value = props.playlist;
 				loadVideo(video.snippet);
 				play();
 			}

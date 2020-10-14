@@ -21,7 +21,7 @@ const playerPlaymodes = {
 }
 
 let currentVideo = ref({});
-let currentPlaylistId = ref("");
+let currentPlaylist = ref(null);
 let currentTime = ref(null);
 let duration = ref(null);
 let playerState = ref(-1);
@@ -35,6 +35,7 @@ let volume = ref(0);
 let playMode = ref(playerPlaymodes.NEXT);
 let loadVideoFunction = null;
 let playFunction = null;
+let commentsDelay = null;
 
 let { 
 	restoreSettings 
@@ -44,6 +45,7 @@ restoreSettings('Player');
 
 let { 
 	getCommentsRemote,
+	comments,
 	playlists,
 	findPlaylistIndex,
 	findVideoIndex,
@@ -54,7 +56,6 @@ let {
 	playerHeight,
 } = useUI();
 
-
 let player = YouTubePlayer('video-player', {
 	width: _playerDefaultWidth,
 	height: _playerDefaultHeight,
@@ -63,6 +64,107 @@ let player = YouTubePlayer('video-player', {
 player.getVolume().then((res) => {
 	volume.value = res;
 });
+
+function play() {
+	player.playVideo();
+}
+
+playFunction = play;
+
+function stop() {
+	player.stopVideo();
+	currentVideo.value = null;
+}
+
+function pause() {
+	player.pauseVideo();
+}
+
+function togglePlayPause() {
+	if (playerState.value == 2) {
+		play();
+	}
+	else if (playerState.value == 1) {
+		pause();
+	}
+}
+
+function seekTo(seconds) {
+	player.seekTo(seconds);
+}
+
+function setVolume(value) {
+	player.setVolume(value).then(() => {
+		volume.value = value;
+	});
+}
+
+function loadVideo(video) {
+	let id;
+	if (video.resourceId) {
+		id = video.resourceId.videoId;
+	}
+	else {
+		id = video.id.videoId;
+	}
+	player.loadVideoById(id).then(() => {
+		comments.value = [];
+		if (commentsDelay) clearTimeout(commentsDelay);
+		getCommentsRemote(id, false);
+		if (video.resourceId) {
+			currentVideo.value = video;
+		}
+		else {
+			currentVideo.value = video.snippet;
+		}
+	});
+}
+
+loadVideoFunction = loadVideo;
+
+function getTime() {
+	return player.getCurrentTime();
+}
+
+function prev() {
+	if (playMode.value == playerPlaymodes.NEXT) {
+		let index = findVideoIndex(currentPlaylist.value, currentVideo.value);
+		if (index < 0) {
+			index = 0;
+		}
+		else {
+			index = index - 1;
+		}
+		return currentPlaylist.value.items[index].snippet;
+	}
+	else if (playMode.value == playerPlaymodes.SHUFFLE) {
+		let index = getRandomInteger(0, currentPlaylist.value.items.length - 1);
+		return currentPlaylist.value.items[index].snippet;
+	}
+	else if (playMode.value == playerPlaymodes.REPEAT) {
+		return currentVideo.value;
+	}
+}
+
+function next() {
+	if (playMode.value == playerPlaymodes.NEXT) {
+		let index = findVideoIndex(currentPlaylist.value, currentVideo.value);
+		if (index >= currentPlaylist.value.items.length - 1) {
+			index = 0;
+		}
+		else {
+			index = index + 1;
+		}
+		return currentPlaylist.value.items[index].snippet;
+	}
+	else if (playMode.value == playerPlaymodes.SHUFFLE) {
+		let index = getRandomInteger(0, currentPlaylist.value.items.length - 1);
+		return currentPlaylist.value.items[index].snippet;
+	}
+	else if (playMode.value == playerPlaymodes.REPEAT) {
+		return currentVideo.value;
+	}
+}
 
 function setYoutubeWindow(state) {
 	let size;
@@ -107,28 +209,6 @@ window.addEventListener('resize', () => {
 	}
 })
 
-function next() {
-	if (playMode.value == playerPlaymodes.NEXT) {
-		let playlistIndex = findPlaylistIndex(currentPlaylistId.value);
-		let index = findVideoIndex(playlistIndex, currentVideo.value);
-		if (index >= playlists.value[playlistIndex].items.length - 1) {
-			index = 0;
-		}
-		else {
-			index = index + 1;
-		}
-		return playlists.value[playlistIndex].items[index].snippet;
-	}
-	else if (playMode.value == playerPlaymodes.SHUFFLE) {
-		let playlistIndex = findPlaylistIndex(currentPlaylistId.value);
-		let index = getRandomInteger(0, playlists.value[playlistIndex].items.length - 1);
-		return playlists.value[playlistIndex].items[index].snippet;
-	}
-	else if (playMode.value == playerPlaymodes.REPEAT) {
-		return currentVideo.value;
-	}
-}
-
 player.on('stateChange', ev => {
 	if (ev.data == playerStates.PLAYING) {
 		player.getDuration().then(time => {
@@ -152,11 +232,13 @@ player.on('stateChange', ev => {
 		let video = null;
 		if (playMode.value == playerPlaymodes.NEXT) {
 			video = next();
+			video.el.scrollIntoView({ block: 'center' });
 			loadVideoFunction(video);
 			playFunction();
 		}
 		else if (playMode.value == playerPlaymodes.SHUFFLE) {
 			video = next();
+			video.el.scrollIntoView({ block: 'center' });
 			loadVideoFunction(video);
 			playFunction();
 		}
@@ -168,69 +250,10 @@ player.on('stateChange', ev => {
 })
 
 export default function useYoutubePlayer() {
-	function play() {
-		player.playVideo();
-	}
-
-	playFunction = play;
-
-	function stop() {
-		player.stopVideo();
-		currentVideo.value = null;
-	}
-
-	function pause() {
-		player.pauseVideo();
-	}
-
-	function togglePlayPause() {
-		if (playerState.value == 2) {
-			play();
-		}
-		else if (playerState.value == 1) {
-			pause();
-		}
-	}
-
-	function seekTo(seconds) {
-		player.seekTo(seconds);
-	}
-
-	function setVolume(value) {
-		player.setVolume(value).then(() => {
-			volume.value = value;
-		});
-	}
-
-	function loadVideo(video) {
-		let id;
-		if (video.resourceId) {
-			id = video.resourceId.videoId;
-		}
-		else {
-			id = video.id.videoId;
-		}
-		player.loadVideoById(id).then(() => {
-			getCommentsRemote(id, false);
-			if (video.resourceId) {
-				currentVideo.value = video;
-			}
-			else {
-				currentVideo.value = video.snippet;
-			}
-		});
-	}
-
-	loadVideoFunction = loadVideo;
-
-	function getTime() {
-		return player.getCurrentTime();
-	}
-
 	return {
 		// ref
 		currentVideo,
-		currentPlaylistId,
+		currentPlaylist,
 		currentTime,
 		duration,
 		volume,
@@ -242,6 +265,7 @@ export default function useYoutubePlayer() {
 		pause,
 		togglePlayPause,
 		seekTo,
+		prev,
 		next,
 		playMode,
 		setVolume,

@@ -39,6 +39,7 @@
 				class="col-auto border-right border-secondary"
 			>
 				<i 
+					@click="handleClickPrevious"
 					class="mdi mdi-skip-previous mdi-player-icon-play"
 				></i>
 				<i 
@@ -192,6 +193,7 @@ export default {
 			stop, 
 			pause,
 			seekTo,
+			prev,
 			next,
 			loadVideo,
 			playMode,
@@ -265,6 +267,7 @@ export default {
 		})
 
 		function handleClickPlay() {
+			if (!currentVideo.value.resourceId) return;
 			play();
 		}
 
@@ -310,6 +313,17 @@ export default {
 			setVolume(volume);
 		}
 
+		function handleClickPrevious() {
+			if (currentTime.value > 5 || playMode.value == 3) {
+				seekTo(0);
+			}
+			else {
+				let video = prev();
+				loadVideo(video);
+				play();
+			}
+		}
+
 		function handleClickNext() {
 			let video = next();
 			loadVideo(video);
@@ -340,6 +354,7 @@ export default {
 			handleClickVolume,
 			handleClickPlayMode,
 			handleProgressMouseMove,
+			handleClickPrevious,
 			handleClickNext,
 			scrollToCurrentVideo,
 			progressEl,
