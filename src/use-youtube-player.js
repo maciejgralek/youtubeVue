@@ -84,7 +84,6 @@ function togglePlayPause() {
 }
 
 function seekTo(seconds) {
-	console.log(seconds)
 	player.seekTo(seconds);
 }
 
