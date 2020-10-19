@@ -13,7 +13,7 @@
 		<div 
 			v-for="(playlist, index) in playlists" 
 			class="col text-left playlist"
-			>
+		>
 			<YoutubePlaylist :playlist="playlist" :playlistId="playlist.id"/>
 		</div>
 	</div>

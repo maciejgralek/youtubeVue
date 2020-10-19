@@ -1,10 +1,12 @@
 <template>
-	<div class="comments-container shadow rounded p-1 pr-1 pt-2">
+	<div 
+		@mouseenter="pauseComments" 
+		@mouseleave="playComments" 
+		class="comments-container shadow rounded p-1 pr-1 pt-2"
+	>
 		<div class="comments">
 			<div 
 				v-if="comments.length" 
-				@mouseenter="pauseComments" 
-				@mouseleave="playComments" 
 				class="row p-2 g-2"
 			>
 				<div class="col-auto">

@@ -27,7 +27,7 @@ let {
 	restoreSettings 
 } = useStoreSettings('UI', {currentTheme, compactMode, overlayOpacity});
 
-restoreSettings('UI');
+restoreSettings();
 
 function setTheme(theme) {
 	if (theme) {
@@ -69,20 +69,20 @@ function setCompact(value) {
 	}
 }
 
+function setPlayerHeight(h) {
+	playerHeight = h;
+}
+
+function setComments() {
+	if (showComments.value) {
+		showComments.value = false;
+	}
+	else {
+		showComments.value = true;
+	}
+}
+
 export default function useUI() {
-	function setPlayerHeight(h) {
-		playerHeight = h;
-	}
-
-	function setComments() {
-		if (showComments.value) {
-			showComments.value = false;
-		}
-		else {
-			showComments.value = true;
-		}
-	}
-
 	return {
 		playerHeight,
 		setPlayerHeight,

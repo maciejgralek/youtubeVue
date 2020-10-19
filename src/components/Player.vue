@@ -40,26 +40,28 @@
 			>
 				<i 
 					@click="handleClickPrevious"
+					v-tippy="'Previous'"
 					class="mdi mdi-skip-previous mdi-player-icon-play"
 				></i>
 				<i 
 					@click="handleClickNext"
+					v-tippy="'Next'"
 					class="mdi mdi-skip-next mdi-player-icon-play"
 				></i>
 				<i 
-					v-if="playMode == 1" 
+					v-if="playMode == playerPlaymodes.NEXT" 
 					@click="handleClickPlayMode" 
 					v-tippy="'Next'"
 					class="mdi mdi-shuffle-disabled mdi-player-icon"
 				></i>
 				<i 
-					v-else-if="playMode == 2" 
+					v-else-if="playMode == playerPlaymodes.SHUFFLE" 
 					@click="handleClickPlayMode" 
 					v-tippy="'Shuffle'"
 					class="mdi mdi-shuffle mdi-player-icon"
 				></i>
 				<i 
-					v-else 
+					v-if="playMode == playerPlaymodes.REPEAT"
 					@click="handleClickPlayMode" 
 					v-tippy="'Repeat'"
 					class="mdi mdi-repeat mdi-player-icon"
@@ -72,7 +74,7 @@
 				<transition name="fade" mode="out-in">
 					<span 
 						@click="scrollToCurrentVideo" 
-						v-tippy-player="() => currentVideo.description ? currentVideo.description.replace(/(?:\r\n|\r|\n)/g, '<br>'): 'No description'" 
+						v-tippy-player="tippyVideoDescriptionContent" 
 						:key="currentVideo.title" 
 						class="video-title font-weight-bold mx-3"
 					>
@@ -85,15 +87,18 @@
 
 			<div class="col-auto ml-auto pr-0">
 				<i 
-					v-if="volume > 50" 
+					v-if="volume > 50 && !isMuted" 
+					@click="handleClickVolumeIcon" 
 					class="mdi mdi-volume-high mdi-player-icon"
 				></i>
 				<i 
-					v-else-if="volume <= 50 && volume > 0" 
+					v-else-if="volume <= 50 && volume > 0 && !isMuted" 
+					@click="handleClickVolumeIcon" 
 					class="mdi mdi-volume-medium mdi-player-icon"
 				></i>
 				<i 
-					v-else 
+					v-else-if="volume == 0 || isMuted" 
+					@click="handleClickVolumeIcon" 
 					class="mdi mdi-volume-off mdi-player-icon"
 				></i>
 			</div>
@@ -165,9 +170,10 @@
 
 <script>
 import { ref, computed, onMounted, watchEffect, watch } from 'vue'
-import useYoutubePlayer from '../use-youtube-player.js'
+import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player.js'
 import useYoutube from '../use-youtube.js'
 import useUI from '../use-UI.js'
+import { ifMinAddDigit } from '../tools'
 
 export default {
 	setup(props) {
@@ -187,6 +193,7 @@ export default {
 			currentTime, 
 			duration, 
 			volume,
+			isMuted,
 			playerState, 
 			playerWindowState,
 			play, 
@@ -199,6 +206,7 @@ export default {
 			playMode,
 			getTime,
 			setVolume,
+			toggleMute,
 			setYoutubeWindow,
 		} = useYoutubePlayer();
 
@@ -233,8 +241,8 @@ export default {
 			let minutes = Math.trunc((duration.value / 60) % 60);
 			let seconds = duration.value % 60;
 			hours > 0 ? (hours = hours < 10 ? '0' + hours : hours) : '';
-			minutes = minutes < 10 ? '0' + minutes : minutes;
-			seconds = seconds < 10 ? '0' + seconds : seconds;
+			minutes = ifMinAddDigit(minutes);
+			seconds = ifMinAddDigit(seconds);
 			return (hours ? hours + ':' : '') + minutes + ':' + seconds;
 		})
 
@@ -243,21 +251,23 @@ export default {
 			if (currentTime.value == undefined) currentTime.value = 0;
 			if (showHours) {
 				let hours = Math.trunc((Math.floor(currentTime.value) / 60 / 60) % 60);
-				hours = hours < 10 ? '0' + hours : hours;
+				hours = ifMinAddDigit(hours);
 				time = hours + ':';
 			}
 			if (showMinutes) {
 				let minutes = Math.trunc((Math.floor(currentTime.value) / 60) % 60);
-				minutes = minutes < 10 ? '0' + minutes : minutes;
+				minutes = ifMinAddDigit(minutes);
 				time += minutes + ':';
 			}
 			let seconds = Math.floor(currentTime.value) % 60;
-			seconds = seconds < 10 ? '0' + seconds : seconds;
+			seconds = ifMinAddDigit(seconds);
 			return time + seconds;
 		})
 
 		let playButtonMode = computed(() => {
-			return playerState.value == 2 || playerState.value == -1 || playerState.value == 0;
+			return playerState.value == playerStates.PAUSED || 
+				playerState.value == playerStates.UNSTARTED || 
+				playerState.value == playerStates.ENDED;
 		})
 
 		// METHODS
@@ -300,17 +310,21 @@ export default {
 
 		function handleProgressMouseMove(ev) {
 			let seconds = Math.floor(((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value);
-			progressEl.value.tippyProgress.setContent((ifMinAddDigit(Math.trunc(seconds/60/60)%60)) + ':' + ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + ifMinAddDigit(Math.trunc(seconds % 60)));
-		}
-
-		function ifMinAddDigit(value) {
-			return value < 10 ? '0' + value : value;
+			progressEl.value.tippyProgress.setContent(
+				ifMinAddDigit(Math.trunc(seconds/60/60)%60) + ':' + 
+				ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + 
+				ifMinAddDigit(Math.trunc(seconds%60))
+			);
 		}
 
 		function handleClickVolume(ev) {
 			let w = ev.target.clientWidth;
 			let volume = ((ev.x - ev.target.offsetLeft)/w) * 100;
 			setVolume(volume);
+		}
+
+		function handleClickVolumeIcon() {
+			toggleMute();
 		}
 
 		function handleClickPrevious() {
@@ -330,18 +344,29 @@ export default {
 			play();
 		}
 
+		function tippyVideoDescriptionContent () {
+			return currentVideo.value.description ? 
+				currentVideo.value.description.replace(/(?:\r\n|\r|\n)/g, '<br>') : 
+				'No description'
+		}
+		
+
 		function scrollToCurrentVideo() {
 			currentVideo.value.el.scrollIntoView({ block: "center" });
 		}
 
 		return {
 			playerRef,
+			progressEl,
 			currentVideo,
 			currentTime,
 			formatedTime,
 			durationTime,
 			duration,
 			volume,
+			isMuted,
+			playerStates,
+			playerPlaymodes,
 			playerState,
 			playerWindowState,
 			playButtonMode,
@@ -352,12 +377,13 @@ export default {
 			handleClickProgress,
 			handleWheel,
 			handleClickVolume,
+			handleClickVolumeIcon,
 			handleClickPlayMode,
 			handleProgressMouseMove,
 			handleClickPrevious,
 			handleClickNext,
+			tippyVideoDescriptionContent,
 			scrollToCurrentVideo,
-			progressEl,
 			showComments,
 			setComments,
 		}

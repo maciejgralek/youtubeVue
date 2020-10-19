@@ -5,7 +5,7 @@ import useUI from './use-UI.js'
 import useStoreSettings from './use-store-settings'
 import {getRandomInteger} from './tools'
 
-const playerStates = {
+export const playerStates = {
 	UNSTARTED: -1,
 	ENDED: 0,
 	PLAYING: 1,
@@ -14,40 +14,36 @@ const playerStates = {
 	CUED: 4,
 }
 
-const playerPlaymodes = {
+export const playerPlaymodes = {
 	NEXT: 1,
 	SHUFFLE: 2,
 	REPEAT: 3,
 }
 
+let _playerDefaultRight = 10;
+let _playerDefaultBottom = 96;
+let _playerDefaultWidth = 320;
+let _playerDefaultHeight = 180;
+let _timer = null;
 let currentVideo = ref({});
 let currentPlaylist = ref(null);
 let currentTime = ref(null);
 let duration = ref(null);
 let playerState = ref(-1);
 let playerWindowState = ref(1);
-let _playerDefaultRight = 10;
-let _playerDefaultBottom = 96;
-let _playerDefaultWidth = 320;
-let _playerDefaultHeight = 180;
-let timer = null;
 let volume = ref(0);
+let isMuted = ref(false);
 let playMode = ref(playerPlaymodes.NEXT);
-let loadVideoFunction = null;
-let playFunction = null;
-let commentsDelay = null;
 
 let { 
 	restoreSettings 
 } = useStoreSettings('Player', { playMode });
 
-restoreSettings('Player');
+restoreSettings();
 
 let { 
 	getCommentsRemote,
 	comments,
-	playlists,
-	findPlaylistIndex,
 	findVideoIndex,
 } = useYoutube();
 
@@ -69,8 +65,6 @@ function play() {
 	player.playVideo();
 }
 
-playFunction = play;
-
 function stop() {
 	player.stopVideo();
 	currentVideo.value = null;
@@ -90,6 +84,7 @@ function togglePlayPause() {
 }
 
 function seekTo(seconds) {
+	console.log(seconds)
 	player.seekTo(seconds);
 }
 
@@ -97,6 +92,17 @@ function setVolume(value) {
 	player.setVolume(value).then(() => {
 		volume.value = value;
 	});
+}
+
+function toggleMute() {
+	if (!isMuted.value) {
+		player.mute();
+		isMuted.value = true;
+	}
+	else {
+		player.unMute();
+		isMuted.value = false;
+	}
 }
 
 function loadVideo(video) {
@@ -109,7 +115,6 @@ function loadVideo(video) {
 	}
 	player.loadVideoById(id).then(() => {
 		comments.value = [];
-		if (commentsDelay) clearTimeout(commentsDelay);
 		getCommentsRemote(id, false);
 		if (video.resourceId) {
 			currentVideo.value = video;
@@ -119,8 +124,6 @@ function loadVideo(video) {
 		}
 	});
 }
-
-loadVideoFunction = loadVideo;
 
 function getTime() {
 	return player.getCurrentTime();
@@ -215,7 +218,7 @@ player.on('stateChange', ev => {
 			duration.value = Math.floor(time);
 		});
 		playerState.value = 1;
-		timer = setInterval(() => {
+		_timer = setInterval(() => {
 			player.getCurrentTime().then(time => { 
 				currentTime.value = time
 			});
@@ -228,22 +231,22 @@ player.on('stateChange', ev => {
 	}
 	if (ev.data == playerStates.ENDED) {
 		playerState.value = 0;
-		clearInterval(timer);
+		clearInterval(_timer);
 		let video = null;
 		if (playMode.value == playerPlaymodes.NEXT) {
 			video = next();
 			video.el.scrollIntoView({ block: 'center' });
-			loadVideoFunction(video);
-			playFunction();
+			loadVideo(video);
+			play();
 		}
 		else if (playMode.value == playerPlaymodes.SHUFFLE) {
 			video = next();
 			video.el.scrollIntoView({ block: 'center' });
-			loadVideoFunction(video);
-			playFunction();
+			loadVideo(video);
+			play();
 		}
 		else if (playMode.value == playerPlaymodes.REPEAT) {
-			playFunction();
+			play();
 		}
 		// play next
 	}
@@ -257,6 +260,7 @@ export default function useYoutubePlayer() {
 		currentTime,
 		duration,
 		volume,
+		isMuted,
 		playerState,
 		playerWindowState,
 		// control
@@ -269,6 +273,7 @@ export default function useYoutubePlayer() {
 		next,
 		playMode,
 		setVolume,
+		toggleMute,
 		loadVideo,
 		getTime,
 		setYoutubeWindow,

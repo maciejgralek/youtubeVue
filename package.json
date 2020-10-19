@@ -7,25 +7,25 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@mdi/font": "^5.5.55",
+    "@mdi/font": "^5.7.55",
     "axios": "^0.19.2",
-    "bootstrap": "^5.0.0-alpha1",
+    "bootstrap": "^5.0.0-alpha2",
     "bootstrap-icons": "^1.0.0-alpha5",
     "core-js": "^3.6.5",
     "popper-max-size-modifier": "^0.2.0",
     "popper.js": "^1.16.1",
-    "sass": "^1.26.10",
+    "sass": "^1.27.0",
     "sass-loader": "^9.0.2",
-    "tippy.js": "^6.2.6",
-    "vue": "^3.0.0-beta.1",
-    "vue-router": "^4.0.0-beta.12",
+    "tippy.js": "^6.2.7",
+    "vue": "^3.0.1",
+    "vue-router": "^4.0.0-beta.13",
     "youtube-player": "^5.5.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-router": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
-    "@vue/compiler-sfc": "^3.0.0-beta.1",
+    "@vue/compiler-sfc": "^3.0.1",
     "vue-cli-plugin-vue-next": "^0.1.4"
   }
 }

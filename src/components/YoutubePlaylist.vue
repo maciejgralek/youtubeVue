@@ -1,6 +1,4 @@
 <template>
-	<div class="rounded">
-
 		<div class="playlist-header d-flex align-items-center w-100 pl-3 py-2 mb-1" >
 			<span class="font-weight-bold">
 				{{ playlist.title }} 
@@ -22,13 +20,13 @@
 		</div>
 
 		<div v-scroll="handleScroll" class="playlist">
-			<div v-if="!filteredPlaylist.length" class="p-3">
+			<div v-show="!playlist.filteredItems.length" class="p-3">
 				No items
 			</div>
-			<ul v-else class="list-unstyled p-3">
+			<ul class="list-unstyled p-3">
 				<transition-group name="list" tag="p">
 					<li 
-						v-for="(item, index) in filteredPlaylist" 
+						v-for="(item, index) in playlist.filteredItems" 
 						:ref="el => { playlist.items.length && (playlist.items[index].snippet.el = el) }"
 						@click="handleClickPlaylistItem(item)" 
 						class="playlist-item text-truncate p-1" 
@@ -36,7 +34,7 @@
 						:key="item.id"
 					>
 						<img 
-							:src="item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : ''" 
+							:src="srcThumbnail(item)" 
 							class="pr-2" 
 							:width="thumbnailWidth"
 							:height="thumbnailHeight"
@@ -47,8 +45,6 @@
 				</transition-group>
 			</ul>
 		</div>
-
-	</div>
 </template>
 
 <script>
@@ -97,13 +93,6 @@ export default {
 
 		let state = useStore();
 
-		// COMPUTED
-
-		let filteredPlaylist = computed(() => {
-			let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
-			return props.playlist.items.filter(item => item.snippet.title.search(regexp) >= 0);
-		})
-
 		// METHODS
 
 		function classListPlaylistItem(item) {
@@ -113,6 +102,10 @@ export default {
 				'playlist-item-play': item.snippet == currentVideo.value,
 			}
 		} 
+
+		function srcThumbnail(item) {
+			return ( item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : '' );
+		}
 
 		function handleScroll(ev) {
 			if (ev.target.scrollTop >= ev.target.scrollHeight - ev.target.offsetHeight) {
@@ -151,7 +144,7 @@ export default {
 		return {
 			currentVideo,
 			removePlaylist,
-			filteredPlaylist,
+			// filteredPlaylist,
 			move,
 			play,
 			handleClickPlaylistItem,
@@ -164,6 +157,7 @@ export default {
 			thumbnailWidth,
 			thumbnailHeight,
 			classListPlaylistItem,
+			srcThumbnail,
 		}
 	}
 }

@@ -1,6 +1,7 @@
-import { ref, onMounted, shallowRef } from 'vue'
+import { ref, onMounted, watchEffect, watch, markRaw } from 'vue'
 import axios from 'axios'
 import {createUrl} from './tools.js'
+import useStore from './use-store.js'
 
 // let googleApiRemote = 'http://localhost:3000/youtubevue/'
 let googleApiRemote = 'https://youtube-vue-server.herokuapp.com/youtubevue/'
@@ -13,6 +14,15 @@ let commentsNextPageToken = null;
 let searchNextPageToken = null;
 let searchLast = "";
 
+let state = useStore();
+
+watch(
+	() => state.filter, 
+	() => {
+		for (let playlist of playlists.value) {
+			playlist.filteredItems = filterPlaylistItems(playlist.items);
+		}
+	})
 
 // YOUTUBE API
 
@@ -34,20 +44,23 @@ async function getPlaylistRemote(playlist, nextPage) {
 	let regexp = /[0-9]?[0-9]?:?[0-9]?[0-9]:[0-9][0-9]/ig;
 	for(let video of res.data.items) {
 		video.snippet.el = ref(null);
-		video.snippet.description = video.snippet.description.replace(regexp, match => {
-			return '<a href="">' + match + '</a>';
-		});
+		video.snippet.description = video.snippet.description.replace(
+			regexp, match => {
+				return '<a href="">' + match + '</a>';
+			});
 	}
 
 	if (nextPage) {
 		playlist.items = playlist.items.concat(res.data.items.filter(item => 
 			item.snippet.title != "Private video"
 		));
+		playlist.filteredItems = filterPlaylistItems(playlist.items);
 	}
 	else {
 		playlist.items.value = res.data.items.filter(item => 
 			item.snippet.title != "Private video"
 		);
+		playlist.filteredItems.value = filterPlaylistItems(playlist.items.value);
 		_getPlaylistPropertiesRemote(playlist);
 	}
 
@@ -60,7 +73,6 @@ async function _getPlaylistPropertiesRemote(playlist) {
 	}
 
 	let queryUrl = createUrl(googleApiRemote + 'playlists?', query);
-
 	let res = await axios.get(queryUrl);
 	playlist.title.value = res.data.items[0].snippet.title;
 }
@@ -73,8 +85,11 @@ async function getChannelPlaylists(id) {
 		maxResults: 50,
 	}
 	let queryUrl = createUrl(googleApiPlaylists, query);
+
 	let res = await axios.get(queryUrl);
+
 	channelPlaylists = res.data.items;
+
 	for (let i of channelPlaylists) {
 		addPlaylist(i.id, i.snippet.title)
 	}
@@ -117,10 +132,14 @@ async function searchRemote(value, nextPage) {
 
 	let res = await axios.get(queryUrl);
 	if (nextPage) {
-		searchRes.value = searchRes.value.concat(res.data.items.filter(item => item.id.kind == "youtube#video"));
+		searchRes.value = searchRes.value.concat(
+			res.data.items.filter(item => item.id.kind == "youtube#video")
+		);
 	}
 	else {
-		searchRes.value = res.data.items.filter(item => item.id.kind == "youtube#video");
+		searchRes.value = res.data.items.filter(
+			item => item.id.kind == "youtube#video"
+		);
 	}
 	searchNextPageToken = res.data.nextPageToken;
 }
@@ -130,12 +149,13 @@ function addPlaylist(id, local) {
 		id: id,
 		local: local || 0,
 		title: ref(""),
-		channel: '',
 		items: ref([]),
+		filteredItems: ref([]),
 		nextPageToken: null,
 		isLoading: ref(false),
 	}
 	getPlaylistRemote(playlist);
+
 	return playlist;
 }
 
@@ -165,7 +185,7 @@ function removePlaylist(playlist) {
 }
 
 function reloadPlaylist(playlist) {
-	let index = findPlaylistIndex(playlist.id);
+	let index = findPlaylistIndex(playlist);
 	let reloadedPlaylist = addPlaylist(playlist.id)
 	playlists.value[index] = reloadedPlaylist;
 }
@@ -176,14 +196,20 @@ function removeSearch() {
 
 function move(playlist, dir) {
 	let index = playlists.value.indexOf(playlist);
-	if ((index == 0 && dir == -1) || (index == playlists.value.length && dir == 1)) return;
+	if ((index == 0 && dir == -1) || 
+		(index == playlists.value.length && dir == 1)) return;
 	let to = index + dir;
 	let i = playlists.value.splice(index, 1);
 	playlists.value.splice(to, 0, i[0]);
 }
 
-function findPlaylistIndex(id) {
-	return playlists.value.findIndex(item => item.id == id)
+function filterPlaylistItems(items) {
+	let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
+	return items.filter(item => item.snippet.title.search(regexp) >= 0);
+}
+
+function findPlaylistIndex(playlist) {
+	return playlists.value.findIndex(item => item == playlist)
 }
 
 function findVideoIndex(playlist, video) {

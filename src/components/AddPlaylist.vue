@@ -46,16 +46,16 @@
 							</label>
 							<input v-model.number="overlayOpacity" class="ml-auto" type="range" min="0" max="100" step="10" id="checkboxCompactMode">
 						</li>
-						<li class="list-group-item d-flex align-items-center border-0">
-								<a href="">
-									Export all playlists as URL
-								</a>
-						</li>
-						<li class="list-group-item d-flex align-items-center border-0">
-								<a href="">
-									Export saved playlists as URL
-								</a>
-						</li>
+						<!-- <li class="list&#45;group&#45;item d&#45;flex align&#45;items&#45;center border&#45;0"> -->
+						<!-- 		<a href=""> -->
+						<!-- 			Export all playlists as URL -->
+						<!-- 		</a> -->
+						<!-- </li> -->
+						<!-- <li class="list&#45;group&#45;item d&#45;flex align&#45;items&#45;center border&#45;0"> -->
+						<!-- 		<a href=""> -->
+						<!-- 			Export saved playlists as URL -->
+						<!-- 		</a> -->
+						<!-- </li> -->
 					</ul>
 				</div>
 			</div>
@@ -69,12 +69,8 @@ import { ref, onMounted } from 'vue'
 import useYoutube from '../use-youtube.js'
 import useUI from '../use-UI.js'
 import useStore from '../use-store.js'
-import Icon from './Icon.vue'
 
 export default {
-	components: {
-		Icon,
-	},
 	setup(props, { emit }) {
 		let playlistId = ref('');
 		let searchString = ref('');
