@@ -65,8 +65,6 @@ export default {
 	},
 	setup(props) {
 
-		let youtubeUrl = "http://youtube.com/";
-
 		// COMPOSITION
 
 		let { 
@@ -122,7 +120,7 @@ export default {
 		}
 
 		function handleEditInYoutube() {
-			window.open(youtubeUrl + "playlist?list=" + props.playlist.id);
+			window.open("http://youtube.com/playlist?list=" + props.playlist.id);
 		}
 
 		function handleSavePlaylist() {
