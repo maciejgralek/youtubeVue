@@ -3,7 +3,7 @@ import YouTubePlayer from 'youtube-player';
 import useYoutube from './use-youtube.js'
 import useUI from './use-UI.js'
 import useStoreSettings from './use-store-settings'
-import {getRandomInteger} from './tools'
+import { getRandomInteger } from './tools'
 
 export const playerStates = {
 	UNSTARTED: -1,
@@ -135,7 +135,7 @@ function prev() {
 			index = 0;
 		}
 		else {
-			index = index - 1;
+			index -= 1;
 		}
 		return currentPlaylist.value.items[index].snippet;
 	}
@@ -155,7 +155,7 @@ function next() {
 			index = 0;
 		}
 		else {
-			index = index + 1;
+			index += 1;
 		}
 		return currentPlaylist.value.items[index].snippet;
 	}
@@ -216,7 +216,7 @@ player.on('stateChange', ev => {
 		player.getDuration().then(time => {
 			duration.value = Math.floor(time);
 		});
-		playerState.value = 1;
+		playerState.value = playerStates.PLAYING;
 		_timer = setInterval(() => {
 			player.getCurrentTime().then(time => { 
 				currentTime.value = time
@@ -225,11 +225,11 @@ player.on('stateChange', ev => {
 		showCommentsPause.value = true;
 	}
 	if (ev.data == playerStates.PAUSED) {
-		playerState.value = 2;
+		playerState.value = playerStates.PAUSED;
 		showCommentsPause.value = false;
 	}
 	if (ev.data == playerStates.ENDED) {
-		playerState.value = 0;
+		playerState.value = playerStates.ENDED;
 		clearInterval(_timer);
 		let video = null;
 		if (playMode.value == playerPlaymodes.NEXT) {
