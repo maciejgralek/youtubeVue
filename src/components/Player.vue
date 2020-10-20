@@ -211,10 +211,6 @@ export default {
 		} = useYoutubePlayer();
 
 		let { 
-			findVideoElement,
-		} = useYoutube();
-
-		let { 
 			setPlayerHeight,
 			showComments,
 			setComments,

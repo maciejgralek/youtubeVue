@@ -102,7 +102,7 @@ export default {
 		} 
 
 		function srcThumbnail(item) {
-			return ( item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : '' );
+			return item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : '';
 		}
 
 		function handleScroll(ev) {

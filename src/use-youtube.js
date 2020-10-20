@@ -1,6 +1,6 @@
-import { ref, onMounted, watchEffect, watch, markRaw } from 'vue'
+import { ref, onMounted, watch, reactive } from 'vue'
 import axios from 'axios'
-import {createUrl} from './tools.js'
+import { createUrl } from './tools.js'
 import useStore from './use-store.js'
 
 // let googleApiRemote = 'http://localhost:3000/youtubevue/'
@@ -50,19 +50,10 @@ async function getPlaylistRemote(playlist, nextPage) {
 			});
 	}
 
-	if (nextPage) {
-		playlist.items = playlist.items.concat(res.data.items.filter(item => 
-			item.snippet.title != "Private video"
-		));
-		playlist.filteredItems = filterPlaylistItems(playlist.items);
-	}
-	else {
-		playlist.items.value = res.data.items.filter(item => 
-			item.snippet.title != "Private video"
-		);
-		playlist.filteredItems.value = filterPlaylistItems(playlist.items.value);
-		_getPlaylistPropertiesRemote(playlist);
-	}
+	playlist.items = playlist.items.concat(res.data.items.filter(item => 
+		item.snippet.title != "Private video"
+	));
+	playlist.filteredItems = filterPlaylistItems(playlist.items);
 
 	playlist.nextPageToken = res.data.nextPageToken;
 }
@@ -71,10 +62,11 @@ async function _getPlaylistPropertiesRemote(playlist) {
 	let query = {
 		id: playlist.id,
 	}
-
 	let queryUrl = createUrl(googleApiRemote + 'playlists?', query);
+
 	let res = await axios.get(queryUrl);
-	playlist.title.value = res.data.items[0].snippet.title;
+
+	playlist.title = res.data.items[0].snippet.title;
 }
 
 async function getChannelPlaylists(id) {
@@ -145,16 +137,17 @@ async function searchRemote(value, nextPage) {
 }
 
 function addPlaylist(id, local) {
-	let playlist = {
+	let playlist = reactive({
 		id: id,
 		local: local || 0,
-		title: ref(""),
-		items: ref([]),
-		filteredItems: ref([]),
+		title: "",
+		items: [],
+		filteredItems: [],
 		nextPageToken: null,
-		isLoading: ref(false),
-	}
+		isLoading: false,
+	})
 	getPlaylistRemote(playlist);
+	_getPlaylistPropertiesRemote(playlist);
 
 	return playlist;
 }
@@ -216,12 +209,6 @@ function findVideoIndex(playlist, video) {
 	return playlist.items.findIndex(item => item.snippet == video);
 }
 
-function findVideoElement(video) {
-	for (let i of playlists.value) {
-		let index = i.items.findIndex(item => item.snippet == video);
-	}
-}
-
 // LOCAL STORAGE
 
 function savePlaylist(playlist) {
@@ -267,7 +254,6 @@ export default function useYoutube() {
 		searchRes,
 		comments,
 		getCommentsRemote,
-		findVideoElement,
 		findPlaylistIndex,
 		findVideoIndex,
 		// local
