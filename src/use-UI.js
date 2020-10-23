@@ -1,6 +1,5 @@
 import { ref, watch } from 'vue'
 import useStoreSettings from './use-store-settings'
-import tippy from 'tippy.js';
 
 let playerHeight = ref(null);
 let compactMode = ref(true);
@@ -41,6 +40,7 @@ function setTheme(theme) {
 		document.documentElement.style.setProperty('--input-color', 'var(--input-color-dark)');
 		document.documentElement.style.setProperty('--input-border-color', 'var(--input-border-color-dark)');
 		document.documentElement.style.setProperty('--icon-color', 'var(--icon-color-dark)');
+		document.documentElement.style.setProperty('--modal-content-bg', 'var(--modal-content-bg-dark)');
 		currentTheme.value = true;
 	}
 	else {
@@ -54,6 +54,7 @@ function setTheme(theme) {
 		document.documentElement.style.setProperty('--input-color', 'var(--input-color-light)');
 		document.documentElement.style.setProperty('--input-border-color', 'var(--input-border-color-light)');
 		document.documentElement.style.setProperty('--icon-color', 'var(--icon-color-light)');
+		document.documentElement.style.setProperty('--modal-content-bg', 'var(--modal-content-bg-light)');
 		currentTheme.value = false;
 	}
 }

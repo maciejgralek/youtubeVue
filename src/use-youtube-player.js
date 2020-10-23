@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import YouTubePlayer from 'youtube-player';
-import useYoutube from './use-youtube.js'
-import useUI from './use-UI.js'
+import useYoutube from './use-youtube'
+import useUI from './use-UI'
 import useStoreSettings from './use-store-settings'
 import { getRandomInteger } from './tools'
 
@@ -20,8 +20,8 @@ export const playerPlaymodes = {
 	REPEAT: 3,
 }
 
-let _playerDefaultRight = 10;
-let _playerDefaultBottom = 96;
+let _playerDefaultRight = 12;
+let _playerDefaultBottom = 90;
 let _playerDefaultWidth = 320;
 let _playerDefaultHeight = 180;
 let _timer = null;
@@ -59,6 +59,11 @@ let player = YouTubePlayer('video-player', {
 
 player.getVolume().then((res) => {
 	volume.value = res;
+});
+
+player.getIframe().then(el => {
+  el.style.right = _playerDefaultRight+"px";
+  el.style.bottom = _playerDefaultBottom+"px";
 });
 
 function play() {

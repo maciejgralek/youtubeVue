@@ -1,17 +1,34 @@
 <template>
 	<div class="row align-items-center py-3 pt-4 pr-3">
+
+    <!-- FILTER -->
+
 		<div class="col-4 ml-auto border-right">
-			<input v-model="state.filter" type="search" class="form-control form-control-sm" placeholder="Filter">
+      <input 
+        v-model="state.filter" 
+        type="search" 
+        class="form-control form-control-sm" 
+        placeholder="Filter"
+      >
 		</div>
+
+    <!-- SEARCH -->
 
 		<div class="col-4">
-				<input v-model="searchString" type="search" class="form-control form-control-sm" placeholder="">
+      <input 
+        v-model="searchString" 
+        type="search" 
+        class="form-control form-control-sm" 
+      >
 		</div>
-
 		<div class="col-auto">
 			<!-- <button @click="searchRemote(searchString)" class="btn btn&#45;primary btn&#45;sm">Search</button> -->
-			<button @click="" class="btn btn-primary btn-sm">Search</button>
+      <button @click="" class="btn btn-primary btn-sm">
+        Search
+      </button>
 		</div>
+
+    <!-- PLAYLIST DROPDOWN -->
 
 		<div class="col-auto ml-auto pr-1">
 			<div class="dropdown">
@@ -19,10 +36,19 @@
 				<div class="dropdown-menu dropdown-menu-right" style="width: 500px">
 					<div class="row px-3 py-2">
 						<div class="col">
-							<input v-model="playlistId" type="email" class="form-control form-control-sm" placeholder="Playlist id">
+              <input 
+                v-model="playlistId" 
+                type="email" 
+                class="form-control 
+                form-control-sm" 
+                placeholder="Playlist id"
+              >
 						</div>
 						<div class="col-auto">
-							<button @click="addPlaylistToPlaylists(playlistId)" class="btn btn-primary btn-sm">
+              <button 
+                @click="addPlaylistToPlaylists(playlistId)" 
+                class="btn btn-primary btn-sm"
+              >
 								Add Playlist
 							</button>
 						</div>
@@ -32,49 +58,94 @@
 							<label for="checkboxCompactMode" class="form-check-label">
 								Compact view
 							</label>
-							<input v-model="compactMode" class="ml-auto" type="checkbox" id="checkboxCompactMode">
+              <input 
+                v-model="compactMode" 
+                type="checkbox" 
+                id="checkboxCompactMode"
+                class="ml-auto" 
+              >
 						</li>
 						<li class="list-group-item d-flex align-items-center border-0">
-							<label for="checkboxDarkMode" class="form-check-label">
+              <label 
+                for="checkboxDarkMode" 
+                class="form-check-label"
+              >
 								Dark theme
 							</label>
-							<input v-model="currentTheme" class="ml-auto" type="checkbox" id="checkboxDarkMode">
+              <input 
+                v-model="currentTheme" 
+                class="ml-auto" 
+                type="checkbox" 
+                id="checkboxDarkMode"
+              >
 						</li>
 						<li class="list-group-item d-flex align-items-center border-0">
-							<label @click="setTheme" class="form-check-label">
+              <label 
+                @click="setTheme" 
+                class="form-check-label"
+              >
 								Overlay opacity
 							</label>
-							<input v-model.number="overlayOpacity" class="ml-auto" type="range" min="0" max="100" step="10" id="checkboxCompactMode">
+              <input 
+                v-model.number="overlayOpacity" 
+                type="range" 
+                class="ml-auto" 
+                min="0" 
+                max="100" 
+                step="10" 
+              >
 						</li>
-						<!-- <li class="list&#45;group&#45;item d&#45;flex align&#45;items&#45;center border&#45;0"> -->
-						<!-- 		<a href=""> -->
-						<!-- 			Export all playlists as URL -->
-						<!-- 		</a> -->
-						<!-- </li> -->
-						<!-- <li class="list&#45;group&#45;item d&#45;flex align&#45;items&#45;center border&#45;0"> -->
-						<!-- 		<a href=""> -->
-						<!-- 			Export saved playlists as URL -->
-						<!-- 		</a> -->
-						<!-- </li> -->
+						<li class="list-group-item d-flex align-items-center border-0">
+								<a href="" data-toggle="modal" data-target="#exampleModal">
+									Export playlists as URL
+								</a>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 
+  <!-- EXPORT MODAL -->
+
+  <teleport to="body">
+    <Modal>
+      <template v-slot:header>
+        <h5 class="modal-title" id="exampleModalLabel">Export playlists</h5>
+      </template>
+      <template v-slot:default>
+        <textarea 
+          ref="exportRef" 
+          :value="exportString" 
+          rows="3" 
+          class="form-control w-100 mb-2"
+        >
+        </textarea>
+        <a href="" @click.prevent="handleExportCopyToClipboard">
+          Copy to clipboard
+        </a>
+      </template>
+    </Modal>
+  </teleport>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import useYoutube from '../use-youtube.js'
-import useUI from '../use-UI.js'
-import useStore from '../use-store.js'
+import { ref, onMounted, watchEffect } from 'vue'
+import Modal from './Modal.vue'
+import useYoutube from '../use-youtube'
+import useUI from '../use-UI'
+import useStore from '../use-store'
 
 export default {
+  components: {
+    Modal,
+  },
 	setup(props, { emit }) {
+	  let exportRef = ref(null);
 		let playlistId = ref('');
 		let searchString = ref('');
-		let savedPlaylists = ref([]);
+    let exportString = ref('');
+		let appUrl = "https://relaxed-bell-6b8902.netlify.app"
 
 		let { 
 			playlists,
@@ -92,11 +163,22 @@ export default {
 
 		let state = useStore();
 
-		onMounted(() => {
-			savedPlaylists.value = loadPlaylists();
-		})
+    watchEffect(() => {
+      let playlistsId = [];
+      for(let playlist of playlists.value) {
+        playlistsId.push(playlist.id);   
+      }
+      exportString.value = `${appUrl}/playlist/${playlistsId.join(',')}`; 
+    })
+
+    function handleExportCopyToClipboard() {
+      exportRef.value.select();
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+    }
 
 		return {
+		  exportRef,
 			playlistId,
 			searchString,
 			overlayOpacity,
@@ -107,14 +189,14 @@ export default {
 			setCompact,
 			compactMode,
 			currentTheme,
+			handleExportCopyToClipboard,
 			searchRemote,
-			savedPlaylists,
+			exportString,
 		}
 	}
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .border-right {
 	border-right-width: 1px;

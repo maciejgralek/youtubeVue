@@ -1,431 +1,434 @@
 <template>
-	<div 
-		ref="playerRef" 
-		@wheel.prevent="handleWheel" 
-		class="player w-100 p-2"
-	>
-		<div class="row align-items-center py-0">
+  <div 
+    ref="playerRef" 
+    @wheel.prevent="handleWheel" 
+    class="player p-2"
+  >
+    <div class="row align-items-center py-0">
 
-			<!-- PLAY -->
+      <!-- PLAY -->
 
-			<div class="col-auto border-right border-secondary pr-1">
-				<i 
-					v-if="playButtonMode" 
-					@click="handleClickPlay" 
-					class="mdi mdi-play mdi-player-icon-play" 
-				></i>
-				<i 
-					v-else 
-					@click="handleClickPause" 
-					class="mdi mdi-pause mdi-player-icon-play"
-				></i>
-			</div>
+      <div class="col-auto border-right border-secondary pr-1">
+        <i 
+          v-if="playButtonMode" 
+          @click="handleClickPlay" 
+          class="mdi mdi-play mdi-player-icon-play" 
+        ></i>
+        <i 
+          v-else 
+          @click="handleClickPause" 
+          class="mdi mdi-pause mdi-player-icon-play"
+        ></i>
+      </div>
 
-			<!-- TIMER -->
+      <!-- TIMER -->
 
-			<div 
-				v-if="currentVideo.title && duration" 
-				class="col-auto border-right border-secondary"
-			>
-				<span class="timer font-weight-bold mx-3">
-					{{ formatedTime }} - {{ durationTime }}
-				</span>
-			</div>
+      <div 
+        v-if="currentVideo.title && duration" 
+        class="col-auto border-right border-secondary"
+      >
+        <span class="timer font-weight-bold mx-3">
+          {{ formatedTime }} - {{ durationTime }}
+        </span>
+      </div>
 
-			<!-- NEXT -->
+      <!-- NEXT -->
 
-			<div 
-				v-if="currentVideo.title" 
-				class="col-auto border-right border-secondary"
-			>
-				<i 
-					@click="handleClickPrevious"
-					v-tippy="'Previous'"
-					class="mdi mdi-skip-previous mdi-player-icon-play"
-				></i>
-				<i 
-					@click="handleClickNext"
-					v-tippy="'Next'"
-					class="mdi mdi-skip-next mdi-player-icon-play"
-				></i>
-				<i 
-					v-if="playMode == playerPlaymodes.NEXT" 
-					@click="handleClickPlayMode" 
-					v-tippy="'Next'"
-					class="mdi mdi-shuffle-disabled mdi-player-icon"
-				></i>
-				<i 
-					v-else-if="playMode == playerPlaymodes.SHUFFLE" 
-					@click="handleClickPlayMode" 
-					v-tippy="'Shuffle'"
-					class="mdi mdi-shuffle mdi-player-icon"
-				></i>
-				<i 
-					v-if="playMode == playerPlaymodes.REPEAT"
-					@click="handleClickPlayMode" 
-					v-tippy="'Repeat'"
-					class="mdi mdi-repeat mdi-player-icon"
-				></i>
-			</div>
-			
-			<!-- TITLE -->
+      <div 
+        v-if="currentVideo.title" 
+        class="col-auto border-right border-secondary"
+      >
+        <i 
+          @click="handleClickPrevious"
+          v-tippy="'Previous'"
+          class="mdi mdi-skip-previous mdi-player-icon-play"
+        ></i>
+        <i 
+          @click="handleClickNext"
+          v-tippy="'Next'"
+          class="mdi mdi-skip-next mdi-player-icon-play"
+        ></i>
+        <i 
+          v-if="playMode == playerPlaymodes.NEXT" 
+          @click="handleClickPlayMode" 
+          v-tippy="'Next'"
+          class="mdi mdi-shuffle-disabled mdi-player-icon"
+        ></i>
+        <i 
+          v-else-if="playMode == playerPlaymodes.SHUFFLE" 
+          @click="handleClickPlayMode" 
+          v-tippy="'Shuffle'"
+          class="mdi mdi-shuffle mdi-player-icon"
+        ></i>
+        <i 
+          v-if="playMode == playerPlaymodes.REPEAT"
+          @click="handleClickPlayMode" 
+          v-tippy="'Repeat'"
+          class="mdi mdi-repeat mdi-player-icon"
+        ></i>
+      </div>
+      
+      <!-- TITLE -->
 
-			<div class="col-auto">
-				<transition name="fade" mode="out-in">
-					<span 
-						@click="scrollToCurrentVideo" 
-						v-tippy-player="tippyVideoDescriptionContent" 
-						:key="currentVideo.title" 
-						class="video-title font-weight-bold mx-3"
-					>
-							{{ currentVideo.title }}
-						</span>
-				</transition>
-			</div>
+      <div class="col-auto">
+        <transition name="fade" mode="out-in">
+          <span 
+            @click="scrollToCurrentVideo" 
+            v-tippy-player="tippyVideoDescriptionContent" 
+            :key="currentVideo.title" 
+            class="video-title font-weight-bold mx-3"
+          >
+              {{ currentVideo.title }}
+            </span>
+        </transition>
+      </div>
 
-			<!-- VOLUME -->
+      <!-- VOLUME -->
 
-			<div class="col-auto ml-auto pr-0">
-				<i 
-					v-if="volume > 50 && !isMuted" 
-					@click="handleClickVolumeIcon" 
-					class="mdi mdi-volume-high mdi-player-icon"
-				></i>
-				<i 
-					v-else-if="volume <= 50 && volume > 0 && !isMuted" 
-					@click="handleClickVolumeIcon" 
-					class="mdi mdi-volume-medium mdi-player-icon"
-				></i>
-				<i 
-					v-else-if="volume == 0 || isMuted" 
-					@click="handleClickVolumeIcon" 
-					class="mdi mdi-volume-off mdi-player-icon"
-				></i>
-			</div>
-			<div class="col-auto">
-				<div 
-					@click="handleClickVolume" 
-					class="progress bg-secondary" 
-					style="width: 150px"
-				>
-					<div 
-						class="progress-bar bg-danger" 
-						role="progressbar" 
-						style="pointer-events: none"
-						:style="{'width': volume +'%'}" 
-						aria-valuenow="0" 
-						aria-valuemin="0" 
-						aria-valuemax="100">
-					</div>
-				</div>
-			</div>
+      <div class="col-auto ml-auto pr-0">
+        <i 
+          v-if="volume > 50 && !isMuted" 
+          @click="handleClickVolumeIcon" 
+          class="mdi mdi-volume-high mdi-player-icon"
+        ></i>
+        <i 
+          v-else-if="volume <= 50 && volume > 0 && !isMuted" 
+          @click="handleClickVolumeIcon" 
+          class="mdi mdi-volume-medium mdi-player-icon"
+        ></i>
+        <i 
+          v-else-if="volume == 0 || isMuted" 
+          @click="handleClickVolumeIcon" 
+          class="mdi mdi-volume-off mdi-player-icon"
+        ></i>
+      </div>
+      <div class="col-auto">
+        <div 
+          @click="handleClickVolume" 
+          class="progress bg-secondary" 
+          style="width: 150px"
+        >
+          <div 
+            class="progress-bar bg-danger" 
+            role="progressbar" 
+            style="pointer-events: none"
+            :style="{'width': volume +'%'}" 
+            aria-valuenow="0" 
+            aria-valuemin="0" 
+            aria-valuemax="100">
+          </div>
+        </div>
+      </div>
 
-			<!-- COMMENTS FULLSCREEN -->
+      <!-- COMMENTS FULLSCREEN -->
 
-			<div class="col-auto mr-1">
-				<i 
-					v-if="showComments" 
-					@click="setComments" 
-					v-tippy="'Show comments'" 
-					class="mdi mdi-comment-outline mdi-player-icon-mini"
-				></i>
-				<i 
-					v-else 
-					@click="setComments" 
-					v-tippy="'Show comments'" 
-					class="mdi mdi-comment-remove-outline mdi-player-icon-mini"
-				></i>
-				<i 
-					v-if="playerWindowState == 1" 
-					@click="handleYoutubeWindowClick" 
-					v-tippy="'Fullscreen'" 
-					class="mdi mdi-square-rounded-outline mdi-player-icon"
-				></i>
-				<i 
-					v-else 
-					@click="handleYoutubeWindowClick" 
-					v-tippy="'Fullscreen'" 
-					class="mdi mdi-arrow-top-left-thick mdi-player-icon"
-				></i>
-			</div>
-		</div>
+      <div class="col-auto mr-1">
+        <i 
+          v-if="showComments" 
+          @click="setComments" 
+          v-tippy="'Show comments'" 
+          class="mdi mdi-comment-outline mdi-player-icon-mini"
+        ></i>
+        <i 
+          v-else 
+          @click="setComments" 
+          v-tippy="'Show comments'" 
+          class="mdi mdi-comment-remove-outline mdi-player-icon-mini"
+        ></i>
+        <i 
+          v-if="playerWindowState == 1" 
+          @click="handleYoutubeWindowClick" 
+          v-tippy="'Fullscreen'" 
+          class="mdi mdi-square-rounded-outline mdi-player-icon"
+        ></i>
+        <i 
+          v-else 
+          @click="handleYoutubeWindowClick" 
+          v-tippy="'Fullscreen'" 
+          class="mdi mdi-arrow-top-left-thick mdi-player-icon"
+        ></i>
+      </div>
+    </div>
 
-		<div class="row">
-			<div class="col mx-1">
-				<div ref="progressEl" @mousemove="handleProgressMouseMove" @click="handleClickProgress" v-tippy-progress="" class="progress bg-secondary mt-2 mb-1">
-					<div 
-						class="progress-bar bg-danger" 
-						role="progressbar" 
-						style="pointer-events: none"
-						:style="{'width': (currentTime/duration) * 100 +'%'}" 
-						aria-valuenow="0" 
-						aria-valuemin="0" 
-						aria-valuemax="100">
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+      <div class="col mx-1">
+        <div ref="progressEl" @mousemove="handleProgressMouseMove" @click="handleClickProgress" v-tippy-progress="" class="progress bg-secondary mt-2 mb-1">
+          <div 
+            class="progress-bar bg-danger" 
+            role="progressbar" 
+            style="pointer-events: none"
+            :style="{'width': (currentTime/duration) * 100 +'%'}" 
+            aria-valuenow="0" 
+            aria-valuemin="0" 
+            aria-valuemax="100">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { ref, computed, onMounted, watchEffect, watch } from 'vue'
-import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player.js'
-import useYoutube from '../use-youtube.js'
-import useUI from '../use-UI.js'
+import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
+import useYoutube from '../use-youtube'
+import useUI from '../use-UI'
 import { ifMinAddDigit } from '../tools'
 
 export default {
-	setup(props) {
+  setup(props) {
 
-		let showHours = false;
-		let showMinutes = false;
+    let showHours = false;
+    let showMinutes = false;
 
-		// DATA
+    // DATA
 
-		let playerRef = ref(null);
-		let progressEl = ref(null);
+    let playerRef = ref(null);
+    let progressEl = ref(null);
 
-		// COMPOSITION
+    // COMPOSITION
 
-		let { 
-			currentVideo, 
-			currentTime, 
-			duration, 
-			volume,
-			isMuted,
-			playerState, 
-			playerWindowState,
-			play, 
-			stop, 
-			pause,
-			seekTo,
-			prev,
-			next,
-			loadVideo,
-			playMode,
-			getTime,
-			setVolume,
-			toggleMute,
-			setYoutubeWindow,
-		} = useYoutubePlayer();
+    let { 
+      currentVideo, 
+      currentTime, 
+      duration, 
+      volume,
+      isMuted,
+      playerState, 
+      playerWindowState,
+      play, 
+      stop, 
+      pause,
+      seekTo,
+      prev,
+      next,
+      loadVideo,
+      playMode,
+      getTime,
+      setVolume,
+      toggleMute,
+      setYoutubeWindow,
+    } = useYoutubePlayer();
 
-		let { 
-			setPlayerHeight,
-			showComments,
-			setComments,
-		} = useUI();
+    let { 
+      setPlayerHeight,
+      showComments,
+      setComments,
+    } = useUI();
 
-		// WATCH
-		
-		watchEffect(() => {
-			showHours = false;
-			showMinutes = false;
-			let hours = Math.trunc((Math.floor(duration.value) / 60 / 60) % 60);
-			let minutes = Math.trunc((duration.value / 60) % 60);
-			if (hours) {
-				showHours = true;
-				showMinutes = true;
-			}
-			if (minutes) showMinutes = true;
-		})
+    // WATCH
+    
+    watchEffect(() => {
+      showHours = false;
+      showMinutes = false;
+      let hours = Math.trunc((Math.floor(duration.value) / 60 / 60) % 60);
+      let minutes = Math.trunc((duration.value / 60) % 60);
+      if (hours) {
+        showHours = true;
+        showMinutes = true;
+      }
+      if (minutes) showMinutes = true;
+    })
 
-		// COMPUTED
+    // COMPUTED
 
-		let durationTime = computed(() => {
-			let hours = Math.trunc((Math.floor(duration.value) / 60 / 60) % 60);
-			let minutes = Math.trunc((duration.value / 60) % 60);
-			let seconds = duration.value % 60;
-			hours > 0 ? (hours = hours < 10 ? '0' + hours : hours) : '';
-			minutes = ifMinAddDigit(minutes);
-			seconds = ifMinAddDigit(seconds);
-			return (hours ? hours + ':' : '') + minutes + ':' + seconds;
-		})
+    let durationTime = computed(() => {
+      let hours = Math.trunc((Math.floor(duration.value) / 60 / 60) % 60);
+      let minutes = Math.trunc((duration.value / 60) % 60);
+      let seconds = duration.value % 60;
+      hours > 0 ? (hours = hours < 10 ? '0' + hours : hours) : '';
+      minutes = ifMinAddDigit(minutes);
+      seconds = ifMinAddDigit(seconds);
+      return (hours ? hours + ':' : '') + minutes + ':' + seconds;
+    })
 
-		let formatedTime = computed(() => {
-			let time = "";
-			if (currentTime.value == undefined) currentTime.value = 0;
-			if (showHours) {
-				let hours = Math.trunc((Math.floor(currentTime.value) / 60 / 60) % 60);
-				hours = ifMinAddDigit(hours);
-				time = hours + ':';
-			}
-			if (showMinutes) {
-				let minutes = Math.trunc((Math.floor(currentTime.value) / 60) % 60);
-				minutes = ifMinAddDigit(minutes);
-				time += minutes + ':';
-			}
-			let seconds = Math.floor(currentTime.value) % 60;
-			seconds = ifMinAddDigit(seconds);
-			return time + seconds;
-		})
+    let formatedTime = computed(() => {
+      let time = "";
+      if (currentTime.value == undefined) currentTime.value = 0;
+      if (showHours) {
+        let hours = Math.trunc((Math.floor(currentTime.value) / 60 / 60) % 60);
+        hours = ifMinAddDigit(hours);
+        time = hours + ':';
+      }
+      if (showMinutes) {
+        let minutes = Math.trunc((Math.floor(currentTime.value) / 60) % 60);
+        minutes = ifMinAddDigit(minutes);
+        time += minutes + ':';
+      }
+      let seconds = Math.floor(currentTime.value) % 60;
+      seconds = ifMinAddDigit(seconds);
+      return time + seconds;
+    })
 
-		let playButtonMode = computed(() => {
-			return playerState.value == playerStates.PAUSED || 
-				playerState.value == playerStates.UNSTARTED || 
-				playerState.value == playerStates.ENDED;
-		})
+    let playButtonMode = computed(() => {
+      return playerState.value == playerStates.PAUSED || 
+        playerState.value == playerStates.UNSTARTED || 
+        playerState.value == playerStates.ENDED;
+    })
 
-		// METHODS
+    // METHODS
 
-		onMounted(() => {
-			setPlayerHeight(playerRef.value.clientHeight);
-		})
+    onMounted(() => {
+      setPlayerHeight(playerRef.value.clientHeight);
+    })
 
-		function handleClickPlay() {
-			if (!currentVideo.value.resourceId) return;
-			play();
-		}
+    function handleClickPlay() {
+      if (!currentVideo.value.resourceId) return;
+      play();
+    }
 
-		function handleClickPause() {
-			pause();
-		}
+    function handleClickPause() {
+      pause();
+    }
 
-		function handleYoutubeWindowClick() {
-			setYoutubeWindow(3);
-		}
+    function handleYoutubeWindowClick() {
+      setYoutubeWindow(3);
+    }
 
-		function handleClickProgress(ev) {
-			if (!currentVideo.value) return;
-			let w = ev.target.clientWidth;
-			let seconds = ((ev.x - ev.target.offsetLeft)/w) * duration.value;
-			seekTo(seconds);
-		}
+    function handleClickProgress(ev) {
+      if (!currentVideo.value) return;
+      let w = ev.target.clientWidth;
+      let seconds = ((ev.x - ev.target.offsetLeft)/w) * duration.value;
+      seekTo(seconds);
+    }
 
-		function handleWheel(ev) {
-			let i = volume.value + ev.deltaY/200 * -1 * 5;
-			setVolume(i > 100 ? 100 : i < 0 ? 0 : i);
-		}
+    function handleWheel(ev) {
+      let i = volume.value + ev.deltaY/200 * -1 * 5;
+      setVolume(i > 100 ? 100 : i < 0 ? 0 : i);
+    }
 
-		function handleClickPlayMode() {
-			playMode.value++;
-			if (playMode.value > 3) {
-				playMode.value = 1;
-			}
-		}
+    function handleClickPlayMode() {
+      playMode.value++;
+      if (playMode.value > 3) {
+        playMode.value = 1;
+      }
+    }
 
-		function handleProgressMouseMove(ev) {
-			let seconds = Math.floor(((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value);
-			progressEl.value.tippyProgress.setContent(
-				ifMinAddDigit(Math.trunc(seconds/60/60)%60) + ':' + 
-				ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + 
-				ifMinAddDigit(Math.trunc(seconds%60))
-			);
-		}
+    function handleProgressMouseMove(ev) {
+      let seconds = Math.floor(((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value);
+      progressEl.value.tippyProgress.setContent(
+        ifMinAddDigit(Math.trunc(seconds/60/60)%60) + ':' + 
+        ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + 
+        ifMinAddDigit(Math.trunc(seconds%60))
+      );
+    }
 
-		function handleClickVolume(ev) {
-			let w = ev.target.clientWidth;
-			let volume = ((ev.x - ev.target.offsetLeft)/w) * 100;
-			setVolume(volume);
-		}
+    function handleClickVolume(ev) {
+      let w = ev.target.clientWidth;
+      let volume = ((ev.x - ev.target.offsetLeft)/w) * 100;
+      setVolume(volume);
+    }
 
-		function handleClickVolumeIcon() {
-			toggleMute();
-		}
+    function handleClickVolumeIcon() {
+      toggleMute();
+    }
 
-		function handleClickPrevious() {
-			if (currentTime.value > 5 || playMode.value == 3) {
-				seekTo(0);
-			}
-			else {
-				let video = prev();
-				loadVideo(video);
-				play();
-			}
-		}
+    function handleClickPrevious() {
+      if (currentTime.value > 5 || playMode.value == 3) {
+        seekTo(0);
+      }
+      else {
+        let video = prev();
+        loadVideo(video);
+        play();
+      }
+    }
 
-		function handleClickNext() {
-			let video = next();
-			loadVideo(video);
-			play();
-		}
+    function handleClickNext() {
+      let video = next();
+      loadVideo(video);
+      play();
+    }
 
-		function tippyVideoDescriptionContent () {
-			return currentVideo.value.description ? 
-				currentVideo.value.description.replace(/(?:\r\n|\r|\n)/g, '<br>') : 
-				'No description'
-		}
-		
+    function tippyVideoDescriptionContent () {
+      return currentVideo.value.description ? 
+        currentVideo.value.description.replace(/(?:\r\n|\r|\n)/g, '<br>') : 
+        'No description'
+    }
+    
 
-		function scrollToCurrentVideo() {
-			currentVideo.value.el.scrollIntoView({ block: "center" });
-		}
+    function scrollToCurrentVideo() {
+      currentVideo.value.el.scrollIntoView({ block: "center" });
+    }
 
-		return {
-			playerRef,
-			progressEl,
-			currentVideo,
-			currentTime,
-			formatedTime,
-			durationTime,
-			duration,
-			volume,
-			isMuted,
-			playerStates,
-			playerPlaymodes,
-			playerState,
-			playerWindowState,
-			playButtonMode,
-			playMode,
-			handleClickPlay,
-			handleClickPause,
-			handleYoutubeWindowClick,
-			handleClickProgress,
-			handleWheel,
-			handleClickVolume,
-			handleClickVolumeIcon,
-			handleClickPlayMode,
-			handleProgressMouseMove,
-			handleClickPrevious,
-			handleClickNext,
-			tippyVideoDescriptionContent,
-			scrollToCurrentVideo,
-			showComments,
-			setComments,
-		}
-	}
+    return {
+      playerRef,
+      progressEl,
+      currentVideo,
+      currentTime,
+      formatedTime,
+      durationTime,
+      duration,
+      volume,
+      isMuted,
+      playerStates,
+      playerPlaymodes,
+      playerState,
+      playerWindowState,
+      playButtonMode,
+      playMode,
+      handleClickPlay,
+      handleClickPause,
+      handleYoutubeWindowClick,
+      handleClickProgress,
+      handleWheel,
+      handleClickVolume,
+      handleClickVolumeIcon,
+      handleClickPlayMode,
+      handleProgressMouseMove,
+      handleClickPrevious,
+      handleClickNext,
+      tippyVideoDescriptionContent,
+      scrollToCurrentVideo,
+      showComments,
+      setComments,
+    }
+  }
 }
 </script>
 
 <style scoped>
 .player {
-	position: fixed;
-	bottom: 0px;
-	-webkit-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
-	-moz-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
-	box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+	background-color: var(--background-player);
+  -webkit-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
+  -moz-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
+  box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
+	z-index: 1020;
 }
 .timer {
-	font-size: 1.55em;
+  font-size: 1.55em;
 }
 .video-title:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
 .mdi-player-icon-title:before {
-	font-size: 1.4em;
-	line-height: normal;
+  font-size: 1.4em;
+  line-height: normal;
 }
 .mdi-player-icon:before {
-	font-size: 2.2em;
-	line-height: normal;
+  font-size: 2.2em;
+  line-height: normal;
 }
 .mdi-player-icon-mini:before {
-	font-size: 2em;
-	line-height: normal;
+  font-size: 2em;
+  line-height: normal;
 }
 .mdi-player-icon-play:before {
-	font-size: 36px;
-	line-height: normal;
+  font-size: 36px;
+  line-height: normal;
 }
 .progress {
-	height: 0.4rem !important;
-	cursor: pointer;
+  height: 0.4rem !important;
+  cursor: pointer;
 }
 .progress-bar {
-	transition: none;
+  transition: none;
 }
 .video-title {
-	font-size: 1em;
+  font-size: 1em;
 }
 
 .fade-enter-active, .fade-leave-active {

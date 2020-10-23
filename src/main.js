@@ -25,6 +25,8 @@ const applyMaxSize = {
 
 let app = createApp(App);
 
+// DIRECTIVE
+
 app.directive('tippy', {
 	mounted: function(el, binding) {
 		let placement = binding.modifiers.right ? 'right' :

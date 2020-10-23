@@ -1,6 +1,11 @@
 <template>
 	<transition name="fade">
-		<div v-if="playerWindowState == 2" class="backdrop" :style="{ opacity: overlayOpacity/100 }"></div>
+    <div 
+      v-if="playerWindowState == 2" 
+      class="backdrop" 
+      :style="{ opacity: (100-overlayOpacity)/100 }"
+    >
+    </div>
 	</transition>
 
 	<AddPlaylist />
@@ -33,10 +38,10 @@ import { ref, computed, onMounted } from 'vue'
 import AddPlaylist from './AddPlaylist.vue'
 import YoutubePlaylist from './YoutubePlaylist.vue'
 import YoutubeSearch from './YoutubeSearch.vue'
-import useYoutube from '../use-youtube.js'
-import useYoutubePlayer from '../use-youtube-player.js'
+import useYoutube from '../use-youtube'
+import useYoutubePlayer from '../use-youtube-player'
 import YoutubeComments from './YoutubeComments.vue'
-import useUI from '../use-UI.js'
+import useUI from '../use-UI'
 
 export default {
 	components: {
@@ -114,7 +119,7 @@ export default {
     height: 100%;
     background: #000000;
 		pointer-events: none;
-		z-index: 5000;
+		z-index: 1000;
 }
 
 .search {

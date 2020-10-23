@@ -29,9 +29,9 @@
 
 <script>
 import { ref, computed, onMounted, watchEffect, watch } from 'vue'
-import useYoutube from '../use-youtube.js'
-import useYoutubePlayer from '../use-youtube-player.js'
-import useUI from '../use-UI.js'
+import useYoutube from '../use-youtube'
+import useYoutubePlayer from '../use-youtube-player'
+import useUI from '../use-UI'
 
 export default {
 	props: {
@@ -104,7 +104,7 @@ export default {
 	bottom: 100px;
 	color: var(--text-color);
 	background-color: var(--background);
-	z-index: 6500;
+	z-index: 1020;
 }
 .comments::-webkit-scrollbar-track {
 	background-color: var(--scroll-track);

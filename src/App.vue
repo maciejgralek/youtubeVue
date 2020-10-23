@@ -13,7 +13,7 @@
 <script>
 import Navbar from './components/Navbar.vue'
 import Player from './components/Player.vue'
-import useKey from './use-key.js'
+import useKey from './use-key'
 
 export default {
 	components: {
@@ -50,6 +50,7 @@ $dark-d-6: darken($dark, 6);
 	--input-background-color-light:   #ffffff;
 	--input-color-light:              #495057;
 	--input-border-color-light:       #ced4da;
+  --modal-content-bg-light:         #{$light};
 
 	// dark
 
@@ -63,6 +64,7 @@ $dark-d-6: darken($dark, 6);
 	--input-background-color-dark:   #{$dark-d-3};
 	--input-color-dark:              #{light-d-3};
 	--input-border-color-dark:       #{$dark-l-10};
+  --modal-content-bg-dark:         #{$dark};
 
 	// theme
 
@@ -77,6 +79,7 @@ $dark-d-6: darken($dark, 6);
 	--input-background-color:   var(--input-background-color-light);
 	--input-color:              var(--input-color-light);
 	--input-border-color:       var(--input-border-color-light);
+  --modal-content-bg:         var(--modal-content-bg-light);
 }
 
 body {
@@ -96,6 +99,8 @@ i {
 	color: var(--icon-color);
 }
 
+// TIPPY
+
 div[data-tippy-root] {
 	overflow-y: auto;
 }
@@ -108,8 +113,10 @@ div[data-tippy-root]::-webkit-scrollbar {
 	text-overflow: ellipsis;
 }
 
+// DROPDOWN
+
 .dropdown-menu {
-	z-index: 9000;
+	z-index: 1045;
 }
 
 .dropdown-menu .list-group-item {
@@ -122,15 +129,8 @@ div[data-tippy-root]::-webkit-scrollbar {
 
 // PLAYER
 
-.player {
-	background-color: var(--background-player);
-	z-index: 6500;
-}
-
 #video-player {
 	position: fixed;
-	right: 10px;
-	bottom: 96px;
-	z-index: 6000;
+	z-index: 1010;
 }
 </style>

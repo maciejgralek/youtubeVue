@@ -29,16 +29,16 @@
             v-for="(item, index) in playlist.filteredItems" 
             :ref="el => { playlist.items.length && (playlist.items[index].snippet.el = el) }"
             @click="handleClickPlaylistItem(item)" 
-            class="playlist-item text-truncate p-1" 
-            :class="classListPlaylistItem(item)"
             :key="item.id"
+            :class="classListPlaylistItem(item)"
+            class="playlist-item text-truncate p-1" 
           >
             <img 
               :src="srcThumbnail(item)" 
-              class="pr-2" 
               :width="thumbnailWidth"
               :height="thumbnailHeight"
               alt=""
+              class="pr-2" 
             >
             {{ item.snippet.title }}
           </li>
@@ -50,10 +50,10 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import PlaylistDropdown from './PlaylistDropdown.vue'
-import useYoutube from '../use-youtube.js'
+import useYoutube from '../use-youtube'
 import useYoutubePlayer from '../use-youtube-player'
-import useUI from '../use-UI.js'
-import useStore from '../use-store.js'
+import useUI from '../use-UI'
+import useStore from '../use-store'
 
 export default {
   components: {

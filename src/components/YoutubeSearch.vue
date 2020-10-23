@@ -46,10 +46,10 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import useYoutube from '../use-youtube.js'
-import useYoutubePlayer from '../use-youtube-player.js'
-import useUI from '../use-UI.js'
-import useStore from '../use-store.js'
+import useYoutube from '../use-youtube'
+import useYoutubePlayer from '../use-youtube-player'
+import useUI from '../use-UI'
+import useStore from '../use-store'
 
 export default {
 	props: {
