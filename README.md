@@ -1,5 +1,5 @@
 # youtube-vue
 
-Youtube Vue is app for listening and searching based on multiple playlists.
+Youtube Vue is an application for listening, searching and displaying multiple playlists, using Youtube API 3.
 
-Vue 3 Composition API
+Build with: Vue 3 (Composition API) and Bootstrap
