@@ -163,7 +163,7 @@ export default {
 
 <style scoped lang="scss">
 @import '../theme.scss';
-@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'bootstrap/scss/bootstrap.scss';
 
 .playlist {
   max-height: 70vh;
@@ -195,6 +195,8 @@ export default {
   background-color: var(--scroll-thumb);
 }
 
+// MDI
+
 .mdi-dropdown-icon:before {
   font-size: 1.2em;
   line-height: normal;
@@ -202,6 +204,8 @@ export default {
 .mdi-icon-playlist:before {
   color: orange;
 }
+
+// TRANSITION
 
 .list-enter-active {
   transition: all .3s ease;

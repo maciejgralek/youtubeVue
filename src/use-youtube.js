@@ -3,7 +3,6 @@ import axios from 'axios'
 import { createUrl } from './tools.js'
 import useStore from './use-store.js'
 
-// let googleApiRemote = 'http://localhost:3000/youtubevue/'
 let googleApiRemote = 'https://youtube-vue-server.herokuapp.com/youtubevue/'
 
 let playlists = ref([]);
@@ -13,6 +12,7 @@ let comments = ref([]);
 let commentsNextPageToken = null;
 let searchNextPageToken = null;
 let searchLast = "";
+let regexpTime = /[0-9]?[0-9]?:?[0-9]?[0-9]:[0-9][0-9]/ig;
 
 let state = useStore();
 
@@ -41,17 +41,16 @@ async function getPlaylistRemote(playlist, nextPage) {
 
 	let res = await axios.get(queryUrl);
 
-	let regexp = /[0-9]?[0-9]?:?[0-9]?[0-9]:[0-9][0-9]/ig;
 	for(let video of res.data.items) {
 		video.snippet.el = ref(null);
 		video.snippet.description = video.snippet.description.replace(
-			regexp, match => {
-				return '<a href="">' + match + '</a>';
-			});
+      regexpTime, match => {
+        return '<a href="">' + match + '</a>';
+      });
 	}
 
-	playlist.items = playlist.items.concat(res.data.items.filter(item => 
-		item.snippet.title != "Private video"
+	playlist.items = playlist.items.concat(res.data.items.filter(
+	  item => item.snippet.title != "Private video"
 	));
 	playlist.filteredItems = filterPlaylistItems(playlist.items);
 
@@ -62,9 +61,9 @@ async function _getPlaylistPropertiesRemote(playlist) {
 	let query = {
 		id: playlist.id,
 	}
-	let queryUrl = createUrl(googleApiRemote + 'playlists?', query);
+  let queryUrl = createUrl(googleApiRemote + 'playlists?', query);
 
-	let res = await axios.get(queryUrl);
+  let res = await axios.get(queryUrl);
 
 	playlist.title = res.data.items[0].snippet.title;
 }
@@ -125,7 +124,7 @@ async function searchRemote(value, nextPage) {
 	let res = await axios.get(queryUrl);
 	if (nextPage) {
 		searchRes.value = searchRes.value.concat(
-			res.data.items.filter(item => item.id.kind == "youtube#video")
+      res.data.items.filter(item => item.id.kind == "youtube#video")
 		);
 	}
 	else {

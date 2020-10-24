@@ -135,7 +135,7 @@ function getTime() {
 
 function prev() {
 	if (playMode.value == playerPlaymodes.NEXT) {
-		let index = findVideoIndex(currentPlaylist.value, currentVideo.value);
+    let index = findVideoIndex(currentPlaylist.value, currentVideo.value);
 		if (index < 0) {
 			index = 0;
 		}

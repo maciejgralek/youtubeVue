@@ -28,14 +28,8 @@ export default {
 
 <style lang="scss">
 @import './theme.scss';
-@import '../node_modules/bootstrap/scss/bootstrap.scss';
-
-$light-d-3: darken($light, 3);
-$light-d-6: darken($light, 6);
-$dark-d-3: darken($dark, 3);
-$dark-l-2: lighten($dark, 2);
-$dark-l-10: lighten($dark, 10);
-$dark-d-6: darken($dark, 6);
+@import 'bootstrap/scss/bootstrap.scss';
+@import './variables.scss';
 
 :root {
 	// light
@@ -121,10 +115,6 @@ div[data-tippy-root]::-webkit-scrollbar {
 
 .dropdown-menu .list-group-item {
 	background-color: var(--input-background-color) !important;
-}
-
-.bg-dark-l10 {
-	background-color: lighten($dark, 10);
 }
 
 // PLAYER
