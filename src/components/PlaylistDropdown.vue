@@ -1,73 +1,73 @@
 <template>
-	<div class="dropdown">
-		<i class="mdi mdi-dots-vertical" style="font-size: 1.45em" data-toggle="dropdown"></i>
-		<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-			<li>
-				<a @click.prevent="emit('close-playlist')" class="dropdown-item d-flex align-items-center" href="#">
-					<i class="mdi mdi-close mdi-dropdown-icon pr-1"></i>
-					Close playlist
-				</a>
-			</li>
-			<li><hr class="dropdown-divider"></li>
-			<li>
-				<a @click.prevent="emit('reload-playlist')" class="dropdown-item d-flex align-items-center" href="#">
-					<i class="mdi mdi-reload mdi-dropdown-icon pr-1"></i>
-					Reload playlist
-				</a>
-			</li>
-			<li><hr class="dropdown-divider"></li>
-			<li v-if="!playlist.local">
-				<a @click.prevent="emit('save-playlist')" class="dropdown-item d-flex align-items-center" href="#">
-					<i class="mdi mdi-star mdi-dropdown-icon pr-1"></i>
-					Save playlist
-				</a>
-			</li>
-			<li v-else>
-				<a @click.prevent="emit('delete-playlist')" class="dropdown-item d-flex align-items-center" href="#">
-					<i class="mdi mdi-star-outline mdi-dropdown-icon pr-1"></i>
-					Delete playlist
-				</a>
-			</li>
-			<li ><hr class="dropdown-divider"></li>
-			<li v-show="playlist.local">
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<i class="mdi mdi-chevron-right mdi-dropdown-icon pr-1"></i>
-					Move to right
-				</a>
-			</li>
-			<li v-show="playlist.local">
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<i class="mdi mdi-chevron-left mdi-dropdown-icon pr-1"></i>
-					Move to left
-				</a>
-			</li>
-			<li v-show="playlist.local"><hr class="dropdown-divider"></li>
-			<li>
-				<a class="dropdown-item d-flex align-items-center" href="#">
-					<i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
-					Open in youtube
-				</a>
-			</li>
-			<li>
-				<a @click.prevent="emit('edit-in-youtube')" class="dropdown-item d-flex align-items-center" href="#">
-					<i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
-					Edit in youtube
-				</a>
-			</li>
-		</ul>
-	</div>
+  <div class="dropdown">
+    <i class="mdi mdi-dots-vertical" style="font-size: 1.45em" data-toggle="dropdown"></i>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+      <li>
+        <a @click.prevent="emit('close-playlist')" class="dropdown-item d-flex align-items-center" href="#">
+          <i class="mdi mdi-close mdi-dropdown-icon pr-1"></i>
+          Close playlist
+        </a>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+      <li>
+        <a @click.prevent="emit('reload-playlist')" class="dropdown-item d-flex align-items-center" href="#">
+          <i class="mdi mdi-reload mdi-dropdown-icon pr-1"></i>
+          Reload playlist
+        </a>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+      <li v-if="!playlist.local">
+        <a @click.prevent="emit('save-playlist')" class="dropdown-item d-flex align-items-center" href="#">
+          <i class="mdi mdi-star mdi-dropdown-icon pr-1"></i>
+          Save playlist
+        </a>
+      </li>
+      <li v-else>
+        <a @click.prevent="emit('delete-playlist')" class="dropdown-item d-flex align-items-center" href="#">
+          <i class="mdi mdi-star-outline mdi-dropdown-icon pr-1"></i>
+          Delete playlist
+        </a>
+      </li>
+      <li ><hr class="dropdown-divider"></li>
+      <li v-show="playlist.local">
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="mdi mdi-chevron-right mdi-dropdown-icon pr-1"></i>
+          Move to right
+        </a>
+      </li>
+      <li v-show="playlist.local">
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="mdi mdi-chevron-left mdi-dropdown-icon pr-1"></i>
+          Move to left
+        </a>
+      </li>
+      <li v-show="playlist.local"><hr class="dropdown-divider"></li>
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
+          Open in youtube
+        </a>
+      </li>
+      <li>
+        <a @click.prevent="emit('edit-in-youtube')" class="dropdown-item d-flex align-items-center" href="#">
+          <i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
+          Edit in youtube
+        </a>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
 export default {
-	props: {
-		playlist: Object,
-	},
-	setup(props, { emit }) {
-		return {
-			emit,
-		}
-	}
+  props: {
+    playlist: Object,
+  },
+  setup(props, { emit }) {
+    return {
+      emit,
+    }
+  }
 }
 </script>
 

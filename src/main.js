@@ -28,48 +28,48 @@ let app = createApp(App);
 // DIRECTIVE
 
 app.directive('tippy', {
-	mounted: function(el, binding) {
-		let placement = binding.modifiers.right ? 'right' :
-			binding.modifiers.left ? 'left' :
-			binding.modifiers.top ? 'top' :
-			binding.modifiers.bottom ? 'bottom' : 'top';
+  mounted: function(el, binding) {
+    let placement = binding.modifiers.right ? 'right' :
+      binding.modifiers.left ? 'left' :
+      binding.modifiers.top ? 'top' :
+      binding.modifiers.bottom ? 'bottom' : 'top';
 
-		tippy(el, {
-			content: binding.value,
-			arrow: false,
-			offset: [0, 20],
-		});	
-	},
+    tippy(el, {
+      content: binding.value,
+      arrow: false,
+      offset: [0, 20],
+    }); 
+  },
 })
 
 app.directive('tippy-player', {
-	mounted: function(el, binding) {
-		tippy(el, {
-			allowHTML: true,
-			interactive: true,
-			arrow: false,
-			appendTo: () => document.body,
-			popperOptions: {
-				modifiers: [
-					maxSize,
-					applyMaxSize,
-				],
-			},
-			maxWidth: 700,
-			content: binding.value,
-		});	
-	},
+  mounted: function(el, binding) {
+    tippy(el, {
+      allowHTML: true,
+      interactive: true,
+      arrow: false,
+      appendTo: () => document.body,
+      popperOptions: {
+        modifiers: [
+          maxSize,
+          applyMaxSize,
+        ],
+      },
+      maxWidth: 700,
+      content: binding.value,
+    }); 
+  },
 })
 
 app.directive('tippy-progress', {
-	mounted: function(el, binding) {
-		el.tippyProgress = tippy(el, {
-			followCursor: 'horizontal',
-			hideOnClick: false,
-			plugins: [followCursor],
-			content: binding.value,
-		});	
-	},
+  mounted: function(el, binding) {
+    el.tippyProgress = tippy(el, {
+      followCursor: 'horizontal',
+      hideOnClick: false,
+      plugins: [followCursor],
+      content: binding.value,
+    }); 
+  },
 })
 
 app.directive('scroll', {

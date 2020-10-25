@@ -3,11 +3,11 @@ import Youtube from '../components/Youtube.vue'
 
 const routes = [
 {
-	path: '/',
+  path: '/',
   component: Youtube,
 },
 {
-	path: '/playlist/:params',
+  path: '/playlist/:params',
   component: Youtube,
   props: true,
 },

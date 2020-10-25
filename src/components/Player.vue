@@ -9,16 +9,18 @@
       <!-- PLAY -->
 
       <div class="col-auto border-right border-secondary pr-1">
-        <i 
-          v-if="playButtonMode" 
-          @click="handleClickPlay" 
-          class="mdi mdi-play mdi-player-icon-play" 
-        ></i>
-        <i 
-          v-else 
-          @click="handleClickPause" 
-          class="mdi mdi-pause mdi-player-icon-play"
-        ></i>
+        <transition name="fade-fast" mode="out-in">
+          <i 
+            v-if="playButtonMode" 
+            @click="handleClickPlay" 
+            class="mdi mdi-play mdi-player-icon-play" 
+          ></i>
+          <i 
+            v-else 
+            @click="handleClickPause" 
+            class="mdi mdi-pause mdi-player-icon-play"
+          ></i>
+        </transition>
       </div>
 
       <!-- TIMER -->
@@ -48,26 +50,31 @@
           v-tippy="'Next'"
           class="mdi mdi-skip-next mdi-player-icon-play"
         ></i>
-        <i 
-          v-if="playMode == playerPlaymodes.NEXT" 
-          @click="handleClickPlayMode" 
-          v-tippy="'Next'"
-          class="mdi mdi-shuffle-disabled mdi-player-icon"
-        ></i>
-        <i 
-          v-else-if="playMode == playerPlaymodes.SHUFFLE" 
-          @click="handleClickPlayMode" 
-          v-tippy="'Shuffle'"
-          class="mdi mdi-shuffle mdi-player-icon"
-        ></i>
-        <i 
-          v-if="playMode == playerPlaymodes.REPEAT"
-          @click="handleClickPlayMode" 
-          v-tippy="'Repeat'"
-          class="mdi mdi-repeat mdi-player-icon"
-        ></i>
+        <transition name="fade-fast" mode="out-in">
+          <i 
+            v-if="playMode == playerPlaymodes.NEXT" 
+            @click="handleClickPlayMode" 
+            key="next"
+            v-tippy="'Next'"
+            class="mdi mdi-shuffle-disabled mdi-player-icon"
+          ></i>
+          <i 
+            v-else-if="playMode == playerPlaymodes.SHUFFLE" 
+            @click="handleClickPlayMode" 
+            key="shuffle"
+            v-tippy="'Shuffle'"
+            class="mdi mdi-shuffle mdi-player-icon"
+          ></i>
+          <i 
+            v-else-if="playMode == playerPlaymodes.REPEAT"
+            @click="handleClickPlayMode" 
+            key="repeat"
+            v-tippy="'Repeat'"
+            class="mdi mdi-repeat mdi-player-icon"
+          ></i>
+        </transition>
       </div>
-      
+
       <!-- TITLE -->
 
       <div class="col-auto">
@@ -78,29 +85,31 @@
             :key="currentVideo.title" 
             class="video-title font-weight-bold mx-3"
           >
-              {{ currentVideo.title }}
-            </span>
+            {{ currentVideo.title }}
+          </span>
         </transition>
       </div>
 
       <!-- VOLUME -->
 
       <div class="col-auto ml-auto pr-0">
-        <i 
-          v-if="volume > 50 && !isMuted" 
-          @click="handleClickVolumeIcon" 
-          class="mdi mdi-volume-high mdi-player-icon"
-        ></i>
-        <i 
-          v-else-if="volume <= 50 && volume > 0 && !isMuted" 
-          @click="handleClickVolumeIcon" 
-          class="mdi mdi-volume-medium mdi-player-icon"
-        ></i>
-        <i 
-          v-else-if="volume == 0 || isMuted" 
-          @click="handleClickVolumeIcon" 
-          class="mdi mdi-volume-off mdi-player-icon"
-        ></i>
+        <transition name="fade-fast" mode="out-in">
+          <i 
+            v-if="volume > 50 && !isMuted" 
+            @click="handleClickVolumeIcon" 
+            class="mdi mdi-volume-high mdi-player-icon"
+          ></i>
+          <i 
+            v-else-if="volume <= 50 && volume > 0 && !isMuted" 
+            @click="handleClickVolumeIcon" 
+            class="mdi mdi-volume-medium mdi-player-icon"
+          ></i>
+          <i 
+            v-else-if="volume == 0 || isMuted" 
+            @click="handleClickVolumeIcon" 
+            class="mdi mdi-volume-off mdi-player-icon"
+          ></i>
+        </transition>
       </div>
       <div class="col-auto">
         <div 
@@ -152,7 +161,7 @@
 
     <div class="row">
       <div class="col mx-1">
-        <div ref="progressEl" @mousemove="handleProgressMouseMove" @click="handleClickProgress" v-tippy-progress="" class="progress bg-secondary mt-2 mb-1">
+        <div ref="progressRef" @mousemove="handleProgressMouseMove" @click="handleClickProgress" v-tippy-progress="" class="progress bg-secondary mt-2 mb-1">
           <div 
             class="progress-bar bg-danger" 
             role="progressbar" 
@@ -184,7 +193,7 @@ export default {
     // DATA
 
     let playerRef = ref(null);
-    let progressEl = ref(null);
+    let progressRef = ref(null);
 
     // COMPOSITION
 
@@ -306,7 +315,7 @@ export default {
 
     function handleProgressMouseMove(ev) {
       let seconds = Math.floor(((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value);
-      progressEl.value.tippyProgress.setContent(
+      progressRef.value.tippyProgress.setContent(
         ifMinAddDigit(Math.trunc(seconds/60/60)%60) + ':' + 
         ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + 
         ifMinAddDigit(Math.trunc(seconds%60))
@@ -353,7 +362,7 @@ export default {
 
     return {
       playerRef,
-      progressEl,
+      progressRef,
       currentVideo,
       currentTime,
       formatedTime,
@@ -392,18 +401,31 @@ export default {
   position: fixed;
   bottom: 0px;
   width: 100%;
-	background-color: var(--background-player);
+  background-color: var(--background-player);
   -webkit-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
   -moz-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
   box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
-	z-index: 1020;
+  z-index: 1020;
 }
 .timer {
   font-size: 1.55em;
 }
+.video-title {
+  font-size: 1em;
+}
 .video-title:hover {
   cursor: pointer;
 }
+.progress {
+  height: 0.4rem !important;
+  cursor: pointer;
+}
+.progress-bar {
+  transition: none;
+}
+
+/* MDI */
+
 .mdi-player-icon-title:before {
   font-size: 1.4em;
   line-height: normal;
@@ -420,21 +442,20 @@ export default {
   font-size: 36px;
   line-height: normal;
 }
-.progress {
-  height: 0.4rem !important;
-  cursor: pointer;
-}
-.progress-bar {
-  transition: none;
-}
-.video-title {
-  font-size: 1em;
-}
+
+/* TRANSITION */
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s;
 }
-.fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+.fade-fast-enter-active, .fade-fast-leave-active {
+  transition: opacity .05s;
+}
+.fade-fast-enter-from, .fade-fast-leave-to {
   opacity: 0;
 }
 </style>

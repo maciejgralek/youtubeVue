@@ -1,36 +1,36 @@
 <template>
-	<transition name="fade">
+  <transition name="fade">
     <div 
       v-if="playerWindowState == 2" 
       class="backdrop" 
       :style="{ opacity: (100-overlayOpacity)/100 }"
     >
     </div>
-	</transition>
+  </transition>
 
-	<AddPlaylist />
+  <AddPlaylist />
 
-	<div class="row g-4 pt-1" :class="'row-cols-lg-' + columns">
-		<div v-if="searchRes.length" class="col search">
-			<YoutubeSearch :items="searchRes" />
-		</div>
+  <div class="row g-4 pt-1" :class="'row-cols-lg-' + columns">
+    <div v-if="searchRes.length" class="col search">
+      <YoutubeSearch :items="searchRes" />
+    </div>
 
-		<div 
-			v-for="(playlist, index) in playlists" 
-			class="col text-left playlist"
-		>
-			<YoutubePlaylist :playlist="playlist" :playlistId="playlist.id"/>
-		</div>
-	</div>
+    <div 
+      v-for="(playlist, index) in playlists" 
+      class="col text-left playlist"
+    >
+      <YoutubePlaylist :playlist="playlist" :playlistId="playlist.id"/>
+    </div>
+  </div>
 
-	<transition name="fade-comment" mode="out-in">
-		<YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
-	</transition>
+  <transition name="fade-comment" mode="out-in">
+    <YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
+  </transition>
 
-	<div 
-		:style="{'min-height': playerHeight + 20 + (showComments && showCommentsPause ? 150 : 0) + 'px'}"
-	>
-	</div>
+  <div 
+    :style="{'min-height': playerHeight + 20 + (showComments && showCommentsPause ? 150 : 0) + 'px'}"
+  >
+  </div>
 </template>
 
 <script>
@@ -44,69 +44,69 @@ import YoutubeComments from './YoutubeComments.vue'
 import useUI from '../use-UI'
 
 export default {
-	components: {
-		AddPlaylist,
-		YoutubePlaylist,
-		YoutubeSearch,
-		YoutubeComments,
-	},
-	props: {
-		params: String,
-	},
-	setup(props) {
+  components: {
+    AddPlaylist,
+    YoutubePlaylist,
+    YoutubeSearch,
+    YoutubeComments,
+  },
+  props: {
+    params: String,
+  },
+  setup(props) {
 
-		// DATA
+    // DATA
 
-		let columns = ref(3);
-		let playlistRequest = null;
+    let columns = ref(3);
+    let playlistRequest = null;
 
-		if (props.params) {
-			playlistRequest = props.params.split(',');
-		}
+    if (props.params) {
+      playlistRequest = props.params.split(',');
+    }
 
-		// COMPOSITION
+    // COMPOSITION
 
-		let { 
-			playlists, 
-			loadPlaylists,
-			addUrlPlaylists,
-			addSavedPlaylists,
-			searchRes,
-			comments,
-		} = useYoutube();
+    let { 
+      playlists, 
+      loadPlaylists,
+      addUrlPlaylists,
+      addSavedPlaylists,
+      searchRes,
+      comments,
+    } = useYoutube();
 
-		let {
-			playerWindowState,
-		} = useYoutubePlayer();
+    let {
+      playerWindowState,
+    } = useYoutubePlayer();
 
-		let {
-			showComments,
-			showCommentsPause,
-			playerHeight,
-			overlayOpacity,
-		} = useUI();
+    let {
+      showComments,
+      showCommentsPause,
+      playerHeight,
+      overlayOpacity,
+    } = useUI();
 
-		// METHODS
+    // METHODS
 
-		onMounted(() => {
-			addSavedPlaylists();
-			if (playlistRequest) {
-				addUrlPlaylists(playlistRequest);
-			}
-		})
+    onMounted(() => {
+      addSavedPlaylists();
+      if (playlistRequest) {
+        addUrlPlaylists(playlistRequest);
+      }
+    })
 
-		return {
-			playlists,
-			columns,
-			searchRes,
-			playerWindowState,
-			comments,
-			showComments,
-			showCommentsPause,
-			playerHeight,
-			overlayOpacity,
-		}
-	}
+    return {
+      playlists,
+      columns,
+      searchRes,
+      playerWindowState,
+      comments,
+      showComments,
+      showCommentsPause,
+      playerHeight,
+      overlayOpacity,
+    }
+  }
 }
 </script>
 
@@ -115,23 +115,23 @@ export default {
     position: fixed;
     left: 0;
     top: 0;
-		width: 100%;
+    width: 100%;
     height: 100%;
     background: #000000;
-		pointer-events: none;
-		z-index: 1000;
+    pointer-events: none;
+    z-index: 1000;
 }
 
 .search {
-	border-right-width: 1px;
-	border-right-style: solid;
-	border-right-color: var(--border-color);
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: var(--border-color);
 }
 
 .playlist {
-	border-right-width: 1px;
-	border-right-style: solid;
-	border-right-color: var(--border-color);
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: var(--border-color);
 }
 
 .fade-enter-active, .fade-leave-active {

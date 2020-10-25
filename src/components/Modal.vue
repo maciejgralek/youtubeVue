@@ -28,13 +28,13 @@ import useUI from '../use-UI'
 import useStore from '../use-store'
 
 export default {
-	setup(props, { emit }) {
-	  let isModalOpen = ref(false);
-	  
-		return {
-		  
-		}
-	}
+  setup(props, { emit }) {
+    let isModalOpen = ref(false);
+    
+    return {
+      
+    }
+  }
 }
 </script>
 

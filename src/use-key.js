@@ -1,36 +1,36 @@
 import useYoutubePlayer from './use-youtube-player'
 
 export default function useKey() {
-	let { 
-		currentTime,
-		togglePlayPause,
-		seekTo,
-		setYoutubeWindow,
-		toggleMute,
-	} = useYoutubePlayer();
+  let { 
+    currentTime,
+    togglePlayPause,
+    seekTo,
+    setYoutubeWindow,
+    toggleMute,
+  } = useYoutubePlayer();
 
-	window.addEventListener('keydown', (ev) => {
-		if (document.activeElement.tagName == 'INPUT') return;
+  window.addEventListener('keydown', (ev) => {
+    if (document.activeElement.tagName == 'INPUT') return;
 
-		if (ev.key == ' ') {
-			togglePlayPause();
-			ev.preventDefault();
-		}
-		if (ev.key == 'ArrowRight') {
-			seekTo(currentTime.value + 5);
-			ev.preventDefault();
-		}
-		if (ev.key == 'ArrowLeft') {
-			seekTo(currentTime.value - 5);
-			ev.preventDefault();
-		}
-		if (ev.key == 'f') {
-			setYoutubeWindow(3);
-			ev.preventDefault();
-		}
-		if (ev.key == 'm') {
-			toggleMute();
-			ev.preventDefault();
-		}
-	})
+    if (ev.key == ' ') {
+      togglePlayPause();
+      ev.preventDefault();
+    }
+    if (ev.key == 'ArrowRight') {
+      seekTo(currentTime.value + 5);
+      ev.preventDefault();
+    }
+    if (ev.key == 'ArrowLeft') {
+      seekTo(currentTime.value - 5);
+      ev.preventDefault();
+    }
+    if (ev.key == 'f') {
+      setYoutubeWindow(3);
+      ev.preventDefault();
+    }
+    if (ev.key == 'm') {
+      toggleMute();
+      ev.preventDefault();
+    }
+  })
 }
