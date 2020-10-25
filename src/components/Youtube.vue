@@ -19,7 +19,7 @@
       v-for="(playlist, index) in playlists" 
       class="col text-left playlist"
     >
-      <YoutubePlaylist :playlist="playlist" :playlistId="playlist.id"/>
+      <YoutubePlaylist :playlist="playlist"/>
     </div>
   </div>
 
@@ -27,9 +27,7 @@
     <YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
   </transition>
 
-  <div 
-    :style="{'min-height': playerHeight + 20 + (showComments && showCommentsPause ? 150 : 0) + 'px'}"
-  >
+  <div :style="styleBottomMargin">
   </div>
 </template>
 
@@ -95,6 +93,12 @@ export default {
       }
     })
 
+    let styleBottomMargin = computed(() => {
+      return { 
+        'min-height': playerHeight + 20 + (showComments.value && showCommentsPause.value ? 150 : 0) + 'px' 
+      }
+    })
+
     return {
       playlists,
       columns,
@@ -105,6 +109,7 @@ export default {
       showCommentsPause,
       playerHeight,
       overlayOpacity,
+      styleBottomMargin,
     }
   }
 }
