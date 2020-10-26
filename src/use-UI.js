@@ -12,7 +12,7 @@ let showCommentsPause = ref(true);
 let thumbnailWidth = ref(compactMode ? _compactThumbnailWidth : _normalThumbnailWidth);
 let thumbnailHeight = ref(compactMode ? _compactThumbnailHeight : _normalThumbnailHeight);
 let currentTheme = ref(false);
-let overlayOpacity = ref(30);
+let overlayOpacity = ref(70);
 
 watch(currentTheme, () => {
   setTheme(currentTheme.value);
