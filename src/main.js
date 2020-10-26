@@ -67,7 +67,6 @@ app.directive('tippy-progress', {
       followCursor: 'horizontal',
       hideOnClick: false,
       plugins: [followCursor],
-      content: binding.value,
     }); 
   },
 })

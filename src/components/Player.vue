@@ -165,7 +165,7 @@
           ref="progressRef" 
           @click="handleClickProgress" 
           @mousemove="handleProgressMouseMove" 
-          v-tippy-progress="" 
+          v-tippy-progress 
           class="progress-container pt-2 pb-1"
         >
           <div class="progress bg-secondary">
