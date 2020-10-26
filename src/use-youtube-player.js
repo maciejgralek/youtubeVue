@@ -52,6 +52,10 @@ let {
   playerHeight,
 } = useUI();
 
+let playerEl = document.createElement('div');
+playerEl.setAttribute('id', 'video-player');
+document.body.append(playerEl);
+
 let player = YouTubePlayer('video-player', {
   width: _playerDefaultWidth,
   height: _playerDefaultHeight,

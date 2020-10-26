@@ -1,50 +1,50 @@
 <template>
-    <div class="playlist-header d-flex align-items-center w-100 pl-3 py-2 mb-1" >
-      <span class="font-weight-bold">
-        {{ playlist.title }} 
-        <span class="badge bg-secondary mx-1">
-          {{ playlist.items.length }}
-        </span>
-        <i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
+  <div class="playlist-header d-flex align-items-center w-100 pl-3 py-2 mb-1" >
+    <span class="font-weight-bold">
+      {{ playlist.title }} 
+      <span class="badge bg-secondary mx-1">
+        {{ playlist.items.length }}
       </span>
-      <div class="ml-auto">
-        <PlaylistDropdown 
-          :playlist="playlist"
-          @close-playlist="handleClosePlaylist"
-          @reload-playlist="handleReloadPlaylist"
-          @save-playlist="handleSavePlaylist"
-          @delete-playlist="handleDeletePlaylist"
-          @edit-in-youtube="handleEditInYoutube"
-        />
-      </div>
+      <i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
+    </span>
+    <div class="ml-auto">
+      <PlaylistDropdown 
+        :playlist="playlist"
+        @close-playlist="handleClosePlaylist"
+        @reload-playlist="handleReloadPlaylist"
+        @save-playlist="handleSavePlaylist"
+        @delete-playlist="handleDeletePlaylist"
+        @edit-in-youtube="handleEditInYoutube"
+      />
     </div>
+  </div>
 
-    <div v-scroll="handleScroll" class="playlist">
-      <div v-show="!playlist.filteredItems.length" class="p-3">
-        No items
-      </div>
-      <ul class="list-unstyled p-3">
-        <transition-group name="list" tag="p">
-          <li 
-            v-for="(item, index) in playlist.filteredItems" 
-            :ref="el => { playlist.items.length && (playlist.items[index].snippet.el = el) }"
-            @click="handleClickPlaylistItem(item)" 
-            :key="item.id"
-            :class="classListPlaylistItem(item)"
-            class="playlist-item text-truncate p-1" 
-          >
-            <img 
-              :src="srcThumbnail(item)" 
-              :width="thumbnailWidth"
-              :height="thumbnailHeight"
-              alt=""
-              class="pr-2" 
-            >
-            {{ item.snippet.title }}
-          </li>
-        </transition-group>
-      </ul>
+  <div v-scroll="handleScroll" class="playlist">
+    <div v-show="!playlist.filteredItems.length" class="p-3">
+      No items
     </div>
+    <ul class="list-unstyled p-3">
+      <transition-group name="list" tag="p">
+        <li 
+          v-for="(item, index) in playlist.filteredItems" 
+          :ref="el => { playlist.items.length && (playlist.items[index].snippet.el = el) }"
+          @click="handleClickPlaylistItem(item)" 
+          :key="item.id"
+          :class="classListPlaylistItem(item)"
+          class="playlist-item text-truncate p-1" 
+        >
+          <img 
+            :src="srcThumbnail(item)" 
+            :width="thumbnailWidth"
+            :height="thumbnailHeight"
+            alt=""
+            class="pr-2" 
+          >
+          {{ item.snippet.title }}
+        </li>
+      </transition-group>
+    </ul>
+  </div>
 </template>
 
 <script>

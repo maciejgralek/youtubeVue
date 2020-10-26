@@ -161,15 +161,23 @@
 
     <div class="row">
       <div class="col mx-1">
-        <div ref="progressRef" @mousemove="handleProgressMouseMove" @click="handleClickProgress" v-tippy-progress="" class="progress bg-secondary mt-2 mb-1">
-          <div 
-            class="progress-bar bg-danger" 
-            role="progressbar" 
-            style="pointer-events: none"
-            :style="{'width': (currentTime/duration) * 100 +'%'}" 
-            aria-valuenow="0" 
-            aria-valuemin="0" 
-            aria-valuemax="100">
+        <div 
+          ref="progressRef" 
+          @click="handleClickProgress" 
+          @mousemove="handleProgressMouseMove" 
+          v-tippy-progress="" 
+          class="progress-container pt-2 pb-1"
+        >
+          <div class="progress bg-secondary">
+            <div 
+              class="progress-bar bg-danger" 
+              role="progressbar" 
+              style="pointer-events: none"
+              :style="{'width': (currentTime/duration) * 100 +'%'}" 
+              aria-valuenow="0" 
+              aria-valuemin="0" 
+              aria-valuemax="100">
+            </div>
           </div>
         </div>
       </div>
@@ -414,6 +422,9 @@ export default {
   font-size: 1em;
 }
 .video-title:hover {
+  cursor: pointer;
+}
+.progress-container {
   cursor: pointer;
 }
 .progress {
