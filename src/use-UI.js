@@ -1,18 +1,19 @@
 import { ref, watch } from 'vue'
 import useStoreSettings from './use-store-settings'
 
-let playerHeight = ref(null);
-let compactMode = ref(true);
 let _compactThumbnailWidth = 55;
 let _compactThumbnailHeight = 30;
 let _normalThumbnailWidth = 80;
 let _normalThumbnailHeight = 50;
+let playerHeight = ref(null);
+let compactMode = ref(true);
 let showComments = ref(true);
-let showCommentsPause = ref(true);
+let showCommentsPause = ref(false);
 let thumbnailWidth = ref(compactMode ? _compactThumbnailWidth : _normalThumbnailWidth);
 let thumbnailHeight = ref(compactMode ? _compactThumbnailHeight : _normalThumbnailHeight);
 let currentTheme = ref(false);
 let overlayOpacity = ref(70);
+let commentsDuration = ref(6);
 
 watch(currentTheme, () => {
   setTheme(currentTheme.value);
@@ -24,7 +25,7 @@ watch(compactMode, () => {
 
 let {
   restoreSettings 
-} = useStoreSettings('UI', {currentTheme, compactMode, overlayOpacity});
+} = useStoreSettings('UI', {currentTheme, compactMode, overlayOpacity, commentsDuration});
 
 restoreSettings();
 
@@ -96,5 +97,6 @@ export default function useUI() {
     compactMode,
     currentTheme,
     overlayOpacity,
+    commentsDuration,
   }
 }

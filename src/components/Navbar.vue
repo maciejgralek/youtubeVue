@@ -21,7 +21,6 @@ export default {
 <style lang="scss">
 @import '../theme.scss';
 @import 'bootstrap/scss/bootstrap.scss';
-@import '../variables.scss';
 
 .navbar {
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.7);
@@ -30,6 +29,6 @@ export default {
 }
 
 .navbar-dark {
-  background-color: $dark-l-10 !important;
+  background-color: lighten($dark, 10) !important;
 }
 </style>

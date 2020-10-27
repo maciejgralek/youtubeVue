@@ -29,7 +29,6 @@ export default {
 <style lang="scss">
 @import './theme.scss';
 @import 'bootstrap/scss/bootstrap.scss';
-@import './variables.scss';
 
 :root {
   // light
@@ -49,15 +48,15 @@ export default {
   // dark
 
   --bg-dark:                       #{$dark};
-  --background-player-dark:        #{$dark-l-2};
-  --text-color-dark:               #{$light-d-3};
-  --icon-color-dark:               #{$light-d-6};
+  --background-player-dark:        #{lighten($dark, 2)};
+  --text-color-dark:               #{darken($light, 3)};
+  --icon-color-dark:               #{darken($light, 6)};
   --scroll-track-color-dark:       #{$dark};
   --scroll-thumb-color-dark:       #{$secondary};
   --border-color-dark:             #{$secondary};
-  --input-background-color-dark:   #{$dark-d-3};
-  --input-color-dark:              #{light-d-3};
-  --input-border-color-dark:       #{$dark-l-10};
+  --input-background-color-dark:   #{darken($dark, 3)};
+  --input-color-dark:              #{darken($light, 3)};
+  --input-border-color-dark:       #{lighten($dark, 10)};
   --modal-content-bg-dark:         #{$dark};
 
   // theme

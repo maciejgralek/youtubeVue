@@ -34,12 +34,11 @@ let playerWindowState = ref(1);
 let volume = ref(0);
 let isMuted = ref(false);
 let playMode = ref(playerPlaymodes.NEXT);
+let player = null;
 
 let { 
   restoreSettings 
 } = useStoreSettings('Player', { playMode });
-
-restoreSettings();
 
 let { 
   getCommentsRemote,
@@ -52,23 +51,28 @@ let {
   playerHeight,
 } = useUI();
 
-let playerEl = document.createElement('div');
-playerEl.setAttribute('id', 'video-player');
-document.body.append(playerEl);
+restoreSettings();
+initPlayer();
 
-let player = YouTubePlayer('video-player', {
-  width: _playerDefaultWidth,
-  height: _playerDefaultHeight,
-}); 
+function initPlayer(){
+  let playerEl = document.createElement('div');
+  playerEl.setAttribute('id', 'video-player');
+  document.body.append(playerEl);
 
-player.getVolume().then((res) => {
-  volume.value = res;
-});
+  player = YouTubePlayer('video-player', {
+    width: _playerDefaultWidth,
+    height: _playerDefaultHeight,
+  }); 
 
-player.getIframe().then(el => {
-  el.style.right = _playerDefaultRight+"px";
-  el.style.bottom = _playerDefaultBottom+"px";
-});
+  player.getVolume().then((res) => {
+    volume.value = res;
+  });
+
+  player.getIframe().then(el => {
+    el.style.right = _playerDefaultRight+"px";
+    el.style.bottom = _playerDefaultBottom+"px";
+  });
+}
 
 function play() {
   player.playVideo();

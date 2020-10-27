@@ -51,6 +51,10 @@ export default {
       currentVideo, 
     } = useYoutubePlayer();
 
+    let { 
+      commentsDuration,
+    } = useUI();
+
     // COMPUTED
 
     watch(currentVideo, () => {
@@ -74,7 +78,7 @@ export default {
         if (commentIndex.value > comments.value.length - 1) {
           commentIndex.value = 0;
         }
-      }, 6000)
+      }, commentsDuration.value * 1000)
     }
 
     return {

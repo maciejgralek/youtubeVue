@@ -5,13 +5,13 @@ import useStore from './use-store.js'
 
 let googleApiRemote = 'https://youtube-vue-server.herokuapp.com/youtubevue/'
 
+let _commentsNextPageToken = null;
+let _searchNextPageToken = null;
+let _searchLast = "";
 let playlists = ref([]);
 let channelPlaylists = ref([]);
 let searchRes = ref([]);
 let comments = ref([]);
-let _commentsNextPageToken = null;
-let _searchNextPageToken = null;
-let _searchLast = "";
 let regexpTime = /[0-9]?[0-9]?:?[0-9]?[0-9]:[0-9][0-9]/ig;
 
 let state = useStore();

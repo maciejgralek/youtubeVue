@@ -96,6 +96,22 @@
               >
             </li>
             <li class="list-group-item d-flex align-items-center border-0">
+              <label 
+                @click="setTheme" 
+                class="form-check-label"
+              >
+                Comments durations ({{ commentsDuration }}s)
+              </label>
+              <input 
+                v-model.number="commentsDuration" 
+                type="range" 
+                class="ml-auto" 
+                min="3" 
+                max="15" 
+                step="1" 
+              >
+            </li>
+            <li class="list-group-item d-flex align-items-center border-0">
                 <a href="" data-toggle="modal" data-target="#exampleModal">
                   Export playlists as URL
                 </a>
@@ -159,6 +175,7 @@ export default {
       setCompact,
       currentTheme,
       overlayOpacity,
+      commentsDuration,
     } = useUI();
 
     let state = useStore();
@@ -192,6 +209,7 @@ export default {
       handleExportCopyToClipboard,
       searchRemote,
       exportString,
+      commentsDuration,
     }
   }
 }
