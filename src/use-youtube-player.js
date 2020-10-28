@@ -144,12 +144,7 @@ function getTime() {
 function prev() {
   if (playMode.value == playerPlaymodes.NEXT) {
     let index = findVideoIndex(currentPlaylist.value, currentVideo.value);
-    if (index < 0) {
-      index = 0;
-    }
-    else {
-      index -= 1;
-    }
+    index = index < 0 ? 0 : index - 1;
     return currentPlaylist.value.items[index].snippet;
   }
   else if (playMode.value == playerPlaymodes.SHUFFLE) {
@@ -164,12 +159,7 @@ function prev() {
 function next() {
   if (playMode.value == playerPlaymodes.NEXT) {
     let index = findVideoIndex(currentPlaylist.value, currentVideo.value);
-    if (index >= currentPlaylist.value.items.length - 1) {
-      index = 0;
-    }
-    else {
-      index += 1;
-    }
+    index = index >= currentPlaylist.value.items.length - 1 ? 0 : index + 1;
     return currentPlaylist.value.items[index].snippet;
   }
   else if (playMode.value == playerPlaymodes.SHUFFLE) {

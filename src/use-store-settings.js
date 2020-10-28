@@ -1,10 +1,10 @@
 import { watch, isRef } from 'vue'
 
 export default function useStoreSettings(name, settings) {
-  let watchSettings = Object.values(settings)
-  watchSettings = watchSettings.filter(item => isRef(item));
+  let _watchSettings = Object.values(settings)
+  _watchSettings = _watchSettings.filter(item => isRef(item));
 
-  watch(watchSettings, () => {
+  watch(_watchSettings, () => {
     _storeSettings(settings);
   })
 

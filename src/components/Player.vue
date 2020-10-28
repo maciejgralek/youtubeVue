@@ -346,6 +346,7 @@ export default {
       }
       else {
         let video = prev();
+        video.el.scrollIntoView({ block: 'center' });
         loadVideo(video);
         play();
       }
@@ -353,6 +354,7 @@ export default {
 
     function handleClickNext() {
       let video = next();
+      video.el.scrollIntoView({ block: 'center' });
       loadVideo(video);
       play();
     }

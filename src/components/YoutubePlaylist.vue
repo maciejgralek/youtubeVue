@@ -1,5 +1,5 @@
 <template>
-  <div class="playlist-header d-flex align-items-center w-100 pl-3 py-2 mb-1" >
+  <div class="playlist-header d-flex align-items-center pl-3 py-2 mb-1" >
     <span class="font-weight-bold">
       {{ playlist.title }} 
       <span class="badge bg-secondary mx-1">

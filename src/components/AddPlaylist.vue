@@ -127,7 +127,9 @@
   <teleport to="body">
     <Modal>
       <template v-slot:header>
-        <h5 class="modal-title" id="exampleModalLabel">Export playlists</h5>
+        <h5 class="modal-title" id="exampleModalLabel">
+          Export playlists
+        </h5>
       </template>
       <template v-slot:default>
         <textarea 
@@ -156,7 +158,7 @@ export default {
   components: {
     Modal,
   },
-  setup(props, { emit }) {
+  setup(props) {
     let exportRef = ref(null);
     let playlistId = ref('');
     let searchString = ref('');
