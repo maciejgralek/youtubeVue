@@ -100,7 +100,7 @@
                 @click="setTheme" 
                 class="form-check-label"
               >
-                Comments durations ({{ commentsDuration }}s)
+                Comments duration ({{ commentsDuration }}s)
               </label>
               <input 
                 v-model.number="commentsDuration" 
