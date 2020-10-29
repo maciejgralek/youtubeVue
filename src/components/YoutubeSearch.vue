@@ -1,6 +1,5 @@
 <template>
-  <div class="rounded">
-    <div class="d-flex align-items-center w-100 playlist-header pl-3 py-2 mb-1">
+    <div class="playlist-header d-flex align-items-center pl-3 py-2 mb-1">
         <span class="font-weight-bold">
           Search
           <span class="badge bg-secondary ml-1">
@@ -40,8 +39,6 @@
         </li>
       </ul>
     </div>
-
-  </div>
 </template>
 
 <script>

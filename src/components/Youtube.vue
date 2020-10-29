@@ -17,7 +17,7 @@
 
     <div 
       v-for="(playlist, index) in playlists" 
-      class="col text-left playlist"
+      class="col playlist"
     >
       <YoutubePlaylist :playlist="playlist"/>
     </div>
@@ -56,10 +56,10 @@ export default {
     // DATA
 
     let columns = ref(3);
-    let playlistRequest = null;
+    let query = null;
 
     if (props.params) {
-      playlistRequest = props.params.split(',');
+      query = props.params.split(',');
     }
 
     // COMPOSITION
@@ -88,8 +88,8 @@ export default {
 
     onMounted(() => {
       addSavedPlaylists();
-      if (playlistRequest) {
-        addUrlPlaylists(playlistRequest);
+      if (query) {
+        addUrlPlaylists(query);
       }
     })
 
@@ -129,16 +129,20 @@ export default {
 }
 
 .search {
+  text-align: left;
   border-right-width: 1px;
   border-right-style: solid;
   border-right-color: var(--border-color);
 }
 
 .playlist {
+  text-align: left;
   border-right-width: 1px;
   border-right-style: solid;
   border-right-color: var(--border-color);
 }
+
+/* TRANSITION */
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity .7s !important;
@@ -146,7 +150,6 @@ export default {
 .fade-enter-from, .fade-leave-to {
   opacity: 0 !important;
 }
-
 .fade-comment-enter-active, .fade-comment-leave-active {
   transition: opacity .3s !important;
 }
