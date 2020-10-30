@@ -96,7 +96,7 @@ export default {
     let styleBottomMargin = computed(() => {
       return { 
         // 'min-height': playerHeight + 20 + (showComments.value && showCommentsPause.value ? 150 : 0) + 'px' 
-        'min-height': playerHeight + 20 + 150 + 'px' 
+        'min-height': playerHeight.value + 20 + 150 + 'px' 
       }
     })
 
