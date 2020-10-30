@@ -97,16 +97,19 @@
           <i 
             v-if="volume > 50 && !isMuted" 
             @click="handleClickVolumeIcon" 
+            v-tippy="'Mute'"
             class="mdi mdi-volume-high mdi-player-icon"
           ></i>
           <i 
             v-else-if="volume <= 50 && volume > 0 && !isMuted" 
             @click="handleClickVolumeIcon" 
+            v-tippy="'Mute'"
             class="mdi mdi-volume-medium mdi-player-icon"
           ></i>
           <i 
             v-else-if="volume == 0 || isMuted" 
             @click="handleClickVolumeIcon" 
+            v-tippy="'Mute'"
             class="mdi mdi-volume-off mdi-player-icon"
           ></i>
         </transition>

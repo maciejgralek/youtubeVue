@@ -2,6 +2,7 @@
   <div 
     @mouseenter="pauseComments" 
     @mouseleave="playComments" 
+    :style="{ bottom: playerHeight + 24 + 'px' }"
     class="comments-container shadow rounded p-1 pr-1 pt-2"
   >
     <div class="comments">
@@ -53,6 +54,7 @@ export default {
 
     let { 
       commentsDuration,
+      playerHeight,
     } = useUI();
 
     // COMPUTED
@@ -86,6 +88,7 @@ export default {
       commentIndex,
       pauseComments,
       playComments,
+      playerHeight,
     }
   }
 }
@@ -105,7 +108,6 @@ export default {
   width: 50% !important;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 100px;
   color: var(--text-color);
   background-color: var(--background);
   z-index: 1020;

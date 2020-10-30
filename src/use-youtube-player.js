@@ -195,12 +195,14 @@ function setYoutubeWindow(state) {
     let w = document.body.clientWidth/1.8;
     let h = window.innerHeight/1.8;
     let l = (document.body.clientWidth - w)/2
-    let t = (window.innerHeight - h)/2 + playerHeight.value/2 + 35;
+    let b = ((window.innerHeight - h)/2);
+    let h2 = playerHeight.value + 120 + 48;
+    b = b < h2 ? h2 : b;
     player.getIframe().then(el => {
       el.style.transition = "right 0.3s,bottom 0.3s";
       player.setSize(w, h);
       el.style.right = l+"px";
-      el.style.bottom = t+"px";
+      el.style.bottom = b+"px";
       playerWindowState.value = 2;
     });
   }
