@@ -163,7 +163,7 @@ export default {
     let playlistId = ref('');
     let searchString = ref('');
     let exportString = ref('');
-    let appUrl = "https://relaxed-bell-6b8902.netlify.app"
+    let appUrl = "https://ytplay.netlify.app"
 
     let { 
       playlists,

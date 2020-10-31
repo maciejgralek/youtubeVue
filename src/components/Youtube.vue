@@ -55,7 +55,6 @@ export default {
 
     // DATA
 
-    let columns = ref(3);
     let query = null;
 
     if (props.params) {
@@ -82,6 +81,8 @@ export default {
       showCommentsPause,
       playerHeight,
       overlayOpacity,
+      marginUI,
+      columns,
     } = useUI();
 
     // METHODS
@@ -95,8 +96,7 @@ export default {
 
     let styleBottomMargin = computed(() => {
       return { 
-        // 'min-height': playerHeight + 20 + (showComments.value && showCommentsPause.value ? 150 : 0) + 'px' 
-        'min-height': playerHeight.value + 20 + 150 + 'px' 
+        'min-height': playerHeight.value + 120 + 2*marginUI + 'px' 
       }
     })
 

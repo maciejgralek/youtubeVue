@@ -15,6 +15,7 @@ let thumbnailHeight = ref(compactMode ? _compactThumbnailHeight : _normalThumbna
 let currentTheme = ref(false);
 let overlayOpacity = ref(70);
 let commentsDuration = ref(6);
+let columns = ref(3);
 
 watch(currentTheme, () => {
   setTheme(currentTheme.value);
@@ -100,5 +101,6 @@ export default function useUI() {
     currentTheme,
     overlayOpacity,
     commentsDuration,
+    columns,
   }
 }
