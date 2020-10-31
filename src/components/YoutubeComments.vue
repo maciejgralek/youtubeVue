@@ -2,7 +2,7 @@
   <div 
     @mouseenter="pauseComments" 
     @mouseleave="playComments" 
-    :style="{ bottom: playerHeight + 24 + 'px' }"
+    :style="{ bottom: playerHeight + marginUI + 'px' }"
     class="comments-container shadow rounded p-1 pr-1 pt-2"
   >
     <div class="comments">
@@ -53,6 +53,7 @@ export default {
     } = useYoutubePlayer();
 
     let { 
+      marginUI,
       commentsDuration,
       playerHeight,
     } = useUI();
@@ -89,6 +90,7 @@ export default {
       pauseComments,
       playComments,
       playerHeight,
+      marginUI,
     }
   }
 }

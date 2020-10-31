@@ -7,6 +7,7 @@ export default function useKey() {
     seekTo,
     setYoutubeWindow,
     toggleMute,
+    toggleYoutubeWindow,
   } = useYoutubePlayer();
 
   window.addEventListener('keydown', (ev) => {
@@ -25,7 +26,7 @@ export default function useKey() {
       ev.preventDefault();
     }
     if (ev.key == 'f') {
-      setYoutubeWindow(3);
+      toggleYoutubeWindow();
       ev.preventDefault();
     }
     if (ev.key == 'm') {

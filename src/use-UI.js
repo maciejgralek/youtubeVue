@@ -5,6 +5,7 @@ let _compactThumbnailWidth = 55;
 let _compactThumbnailHeight = 30;
 let _normalThumbnailWidth = 80;
 let _normalThumbnailHeight = 50;
+let marginUI = 24;
 let playerHeight = ref(null);
 let compactMode = ref(true);
 let showComments = ref(true);
@@ -91,6 +92,7 @@ export default function useUI() {
     setCompact,
     thumbnailWidth,
     thumbnailHeight,
+    marginUI,
     showComments,
     showCommentsPause,
     setComments,

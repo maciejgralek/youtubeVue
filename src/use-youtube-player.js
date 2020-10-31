@@ -20,6 +20,11 @@ export const playerPlaymodes = {
   REPEAT: 3,
 }
 
+export const playerWindowStates = {
+  MINIMIZED: 1,
+  CENTER: 2,
+}
+
 let _playerDefaultRight = 12;
 let _playerDefaultBottom = 90;
 let _playerDefaultWidth = 320;
@@ -29,8 +34,8 @@ let currentVideo = ref({});
 let currentPlaylist = ref(null);
 let currentTime = ref(null);
 let duration = ref(null);
-let playerState = ref(-1);
-let playerWindowState = ref(1);
+let playerState = ref(playerPlaymodes.UNSTARTED);
+let playerWindowState = ref(playerWindowStates.MINIMIZED);
 let volume = ref(0);
 let isMuted = ref(false);
 let playMode = ref(playerPlaymodes.NEXT);
@@ -49,6 +54,7 @@ let {
 let { 
   showCommentsPause, 
   playerHeight,
+  marginUI,
 } = useUI();
 
 restoreSettings();
@@ -171,39 +177,38 @@ function next() {
   }
 }
 
-function setYoutubeWindow(state) {
-  let size;
-  if (state == 3) {
-    if (playerWindowState.value == 1) 
-      size = 2;
-    else
-      size = 1;
+function toggleYoutubeWindow() {
+  if (playerWindowState.value == playerWindowStates.MINIMIZED) {
+    setYoutubeWindow(playerWindowStates.CENTER)
   }
   else {
-    size = state;
+    setYoutubeWindow(playerWindowStates.MINIMIZED)
   }
-  if (size == 1) {
+}
+
+function setYoutubeWindow(state) {
+  if (state == playerWindowStates.MINIMIZED) {
     player.getIframe().then(el => {
       el.style.transition = "right 0.3s,bottom 0.3s";
       player.setSize(_playerDefaultWidth, _playerDefaultHeight);
       el.style.right = _playerDefaultRight+"px";
       el.style.bottom = _playerDefaultBottom+"px";
-      playerWindowState.value = 1;
+      playerWindowState.value = playerWindowStates.MINIMIZED;
     });
   }
-  else if (size == 2) {
+  else if (state == playerWindowStates.CENTER) {
     let w = document.body.clientWidth/1.8;
     let h = window.innerHeight/1.8;
     let l = (document.body.clientWidth - w)/2
     let b = ((window.innerHeight - h)/2);
-    let h2 = playerHeight.value + 120 + 48;
+    let h2 = playerHeight.value + 120 + 2*marginUI;
     b = b < h2 ? h2 : b;
     player.getIframe().then(el => {
       el.style.transition = "right 0.3s,bottom 0.3s";
       player.setSize(w, h);
       el.style.right = l+"px";
       el.style.bottom = b+"px";
-      playerWindowState.value = 2;
+      playerWindowState.value = playerWindowStates.CENTER;
     });
   }
 }
@@ -281,5 +286,6 @@ export default function useYoutubePlayer() {
     loadVideo,
     getTime,
     setYoutubeWindow,
+    toggleYoutubeWindow,
   }
 }

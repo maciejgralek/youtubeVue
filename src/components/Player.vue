@@ -228,6 +228,7 @@ export default {
       setVolume,
       toggleMute,
       setYoutubeWindow,
+      toggleYoutubeWindow,
     } = useYoutubePlayer();
 
     let { 
@@ -302,7 +303,7 @@ export default {
     }
 
     function handleYoutubeWindowClick() {
-      setYoutubeWindow(3);
+      toggleYoutubeWindow();
     }
 
     function handleClickProgress(ev) {
