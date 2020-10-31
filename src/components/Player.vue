@@ -282,6 +282,7 @@ export default {
     })
 
     let playButtonMode = computed(() => {
+      console.log(playerState.value)
       return playerState.value == playerStates.PAUSED || 
         playerState.value == playerStates.UNSTARTED || 
         playerState.value == playerStates.ENDED;
