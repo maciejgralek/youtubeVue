@@ -53,6 +53,7 @@ async function getPlaylistRemote(playlist, nextPage) {
     item => item.snippet.title != "Private video"
   ));
   playlist.filteredItems = filterPlaylistItems(playlist.items);
+  playlist.results = res.data.pageInfo.totalResults;
 
   playlist.nextPageToken = res.data.nextPageToken;
 }
@@ -142,6 +143,7 @@ function addPlaylist(id, local) {
     title: "",
     items: [],
     filteredItems: [],
+    results: 0,
     nextPageToken: null,
     isLoading: false,
   })
