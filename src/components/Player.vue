@@ -364,9 +364,13 @@ export default {
     }
 
     function tippyVideoDescriptionContent () {
-      return currentVideo.value.description ? 
+      let videoId = currentVideo.value.resourceId ? 
+        currentVideo.value.resourceId.videoId : '';
+      let youtubeUrl = `<a href="https://youtube.com/watch?v=${videoId}">Watch on YouTube</a>`
+      let videoDescritpion = currentVideo.value.description ? 
         currentVideo.value.description.replace(/(?:\r\n|\r|\n)/g, '<br>') : 
         'No description'
+      return `${videoDescritpion} <hr> ${youtubeUrl}`
     }
     
 
