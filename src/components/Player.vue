@@ -77,7 +77,7 @@
 
       <!-- TITLE -->
 
-      <div class="col-auto">
+      <div class="col text-truncate">
         <transition name="fade" mode="out-in">
           <span 
             @click="scrollToCurrentVideo" 
