@@ -335,8 +335,7 @@ export default {
     }
 
     function handleClickVolume(ev) {
-      let w = ev.target.clientWidth;
-      let volume = ((ev.x - ev.target.offsetLeft)/w) * 100;
+      let volume = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * 100;
       setVolume(volume);
     }
 
