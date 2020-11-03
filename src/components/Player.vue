@@ -370,7 +370,7 @@ export default {
       let videoDescritpion = currentVideo.value.description ? 
         currentVideo.value.description.replace(/(?:\r\n|\r|\n)/g, '<br>') : 
         'No description'
-      return `${videoDescritpion} <hr> ${youtubeUrl}`
+      return `<div class="mb-2">${videoDescritpion} <hr> ${youtubeUrl}</div>`
     }
     
 
