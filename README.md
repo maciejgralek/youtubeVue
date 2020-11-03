@@ -1,6 +1,6 @@
 # YTPlay
 
-yt-play is an application for listening to, searching and displaying multiple playlists, using Youtube API 3.
+YTPlay is an application for listening to, searching and displaying multiple playlists, using Youtube API 3.
 
 Build with: Vue 3 (Composition API) and Bootstrap
 
