@@ -2,7 +2,7 @@
 
 YTPlay is an application for listening to, searching and displaying multiple playlists, using Youtube API 3 and heroku backend.
 
-Build with: Vue 3 (Composition API), Bootstrap and Express.
+Build with: Vue 3 (Composition API), Bootstrap, Tippy.js and Express.
 
 https://ytplay.netlify.app
 
