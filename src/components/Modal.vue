@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref } from 'vue'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
 import useStore from '../use-store'
