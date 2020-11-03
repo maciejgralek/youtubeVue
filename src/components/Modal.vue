@@ -1,12 +1,24 @@
 <template>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div 
+    id="exampleModal" 
+    tabindex="-1" 
+    aria-labelledby="ModalLabel" 
+    aria-hidden="true"
+    class="modal fade" 
+  >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
 
           <slot name="header"></slot>
 
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          <button 
+            type="button" 
+            data-dismiss="modal" 
+            aria-label="Close"
+            class="btn-close" 
+          >
+          </button>
         </div>
         <div class="modal-body text-right">
 
@@ -14,7 +26,13 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button 
+            type="button" 
+            data-dismiss="modal"
+            class="btn btn-secondary" 
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
