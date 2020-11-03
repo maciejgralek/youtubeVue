@@ -1,4 +1,4 @@
-#YTPlay
+# YTPlay
 
 yt-play is an application for listening to, searching and displaying multiple playlists, using Youtube API 3.
 
