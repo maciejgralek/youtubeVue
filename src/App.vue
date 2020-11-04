@@ -80,10 +80,6 @@ body {
   color: var(--text-color);
 }
 
-.container-fluid {
-  width: 99% !important;
-}
-
 i {
   cursor: pointer;
 }
