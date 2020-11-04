@@ -11,15 +11,15 @@
         class="row p-2 g-2"
       >
         <div class="col-auto">
-          <img :src="comments[commentIndex].snippet.topLevelComment.snippet.authorProfileImageUrl" alt="">
+          <img :src="srcProfileImage" alt="">
         </div>
         <div class="col">
           <transition name="fade" mode="out-in">
             <span :key="comments[commentIndex].id">
               <span class="font-weight-bold">
-                {{ comments[commentIndex].snippet.topLevelComment.snippet.authorDisplayName }}
+                {{ authorComment }}
               </span>
-              {{ comments[commentIndex].snippet.topLevelComment.snippet.textOriginal }}
+              {{ textComment }}
             </span>
           </transition>
         </div>
@@ -66,6 +66,19 @@ export default {
       playComments();
     });
 
+    let textComment = computed(() => {
+      return comments.value[commentIndex.value].snippet.topLevelComment.snippet.textOriginal;
+    })
+
+    let authorComment = computed(() => {
+      return comments.value[commentIndex.value].snippet.topLevelComment.snippet.authorDisplayName;
+    })
+
+    let srcProfileImage = computed(() => {
+      return comments.value[commentIndex.value].snippet.topLevelComment.snippet.authorProfileImageUrl;
+    })
+
+
     // METHODS
 
     function pauseComments() {
@@ -91,6 +104,9 @@ export default {
       playComments,
       playerHeight,
       marginUI,
+      textComment,
+      authorComment,
+      srcProfileImage,
     }
   }
 }
