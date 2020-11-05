@@ -290,7 +290,7 @@ export default {
     // METHODS
 
     onMounted(() => {
-      setPlayerHeight(playerRef.value.clientHeight);
+      setPlayerHeight(playerRef.value);
     })
 
     function handleClickPlay() {

@@ -73,8 +73,8 @@ function setCompact(value) {
   }
 }
 
-function setPlayerHeight(h) {
-  playerHeight.value = h;
+function setPlayerHeight(el) {
+  playerHeight.value = el.clientHeight;
 }
 
 function setComments() {
