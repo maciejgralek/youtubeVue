@@ -114,7 +114,7 @@
           ></i>
         </transition>
       </div>
-      <div class="col-auto">
+      <div class="col-auto d-none d-md-block">
         <div 
           @click="handleClickVolume" 
           class="progress bg-secondary" 
@@ -134,7 +134,7 @@
 
       <!-- COMMENTS FULLSCREEN -->
 
-      <div class="col-auto mr-1">
+      <div class="col-auto d-none d-md-block mr-1">
         <i 
           v-if="showComments" 
           @click="setComments" 
