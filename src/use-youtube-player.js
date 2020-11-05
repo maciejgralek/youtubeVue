@@ -29,6 +29,9 @@ let _playerDefaultRight = 12;
 let _playerDefaultBottom = 90;
 let _playerDefaultWidth = 320;
 let _playerDefaultHeight = 180;
+let _playerMobileDefaultWidth = 180;
+let _playerMobileDefaultHeight = 105;
+let isMobile = ref(false);
 let _timer = null;
 let currentVideo = ref({});
 let currentPlaylist = ref(null);
@@ -78,6 +81,9 @@ function initPlayer(){
     el.style.right = _playerDefaultRight+"px";
     el.style.bottom = _playerDefaultBottom+"px";
   });
+
+  _checkIfMobile(window.innerWidth);
+  setYoutubeWindow(playerWindowState.value);
 }
 
 function play() {
@@ -186,11 +192,23 @@ function toggleYoutubeWindow() {
   }
 }
 
+function _checkIfMobile(w) {
+  if (w < 768) {
+    isMobile.value = true;
+  } 
+  else if (w >= 768) {
+    isMobile.value = false;
+  }
+}
+
 function setYoutubeWindow(state) {
   if (state == playerWindowStates.MINIMIZED) {
+    let w = isMobile.value ? _playerMobileDefaultWidth : _playerDefaultWidth;
+    let h = isMobile.value ? _playerMobileDefaultHeight : _playerDefaultHeight;
+
     player.getIframe().then(el => {
       el.style.transition = "right 0.3s,bottom 0.3s";
-      player.setSize(_playerDefaultWidth, _playerDefaultHeight);
+      player.setSize(w, h);
       el.style.right = _playerDefaultRight+"px";
       el.style.bottom = _playerDefaultBottom+"px";
       playerWindowState.value = playerWindowStates.MINIMIZED;
@@ -210,14 +228,18 @@ function setYoutubeWindow(state) {
       el.style.bottom = b+"px";
       playerWindowState.value = playerWindowStates.CENTER;
     });
-  }
+  } 
 }
 
 // EVENTS
 
-window.addEventListener('resize', () => {
-  if (playerWindowState.value == 2) {
+window.addEventListener('resize', (ev) => {
+  _checkIfMobile(ev.target.innerWidth);
+  if (playerWindowState.value == playerWindowStates.CENTER) {
     setYoutubeWindow(playerWindowState.value);
+  }
+  if (playerWindowState.value == playerWindowStates.MINIMIZED) {
+    setYoutubeWindow(playerWindowState.value)
   }
 })
 
