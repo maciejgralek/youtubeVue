@@ -10,7 +10,7 @@
 
   <AddPlaylist />
 
-  <div class="row pt-1 pl-md-2 mr-4 mr-md-0" :class="'row-cols-lg-' + columns">
+  <div class="row g-4 pt-1 pl-md-2 mr-4 mr-md-0" :class="'row-cols-lg-' + columns">
     <div v-if="searchRes.length" class="col search">
       <YoutubeSearch :items="searchRes" />
     </div>
