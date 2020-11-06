@@ -166,8 +166,10 @@
       <div class="col mx-1">
         <div 
           ref="progressRef" 
-          @click="handleClickProgress" 
+          @mousedown="handleClickProgress" 
+          @mouseup="handleClickProgress" 
           @mousemove="handleProgressMouseMove" 
+          @mouseleave="handleMouseleaveProgress"
           v-tippy-progress 
           class="progress-container pt-2 pb-1"
         >
@@ -193,13 +195,14 @@ import { ref, computed, onMounted, watchEffect, watch } from 'vue'
 import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
-import { ifMinAddDigit } from '../tools'
+import { ifMinAddDigit, debounce } from '../tools'
 
 export default {
   setup(props) {
 
     let showHours = false;
     let showMinutes = false;
+    let isProgressDragging = false;
 
     // DATA
 
@@ -308,8 +311,14 @@ export default {
 
     function handleClickProgress(ev) {
       if (!currentVideo.value) return;
-      let seconds = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
-      seekTo(seconds);
+      if (ev.type == 'mousedown') {
+        let seconds = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
+        isProgressDragging = true;
+        seekTo(seconds);
+      }
+      else if (ev.type == 'mouseup') {
+        isProgressDragging = false;
+      }
     }
 
     function handleWheel(ev) {
@@ -324,8 +333,15 @@ export default {
       }
     }
 
+    function handleMouseleaveProgress() {
+      isProgressDragging = false;
+    }
+
     function handleProgressMouseMove(ev) {
       let seconds = Math.floor(((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value);
+      if (isProgressDragging) {
+        seekTo(seconds);
+      }
       progressRef.value.tippyProgress.setContent(
         ifMinAddDigit(Math.trunc(seconds/60/60)%60) + ':' + 
         ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + 
@@ -401,6 +417,7 @@ export default {
       handleClickVolumeIcon,
       handleClickPlayMode,
       handleProgressMouseMove,
+      handleMouseleaveProgress,
       handleClickPrevious,
       handleClickNext,
       tippyVideoDescriptionContent,
