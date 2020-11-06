@@ -308,8 +308,7 @@ export default {
 
     function handleClickProgress(ev) {
       if (!currentVideo.value) return;
-      let w = ev.target.clientWidth;
-      let seconds = ((ev.x - ev.target.offsetLeft)/w) * duration.value;
+      let seconds = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
       seekTo(seconds);
     }
 
