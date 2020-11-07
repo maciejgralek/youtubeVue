@@ -195,7 +195,7 @@ import { ref, computed, onMounted, watchEffect, watch } from 'vue'
 import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
-import { ifMinAddDigit, debounce } from '../tools'
+import { ifMinAddDigit } from '../tools'
 
 export default {
   setup(props) {
