@@ -30,6 +30,7 @@
           :ref="el => { playlist.items.length && (playlist.items[index].snippet.el = el) }"
           @click="handleClickPlaylistItem(item)" 
           :key="item.id"
+          :data-tippy-content="item.snippet.title"
           :class="classListPlaylistItem(item)"
           class="playlist-item text-truncate p-1" 
         >
@@ -48,12 +49,13 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUpdated } from 'vue'
 import PlaylistDropdown from './PlaylistDropdown.vue'
 import useYoutube from '../use-youtube'
 import useYoutubePlayer from '../use-youtube-player'
 import useUI from '../use-UI'
 import useStore from '../use-store'
+import tippy from 'tippy.js';
 
 export default {
   components: {
@@ -91,6 +93,14 @@ export default {
     let state = useStore();
 
     // METHODS
+
+    onUpdated(() => {
+      tippy('[data-tippy-content]', {
+        arrow: true,
+        delay: [1000, null],
+        placement: 'right',
+      });
+    })
 
     function classListPlaylistItem(item) {
       if (!currentVideo.value.resourceId) return;
