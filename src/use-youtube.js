@@ -1,4 +1,4 @@
-import { ref, onMounted, watch, reactive } from 'vue'
+import { ref, onMounted, watch, reactive, computed } from 'vue'
 import axios from 'axios'
 import { createUrl } from './tools.js'
 import useStore from './use-store.js'
@@ -15,14 +15,6 @@ let comments = ref([]);
 let regexpTime = /[0-9]?[0-9]?:?[0-9]?[0-9]:[0-9][0-9]/ig;
 
 let state = useStore();
-
-watch(
-  () => state.filter, 
-  () => {
-    for (let playlist of playlists.value) {
-      playlist.filteredItems = filterPlaylistItems(playlist.items);
-    }
-  })
 
 // YOUTUBE API
 
@@ -52,7 +44,12 @@ async function getPlaylistRemote(playlist, nextPage) {
   playlist.items = playlist.items.concat(res.data.items.filter(
     item => item.snippet.title != "Private video"
   ));
-  playlist.filteredItems = filterPlaylistItems(playlist.items);
+  playlist.filteredItems = computed(() => {
+    let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
+    return playlist.items.filter(
+      item => item.snippet.title.search(regexp) >= 0
+    );
+  });
   playlist.results = res.data.pageInfo.totalResults;
 
   playlist.nextPageToken = res.data.nextPageToken;
@@ -195,11 +192,6 @@ function move(playlist, dir) {
   let to = index + dir;
   let i = playlists.value.splice(index, 1);
   playlists.value.splice(to, 0, i[0]);
-}
-
-function filterPlaylistItems(items) {
-  let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
-  return items.filter(item => item.snippet.title.search(regexp) >= 0);
 }
 
 function findPlaylistIndex(playlist) {
