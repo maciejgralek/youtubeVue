@@ -5,7 +5,7 @@
 
     <div class="col-4 ml-auto border-right">
       <input 
-        v-model="state.filter" 
+        @input="debounceFilterInput"
         type="search" 
         class="form-control form-control-sm" 
         placeholder="Filter"
@@ -153,6 +153,7 @@ import Modal from './Modal.vue'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
 import useStore from '../use-store'
+import { debounce } from 'lodash'
 
 export default {
   components: {
@@ -190,6 +191,10 @@ export default {
       exportString.value = `${appUrl}/playlist/${playlistsId.join(',')}`; 
     })
 
+    let debounceFilterInput = debounce(e => {
+      state.filter = e.target.value;
+    }, 500)
+
     function handleExportCopyToClipboard() {
       exportRef.value.select();
       document.execCommand('copy');
@@ -212,6 +217,7 @@ export default {
       searchRemote,
       exportString,
       commentsDuration,
+      debounceFilterInput,
     }
   }
 }
