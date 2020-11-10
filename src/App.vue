@@ -34,6 +34,7 @@ export default {
   // light
 
   --bg-light:                       #{$light};
+  --bg-light-2:                     #{$light};
   --background-player-light:        #eaeaea;
   --text-color-light:               #212529;
   --icon-color-light:               #212529;
@@ -48,6 +49,7 @@ export default {
   // dark
 
   --bg-dark:                       #{$dark};
+  --bg-dark-2:                     #{lighten($dark, 2)};
   --background-player-dark:        #{lighten($dark, 2)};
   --text-color-dark:               #{darken($light, 3)};
   --icon-color-dark:               #{darken($light, 6)};
@@ -62,6 +64,7 @@ export default {
   // theme
 
   --background:               var(--bg-light);
+  --background-2:             var(--bg-light-2);
   --text-color:               var(--text-color-light);
   --icon-color:               var(--icon-color-liht);
   --background-player:        var(--background-player-light);

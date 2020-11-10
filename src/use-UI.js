@@ -44,6 +44,7 @@ function setTheme(theme) {
     document.documentElement.style.setProperty('--input-border-color', 'var(--input-border-color-dark)');
     document.documentElement.style.setProperty('--icon-color', 'var(--icon-color-dark)');
     document.documentElement.style.setProperty('--modal-content-bg', 'var(--modal-content-bg-dark)');
+    document.documentElement.style.setProperty('--background-2', 'var(--bg-dark-2)');
     currentTheme.value = true;
   }
   else {
@@ -58,6 +59,7 @@ function setTheme(theme) {
     document.documentElement.style.setProperty('--input-border-color', 'var(--input-border-color-light)');
     document.documentElement.style.setProperty('--icon-color', 'var(--icon-color-light)');
     document.documentElement.style.setProperty('--modal-content-bg', 'var(--modal-content-bg-light)');
+    document.documentElement.style.setProperty('--background-2', 'var(--bg-light-2)');
     currentTheme.value = false;
   }
 }
