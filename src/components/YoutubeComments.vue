@@ -131,7 +131,7 @@ export default {
   z-index: 1020;
 }
 .comments::-webkit-scrollbar-track {
-  background-color: var(--scroll-track);
+  background-color: var(--background-2);
 }
 .comments::-webkit-scrollbar {
   width: 8px;
