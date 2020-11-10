@@ -127,7 +127,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   color: var(--text-color);
-  background-color: var(--background);
+  background-color: var(--background-2);
   z-index: 1020;
 }
 .comments::-webkit-scrollbar-track {
