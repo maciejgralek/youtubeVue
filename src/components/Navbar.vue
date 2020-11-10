@@ -1,11 +1,20 @@
 <template>
-  <!-- <nav class="navbar navbar&#45;expand&#45;lg navbar&#45;dark bg&#45;dark  "> -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-l10 py-1">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-l10 py-0">
   <div class="container-fluid">
     <a class="navbar-brand font-weight-bold" href="#">YTPlay</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto ml-2 mb-0 my-1">
+        <li class="nav-item nav-item-active">
+          <a class="nav-link active" aria-current="page" href="#">Playlists</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="#">About</a>
+        </li>
+      </ul>
+      </div>
   </div>
 </nav>
 </template>
@@ -30,5 +39,13 @@ export default {
 
 .navbar-dark {
   background-color: lighten($dark, 10) !important;
+}
+
+.nav-item {
+  font-size: 1.1em !important;
+}
+
+.nav-item-active {
+  border-bottom: solid #0d6efd 2px;
 }
 </style>
