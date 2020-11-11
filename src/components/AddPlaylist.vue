@@ -32,10 +32,12 @@
 
     <div class="col-auto ml-auto pr-1">
       <div class="dropdown">
-        <i class="mdi mdi-playlist-music mdi-24px" id="dropdownMenuButton" data-toggle="dropdown"></i>
-        <div class="dropdown-menu dropdown-menu-right" style="width: 500px">
-          <div class="row px-3 py-2">
-            <div class="col">
+        <i 
+          data-toggle="dropdown"
+          class="mdi mdi-playlist-music mdi-24px" 
+        ></i>
+        <div class="dropdown-menu dropdown-menu-right" style="width: 300px">
+            <div class="px-3 py-2">
               <input 
                 v-model="playlistId" 
                 type="email" 
@@ -44,15 +46,15 @@
                 placeholder="Playlist id"
               >
             </div>
-            <div class="col-auto">
+            <div class="d-flex w-100 pr-3">
               <button 
                 @click="addPlaylistToPlaylists(playlistId)" 
-                class="btn btn-primary btn-sm"
+                class="btn btn-primary btn-sm ml-auto"
               >
                 Add Playlist
               </button>
             </div>
-          </div>
+            <hr class="dropdown-divider mt-3">
           <ul class="list-group">
             <li class="list-group-item d-flex align-items-center border-0">
               <label for="checkboxCompactMode" class="form-check-label">
@@ -81,8 +83,7 @@
             </li>
             <li class="list-group-item d-flex align-items-center border-0">
               <label 
-                @click="setTheme" 
-                class="form-check-label"
+                class="form-check-label pr-4"
               >
                 Overlay opacity
               </label>
@@ -97,8 +98,7 @@
             </li>
             <li class="list-group-item d-flex align-items-center border-0">
               <label 
-                @click="setTheme" 
-                class="form-check-label"
+                class="form-check-label pr-4"
               >
                 Comments duration ({{ commentsDuration }}s)
               </label>
