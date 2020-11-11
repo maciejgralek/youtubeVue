@@ -55,7 +55,7 @@ import useYoutube from '../use-youtube'
 import useYoutubePlayer from '../use-youtube-player'
 import useUI from '../use-UI'
 import useStore from '../use-store'
-import tippy from 'tippy.js';
+import tippy, { followCursor } from 'tippy.js';
 
 export default {
   components: {
@@ -99,6 +99,8 @@ export default {
         arrow: true,
         delay: [1000, null],
         placement: 'right',
+        plugins: [followCursor],
+        followCursor: 'initial',
       });
     })
 
