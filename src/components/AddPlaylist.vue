@@ -75,7 +75,7 @@
                 Dark theme
               </label>
               <input 
-                v-model="currentTheme" 
+                v-model="darkTheme" 
                 class="ml-auto" 
                 type="checkbox" 
                 id="checkboxDarkMode"
@@ -176,7 +176,7 @@ export default {
     let {
       compactMode,
       setCompact,
-      currentTheme,
+      darkTheme,
       overlayOpacity,
       commentsDuration,
     } = useUI();
@@ -212,7 +212,7 @@ export default {
       addPlaylistToPlaylists,
       setCompact,
       compactMode,
-      currentTheme,
+      darkTheme,
       handleExportCopyToClipboard,
       searchRemote,
       exportString,

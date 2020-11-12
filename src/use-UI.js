@@ -12,13 +12,13 @@ let showComments = ref(true);
 let showCommentsPause = ref(false);
 let thumbnailWidth = ref(compactMode ? _compactThumbnailWidth : _normalThumbnailWidth);
 let thumbnailHeight = ref(compactMode ? _compactThumbnailHeight : _normalThumbnailHeight);
-let currentTheme = ref(false);
+let darkTheme = ref(false);
 let overlayOpacity = ref(70);
 let commentsDuration = ref(6);
 let columns = ref(3);
 
-watch(currentTheme, () => {
-  setTheme(currentTheme.value);
+watch(darkTheme, () => {
+  setTheme(darkTheme.value);
 })
 
 watch(compactMode, () => {
@@ -81,7 +81,7 @@ function setTheme(theme) {
       '--background-2', 
       'var(--bg-dark-2)'
     );
-    currentTheme.value = true;
+    darkTheme.value = true;
   }
   else {
     document.documentElement.style.setProperty(
@@ -132,7 +132,7 @@ function setTheme(theme) {
       '--background-2', 
       'var(--bg-light-2)'
     );
-    currentTheme.value = false;
+    darkTheme.value = false;
   }
 }
 
@@ -172,7 +172,7 @@ export default function useUI() {
     showCommentsPause,
     setComments,
     compactMode,
-    currentTheme,
+    darkTheme,
     overlayOpacity,
     commentsDuration,
     columns,
