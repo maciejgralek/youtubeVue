@@ -142,6 +142,7 @@ function loadVideo(video) {
     getCommentsRemote(id, false);
     if (video.resourceId) {
       currentVideo.value = video;
+      document.title = currentVideo.value.title;
     }
     else {
       currentVideo.value = video.snippet;

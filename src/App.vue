@@ -21,6 +21,7 @@ export default {
     Player,
   },
   setup() {
+    document.title = "YTPlay";
     useKey();
   }
 }
