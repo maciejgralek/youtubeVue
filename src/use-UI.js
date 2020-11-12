@@ -27,39 +27,111 @@ watch(compactMode, () => {
 
 let {
   restoreSettings 
-} = useStoreSettings('UI', {currentTheme, compactMode, overlayOpacity, commentsDuration});
+} = useStoreSettings('UI', {darkTheme, compactMode, overlayOpacity, commentsDuration});
 
 restoreSettings();
 
 function setTheme(theme) {
   if (theme) {
-    document.documentElement.style.setProperty('--background', 'var(--bg-dark)');
-    document.documentElement.style.setProperty('--text-color', 'var(--text-color-dark)');
-    document.documentElement.style.setProperty('--background-player', 'var(--background-player-dark)');
-    document.documentElement.style.setProperty('--scroll-track', 'var(--scroll-track-color-dark)');
-    document.documentElement.style.setProperty('--scroll-thumb', 'var(--scroll-thumb-color-dark)');
-    document.documentElement.style.setProperty('--border-color', 'var(--border-color-dark)');
-    document.documentElement.style.setProperty('--input-background-color', 'var(--input-background-color-dark)');
-    document.documentElement.style.setProperty('--input-color', 'var(--input-color-dark)');
-    document.documentElement.style.setProperty('--input-border-color', 'var(--input-border-color-dark)');
-    document.documentElement.style.setProperty('--icon-color', 'var(--icon-color-dark)');
-    document.documentElement.style.setProperty('--modal-content-bg', 'var(--modal-content-bg-dark)');
-    document.documentElement.style.setProperty('--background-2', 'var(--bg-dark-2)');
+    document.documentElement.style.setProperty(
+      '--background',
+      'var(--bg-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--text-color',
+      'var(--text-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--background-player', 
+      'var(--background-player-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--scroll-track', 
+      'var(--scroll-track-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--scroll-thumb', 
+      'var(--scroll-thumb-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--border-color', 
+      'var(--border-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--input-background-color', 
+      'var(--input-background-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--input-color', 
+      'var(--input-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--input-border-color', 
+      'var(--input-border-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--icon-color', 
+      'var(--icon-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--modal-content-bg', 
+      'var(--modal-content-bg-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--background-2', 
+      'var(--bg-dark-2)'
+    );
     currentTheme.value = true;
   }
   else {
-    document.documentElement.style.setProperty('--background', 'var(--bg-light)');
-    document.documentElement.style.setProperty('--text-color', 'var(--text-color-light)');
-    document.documentElement.style.setProperty('--background-player', 'var(--background-player-light)');
-    document.documentElement.style.setProperty('--scroll-track', 'var(--scroll-track-color-light)');
-    document.documentElement.style.setProperty('--scroll-thumb', 'var(--scroll-thumb-color-light)');
-    document.documentElement.style.setProperty('--border-color', 'var(--border-color-light)');
-    document.documentElement.style.setProperty('--input-background-color', 'var(--input-background-color-light)');
-    document.documentElement.style.setProperty('--input-color', 'var(--input-color-light)');
-    document.documentElement.style.setProperty('--input-border-color', 'var(--input-border-color-light)');
-    document.documentElement.style.setProperty('--icon-color', 'var(--icon-color-light)');
-    document.documentElement.style.setProperty('--modal-content-bg', 'var(--modal-content-bg-light)');
-    document.documentElement.style.setProperty('--background-2', 'var(--bg-light-2)');
+    document.documentElement.style.setProperty(
+      '--background', 
+      'var(--bg-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--text-color', 
+      'var(--text-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--background-player', 
+      'var(--background-player-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--scroll-track', 
+      'var(--scroll-track-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--scroll-thumb', 
+      'var(--scroll-thumb-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--border-color', 
+      'var(--border-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--input-background-color', 
+      'var(--input-background-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--input-color', 
+      'var(--input-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--input-border-color', 
+      'var(--input-border-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--icon-color', 
+      'var(--icon-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--modal-content-bg', 
+      'var(--modal-content-bg-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--background-2', 
+      'var(--bg-light-2)'
+    );
     currentTheme.value = false;
   }
 }
