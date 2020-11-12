@@ -42,7 +42,7 @@ let playerWindowState = ref(playerWindowStates.MINIMIZED);
 let volume = ref(0);
 let isMuted = ref(false);
 let playMode = ref(playerPlaymodes.NEXT);
-let player = null;
+let _player = null;
 
 let { 
   restoreSettings 
@@ -68,16 +68,16 @@ function initPlayer(){
   playerEl.setAttribute('id', 'video-player');
   document.body.append(playerEl);
 
-  player = YouTubePlayer('video-player', {
+  _player = YouTubePlayer('video-player', {
     width: _playerDefaultWidth,
     height: _playerDefaultHeight,
   }); 
 
-  player.getVolume().then((res) => {
+  _player.getVolume().then((res) => {
     volume.value = res;
   });
 
-  player.getIframe().then(el => {
+  _player.getIframe().then(el => {
     el.style.right = _playerDefaultRight+"px";
     el.style.bottom = _playerDefaultBottom+"px";
   });
@@ -87,16 +87,16 @@ function initPlayer(){
 }
 
 function play() {
-  player.playVideo();
+  _player.playVideo();
 }
 
 function stop() {
-  player.stopVideo();
+  _player.stopVideo();
   currentVideo.value = null;
 }
 
 function pause() {
-  player.pauseVideo();
+  _player.pauseVideo();
 }
 
 function togglePlayPause() {
@@ -109,22 +109,22 @@ function togglePlayPause() {
 }
 
 function seekTo(seconds) {
-  player.seekTo(seconds);
+  _player.seekTo(seconds);
 }
 
 function setVolume(value) {
-  player.setVolume(value).then(() => {
+  _player.setVolume(value).then(() => {
     volume.value = value;
   });
 }
 
 function toggleMute() {
   if (!isMuted.value) {
-    player.mute();
+    _player.mute();
     isMuted.value = true;
   }
   else {
-    player.unMute();
+    _player.unMute();
     isMuted.value = false;
   }
 }
@@ -137,7 +137,7 @@ function loadVideo(video) {
   else {
     id = video.id.videoId;
   }
-  player.loadVideoById(id).then(() => {
+  _player.loadVideoById(id).then(() => {
     comments.value = [];
     getCommentsRemote(id, false);
     if (video.resourceId) {
@@ -151,7 +151,7 @@ function loadVideo(video) {
 }
 
 function getTime() {
-  return player.getCurrentTime();
+  return _player.getCurrentTime();
 }
 
 function prev() {
@@ -207,9 +207,9 @@ function setYoutubeWindow(state) {
     let w = isMobile.value ? _playerMobileDefaultWidth : _playerDefaultWidth;
     let h = isMobile.value ? _playerMobileDefaultHeight : _playerDefaultHeight;
 
-    player.getIframe().then(el => {
+    _player.getIframe().then(el => {
       el.style.transition = "right 0.3s,bottom 0.3s";
-      player.setSize(w, h);
+      _player.setSize(w, h);
       el.style.right = _playerDefaultRight+"px";
       el.style.bottom = _playerDefaultBottom+"px";
       playerWindowState.value = playerWindowStates.MINIMIZED;
@@ -222,9 +222,9 @@ function setYoutubeWindow(state) {
     let b = ((window.innerHeight - h)/2);
     let h2 = playerHeight.value + 120 + 2*marginUI;
     b = b < h2 ? h2 : b;
-    player.getIframe().then(el => {
+    _player.getIframe().then(el => {
       el.style.transition = "right 0.3s,bottom 0.3s";
-      player.setSize(w, h);
+      _player.setSize(w, h);
       el.style.right = l+"px";
       el.style.bottom = b+"px";
       playerWindowState.value = playerWindowStates.CENTER;
@@ -244,14 +244,14 @@ window.addEventListener('resize', (ev) => {
   }
 })
 
-player.on('stateChange', ev => {
+_player.on('stateChange', ev => {
   if (ev.data == playerStates.PLAYING) {
-    player.getDuration().then(time => {
+    _player.getDuration().then(time => {
       duration.value = Math.floor(time);
     });
     playerState.value = playerStates.PLAYING;
     _timer = setInterval(() => {
-      player.getCurrentTime().then(time => { 
+      _player.getCurrentTime().then(time => { 
         currentTime.value = time
       });
     }, 100);
