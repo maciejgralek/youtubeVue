@@ -177,7 +177,6 @@
             <div 
               class="progress-bar bg-danger" 
               role="progressbar" 
-              style="pointer-events: none"
               :style="{'width': (currentTime/duration) * 100 +'%'}" 
               aria-valuenow="0" 
               aria-valuemin="0" 
@@ -455,6 +454,7 @@ export default {
 .progress {
   height: 0.4rem !important;
   cursor: pointer;
+  pointer-events: none;
 }
 .progress-bar {
   transition: none;
