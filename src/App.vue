@@ -116,6 +116,10 @@ div[data-tippy-root]::-webkit-scrollbar {
   background-color: var(--input-background-color) !important;
 }
 
+.modal .list-group-item {
+  background-color: var(--background) !important;
+}
+
 // PLAYER
 
 #video-player {
