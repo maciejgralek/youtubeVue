@@ -37,24 +37,24 @@
           class="mdi mdi-playlist-music mdi-24px" 
         ></i>
         <div class="dropdown-menu dropdown-menu-right" style="width: 300px">
-            <div class="px-3 py-2">
-              <input 
-                v-model="playlistId" 
-                type="email" 
-                class="form-control 
-                form-control-sm" 
-                placeholder="Playlist id"
-              >
-            </div>
-            <div class="d-flex w-100 pr-3">
-              <button 
-                @click="addPlaylistToPlaylists(playlistId)" 
-                class="btn btn-primary btn-sm ml-auto"
-              >
-                Add Playlist
-              </button>
-            </div>
-            <hr class="dropdown-divider mt-3">
+          <div class="px-3 py-2">
+            <input 
+              v-model="playlistId" 
+              type="email" 
+              class="form-control 
+              form-control-sm" 
+              placeholder="Playlist id"
+            >
+          </div>
+          <div class="d-flex w-100 pr-3">
+            <button 
+              @click="addPlaylistToPlaylists(playlistId)" 
+              class="btn btn-primary btn-sm ml-auto"
+            >
+              Add Playlist
+            </button>
+          </div>
+          <hr class="dropdown-divider mt-3">
           <ul class="list-group">
             <li class="list-group-item d-flex align-items-center border-0">
               <label for="checkboxCompactMode" class="form-check-label">
@@ -112,9 +112,9 @@
               >
             </li>
             <li class="list-group-item d-flex align-items-center border-0">
-                <a href="" data-toggle="modal" data-target="#exampleModal">
-                  Export playlists as URL
-                </a>
+              <a href="" data-toggle="modal" data-target="#exampleModal">
+                Export playlists as URL
+              </a>
             </li>
           </ul>
         </div>
