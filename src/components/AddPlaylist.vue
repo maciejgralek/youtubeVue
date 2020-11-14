@@ -136,10 +136,32 @@
           ref="exportRef" 
           :value="exportString" 
           rows="3" 
-          class="form-control w-100 mb-2"
+          class="form-control w-100 mb-3"
         >
         </textarea>
-        <a href="" @click.prevent="handleExportCopyToClipboard">
+        <ul class="list-group mb-3">
+          <li 
+            v-for="(playlist, index) in playlists"
+            class="list-group-item d-flex align-items-center border-0"
+          >
+            <label 
+              :for="'checkboxPlaylistExport' + index" 
+              class="form-check-label"
+            >
+              {{ playlist.title }}
+            </label>
+            <input 
+              v-model="playlist.isExported" 
+              :id="'checkboxPlaylistExport' + index" 
+              type="checkbox" 
+              class="ml-auto" 
+            >
+          </li>
+        </ul>
+        <a 
+          href="" 
+          @click.prevent="handleExportCopyToClipboard"
+        >
           Copy to clipboard
         </a>
       </template>
@@ -148,7 +170,7 @@
 </template>
 
 <script>
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Modal from './Modal.vue'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
@@ -163,7 +185,6 @@ export default {
     let exportRef = ref(null);
     let playlistId = ref('');
     let searchString = ref('');
-    let exportString = ref('');
     let appUrl = "https://ytplay.netlify.app"
 
     let { 
@@ -183,13 +204,15 @@ export default {
 
     let state = useStore();
 
-    watchEffect(() => {
+    let exportString = computed(() => {
       let playlistsId = [];
       for(let playlist of playlists.value) {
-        playlistsId.push(playlist.id);   
+        if (playlist.isExported) {
+          playlistsId.push(playlist.id);   
+        }
       }
-      exportString.value = `${appUrl}/playlist/${playlistsId.join(',')}`; 
-    })
+      return `${appUrl}/playlist/${playlistsId.join(',')}`
+    });
 
     let debounceFilterInput = debounce(e => {
       state.filter = e.target.value;

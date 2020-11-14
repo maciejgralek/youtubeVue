@@ -143,6 +143,7 @@ function addPlaylist(id, local) {
     results: 0,
     nextPageToken: null,
     isLoading: false,
+    isExported: true,
   })
   getPlaylistRemote(playlist);
   _getPlaylistPropertiesRemote(playlist);
