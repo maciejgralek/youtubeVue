@@ -19,11 +19,11 @@
     </div>
   </div>
 
-  <div v-scroll="handleScroll" class="playlist">
-    <div v-show="!playlist.filteredItems.length" class="p-3">
+  <div v-scroll="handleScroll" class="playlist p-3">
+    <div v-show="!playlist.filteredItems.length">
       No items
     </div>
-    <ul class="list-unstyled p-3">
+    <ul class="list-unstyled">
       <transition-group name="list" tag="p">
         <li 
           v-for="(item, index) in playlist.filteredItems" 
