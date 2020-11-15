@@ -8,7 +8,7 @@
     </div>
   </transition>
 
-  <AddPlaylist />
+  <AppBar />
 
   <div class="row g-4 pt-1 pl-md-2 mr-4 mr-md-0" :class="'row-cols-lg-' + columns">
     <div v-if="searchRes.length" class="col search">
@@ -33,7 +33,7 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import AddPlaylist from './AddPlaylist.vue'
+import AppBar from './AppBar.vue'
 import YoutubePlaylist from './YoutubePlaylist.vue'
 import YoutubeSearch from './YoutubeSearch.vue'
 import useYoutube from '../use-youtube'
@@ -43,7 +43,7 @@ import useUI from '../use-UI'
 
 export default {
   components: {
-    AddPlaylist,
+    AppBar,
     YoutubePlaylist,
     YoutubeSearch,
     YoutubeComments,
