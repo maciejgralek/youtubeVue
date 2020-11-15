@@ -216,7 +216,7 @@ export default {
 
     let debounceFilterInput = debounce(e => {
       state.filter = e.target.value;
-    }, 500)
+    }, 200)
 
     function handleExportCopyToClipboard() {
       exportRef.value.select();
