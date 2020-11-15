@@ -31,7 +31,11 @@ async function getPlaylistRemote(playlist, nextPage) {
 
   playlist.nextPageToken = null;
 
+  playlist.isLoading = true;
+
   let res = await axios.get(queryUrl);
+
+  playlist.isLoading = false;
 
   for(let video of res.data.items) {
     video.snippet.el = ref(null);

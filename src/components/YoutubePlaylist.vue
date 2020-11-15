@@ -20,7 +20,14 @@
   </div>
 
   <div v-scroll="handleScroll" class="playlist p-3">
-    <div v-show="!playlist.filteredItems.length">
+    <div v-show="playlist.isLoading">
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div v-show="!playlist.filteredItems.length && !playlist.isLoading">
       No items
     </div>
     <ul class="list-unstyled">
