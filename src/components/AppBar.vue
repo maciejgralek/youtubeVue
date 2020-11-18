@@ -132,7 +132,7 @@
       </template>
       <template v-slot:default>
         <textarea 
-          ref="exportRef" 
+          ref="exportEl" 
           :value="exportString" 
           rows="3" 
           class="form-control w-100 mb-3"
@@ -181,7 +181,7 @@ export default {
     Modal,
   },
   setup(props) {
-    let exportRef = ref(null);
+    let exportEl = ref(null);
     let playlistId = ref('');
     let searchString = ref('');
     let appUrl = "https://ytplay.netlify.app"
@@ -219,13 +219,13 @@ export default {
     }
 
     function handleExportCopyToClipboard() {
-      exportRef.value.select();
+      exportEl.value.select();
       document.execCommand('copy');
       window.getSelection().removeAllRanges();
     }
 
     return {
-      exportRef,
+      exportEl,
       playlistId,
       searchString,
       overlayOpacity,
