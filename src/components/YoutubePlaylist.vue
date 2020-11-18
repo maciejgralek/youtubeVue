@@ -3,7 +3,7 @@
     <span class="font-weight-bold">
       {{ playlist.title }} 
       <span class="badge bg-secondary mx-1">
-        {{ playlist.items.length }}
+        {{ playlist.filteredItems.length }}
       </span>
       <i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
     </span>
