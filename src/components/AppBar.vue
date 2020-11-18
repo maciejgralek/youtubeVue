@@ -22,8 +22,7 @@
       >
     </div>
     <div class="col-auto">
-      <!-- <button @click="searchRemote(searchString)" class="btn btn&#45;primary btn&#45;sm">Search</button> -->
-      <button @click="" class="btn btn-primary btn-sm">
+      <button @click="handleSearch" class="btn btn-primary btn-sm">
         Search
       </button>
     </div>
@@ -218,6 +217,10 @@ export default {
       state.filter = e.target.value;
     }, 200)
 
+    function handleSearch() {
+      searchRemote(searchString.value);
+    }
+
     function handleExportCopyToClipboard() {
       exportRef.value.select();
       document.execCommand('copy');
@@ -240,6 +243,7 @@ export default {
       searchRemote,
       exportString,
       commentsDuration,
+      handleSearch,
       debounceFilterInput,
     }
   }
