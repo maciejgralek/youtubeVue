@@ -204,12 +204,9 @@ export default {
     let state = useStore();
 
     let exportString = computed(() => {
-      let playlistsId = [];
-      for(let playlist of playlists.value) {
-        if (playlist.isExported) {
-          playlistsId.push(playlist.id);   
-        }
-      }
+      let playlistsId = playlists.value
+        .filter(item => item.isExported)
+        .map(item => item.id)
       return `${appUrl}/playlist/${playlistsId.join(',')}`
     });
 
