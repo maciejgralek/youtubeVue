@@ -114,7 +114,7 @@ async function getCommentsRemote(videoId, nextPage) {
 }
 
 async function searchRemote(value, nextPage) {
-  _searchLast = nextPage ? searchLast : value;
+  _searchLast = nextPage ? _searchLast : value;
   let query = {
     q: _searchLast,
   }
