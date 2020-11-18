@@ -20,7 +20,7 @@
   </div>
 
   <div v-scroll="handleScroll" class="playlist p-3">
-    <div v-show="playlist.isLoading">
+    <div v-show="playlist.isLoading && !playlist.items.length">
       <div class="d-flex justify-content-center">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -52,6 +52,13 @@
         </li>
       </transition-group>
     </ul>
+    <div v-show="playlist.isLoading && playlist.items.length">
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
