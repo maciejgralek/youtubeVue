@@ -27,7 +27,7 @@ watch(compactMode, () => {
 
 let {
   restoreSettings 
-} = useStoreSettings('UI', {darkTheme, compactMode, overlayOpacity, commentsDuration});
+} = useStoreSettings('UI', {darkTheme, compactMode, overlayOpacity, commentsDuration, showComments});
 
 restoreSettings();
 
