@@ -23,7 +23,7 @@ export default function useStoreSettings(name, settings) {
     if (settingsJSON) {
       let restoredSettings = JSON.parse(settingsJSON);
       for (let [key, value] of Object.entries(settings)) {
-        if (restoredSettings[key] && isRef(settings[key])) {
+        if (restoredSettings[key] != undefined && isRef(settings[key])) {
           settings[key].value = restoredSettings[key];
         }
       }
