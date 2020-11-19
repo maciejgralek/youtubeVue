@@ -147,7 +147,13 @@
               :for="'checkboxPlaylistExport' + index" 
               class="form-check-label"
             >
-              {{ playlist.title }}
+              <span>
+                {{ playlist.title }}
+                <i 
+                  v-show="playlist.local" 
+                  class="mdi mdi-star mdi-icon-orange"
+                ></i>
+              </span>
             </label>
             <input 
               v-model="playlist.isExported" 
@@ -258,7 +264,7 @@ input[type=checkbox] {
   transform: scale(1.2);
 }
 
-.mdi-icon-addplaylist:before {
+.mdi-icon-orange:before {
   color: orange;
 }
 </style>
