@@ -130,23 +130,12 @@ function toggleMute() {
 }
 
 function loadVideo(video) {
-  let id;
-  if (video.resourceId) {
-    id = video.resourceId.videoId;
-  }
-  else {
-    id = video.id.videoId;
-  }
+  let id = video.resourceId.videoId;
   _player.loadVideoById(id).then(() => {
     comments.value = [];
     getCommentsRemote(id, false);
-    if (video.resourceId) {
-      currentVideo.value = video;
-      document.title = currentVideo.value.title;
-    }
-    else {
-      currentVideo.value = video.snippet;
-    }
+    currentVideo.value = video;
+    document.title = currentVideo.value.title;
   });
 }
 

@@ -103,7 +103,7 @@ export default {
 
     function handleClickPlaylistItem(video) {
       if (video != currentVideo.value) {
-        loadVideo(video);
+        loadVideo(video.snippet);
         play();
       }
     }

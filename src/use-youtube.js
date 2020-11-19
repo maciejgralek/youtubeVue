@@ -124,16 +124,12 @@ async function searchRemote(value, nextPage) {
   let queryUrl = createUrl(googleApiRemote + 'search?', query);
 
   let res = await axios.get(queryUrl);
-  if (nextPage) {
-    searchRes.value = searchRes.value.concat(
-      res.data.items.filter(item => item.id.kind == "youtube#video")
-    );
-  }
-  else {
-    searchRes.value = res.data.items.filter(
-      item => item.id.kind == "youtube#video"
-    );
-  }
+
+  searchRes.value = searchRes.value.concat(
+    res.data.items.filter(item => item.id.kind == "youtube#video")
+  );
+  searchRes.value.map(item => item.snippet.resourceId = item.id);
+
   _searchNextPageToken = res.data.nextPageToken;
 }
 
