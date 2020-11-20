@@ -16,6 +16,7 @@ let darkTheme = ref(false);
 let overlayOpacity = ref(70);
 let commentsDuration = ref(6);
 let columns = ref(3);
+let isAboutVisible = ref(false);
 
 watch(darkTheme, () => {
   setTheme(darkTheme.value);
@@ -126,6 +127,7 @@ function setTheme(theme) {
     );
     document.documentElement.style.setProperty(
       '--modal-content-bg', 
+
       'var(--modal-content-bg-light)'
     );
     document.documentElement.style.setProperty(
@@ -176,5 +178,6 @@ export default function useUI() {
     overlayOpacity,
     commentsDuration,
     columns,
+    isAboutVisible,
   }
 }
