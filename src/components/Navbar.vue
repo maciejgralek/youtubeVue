@@ -11,7 +11,7 @@
           <a class="nav-link active" aria-current="page" href="#">Playlists</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">About</a>
+          <a @click.prevent="handleClickAbout" class="nav-link" aria-current="page" href="#">About</a>
         </li>
       </ul>
       </div>
@@ -20,9 +20,19 @@
 </template>
 
 <script>
+import useUI from '../use-UI'
+
 export default {
   setup() {
-  
+    let { isAboutVisible } = useUI();
+
+    function handleClickAbout () {
+      isAboutVisible.value = isAboutVisible.value ? false : true;
+    }
+
+    return {
+      handleClickAbout,
+    }
   }
 }
 </script>

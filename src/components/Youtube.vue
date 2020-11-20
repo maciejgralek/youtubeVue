@@ -1,4 +1,8 @@
 <template>
+  <transition name="fade-about">
+    <About v-if="isAboutVisible"></About>
+  </transition>
+
   <transition name="fade">
     <div 
       v-if="playerWindowState == 2" 
@@ -36,6 +40,7 @@ import { ref, computed, onMounted } from 'vue'
 import AppBar from './AppBar.vue'
 import YoutubePlaylist from './YoutubePlaylist.vue'
 import YoutubeSearch from './YoutubeSearch.vue'
+import About from './About.vue'
 import useYoutube from '../use-youtube'
 import useYoutubePlayer from '../use-youtube-player'
 import YoutubeComments from './YoutubeComments.vue'
@@ -47,6 +52,7 @@ export default {
     YoutubePlaylist,
     YoutubeSearch,
     YoutubeComments,
+    About,
   },
   props: {
     params: String,
@@ -83,6 +89,7 @@ export default {
       overlayOpacity,
       marginUI,
       columns,
+      isAboutVisible,
     } = useUI();
 
     // METHODS
@@ -111,6 +118,7 @@ export default {
       playerHeight,
       overlayOpacity,
       styleBottomMargin,
+      isAboutVisible,
     }
   }
 }
@@ -148,6 +156,12 @@ export default {
   transition: opacity .7s !important;
 }
 .fade-enter-from, .fade-leave-to {
+  opacity: 0 !important;
+}
+.fade-about-enter-active, .fade-about-leave-active {
+  transition: opacity .5s !important;
+}
+.fade-about-enter-from, .fade-about-leave-to {
   opacity: 0 !important;
 }
 .fade-comment-enter-active, .fade-comment-leave-active {
