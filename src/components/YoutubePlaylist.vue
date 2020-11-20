@@ -106,10 +106,14 @@ export default {
 
     let state = useStore();
 
+    let tippyPlaylist = [];
+
     // METHODS
 
     onUpdated(() => {
-      tippy('[data-tippy-content]', {
+      tippyPlaylist.forEach(i => i.destroy());
+      tippyPlaylist = [];
+      tippyPlaylist = tippy('.tippy-' + props.playlist.id, {
         arrow: true,
         delay: [1000, null],
         placement: 'right',
@@ -119,10 +123,10 @@ export default {
     })
 
     function classListPlaylistItem(item) {
-      if (!currentVideo.value.resourceId) return;
       return {
         'font-weight-bold': item.snippet == currentVideo.value,
         'playlist-item-play': item.snippet == currentVideo.value,
+        ['tippy-' + props.playlist.id]: true,
       }
     } 
 
