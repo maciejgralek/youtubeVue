@@ -9,12 +9,12 @@
 
 <script>
 export default {
-	setup(props) {
-		
-		return {
-			
-		}
-	}
+  setup(props) {
+    
+    return {
+      
+    }
+  }
 }
 </script>
 
