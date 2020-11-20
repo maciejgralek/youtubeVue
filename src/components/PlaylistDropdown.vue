@@ -29,19 +29,19 @@
         </a>
       </li>
       <li ><hr class="dropdown-divider"></li>
-      <li v-show="playlist.local">
-        <a class="dropdown-item d-flex align-items-center" href="#">
-          <i class="mdi mdi-chevron-right mdi-dropdown-icon pr-1"></i>
-          Move to right
-        </a>
-      </li>
-      <li v-show="playlist.local">
-        <a class="dropdown-item d-flex align-items-center" href="#">
-          <i class="mdi mdi-chevron-left mdi-dropdown-icon pr-1"></i>
-          Move to left
-        </a>
-      </li>
-      <li v-show="playlist.local"><hr class="dropdown-divider"></li>
+      <!-- <li v&#45;show="playlist.local"> -->
+      <!--   <a class="dropdown&#45;item d&#45;flex align&#45;items&#45;center" href="#"> -->
+      <!--     <i class="mdi mdi&#45;chevron&#45;right mdi&#45;dropdown&#45;icon pr&#45;1"></i> -->
+      <!--     Move to right -->
+      <!--   </a> -->
+      <!-- </li> -->
+      <!-- <li v&#45;show="playlist.local"> -->
+      <!--   <a class="dropdown&#45;item d&#45;flex align&#45;items&#45;center" href="#"> -->
+      <!--     <i class="mdi mdi&#45;chevron&#45;left mdi&#45;dropdown&#45;icon pr&#45;1"></i> -->
+      <!--     Move to left -->
+      <!--   </a> -->
+      <!-- </li> -->
+      <!-- <li v&#45;show="playlist.local"><hr class="dropdown&#45;divider"></li> -->
       <li>
         <a class="dropdown-item d-flex align-items-center" href="#">
           <i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
