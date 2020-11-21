@@ -117,17 +117,21 @@
       <div class="col-auto d-none d-md-block">
         <div 
           @click="handleClickVolume" 
-          class="progress bg-secondary" 
-          style="width: 150px"
+          class="progress-container pt-2 pb-1"
         >
           <div 
-            class="progress-bar bg-danger" 
-            role="progressbar" 
-            style="pointer-events: none"
-            :style="{'width': volume +'%'}" 
-            aria-valuenow="0" 
-            aria-valuemin="0" 
-            aria-valuemax="100">
+            class="progress bg-secondary" 
+            style="width: 150px"
+          >
+            <div 
+              class="progress-bar bg-danger" 
+              role="progressbar" 
+              style="pointer-events: none"
+              :style="{'width': volume +'%'}" 
+              aria-valuenow="0" 
+              aria-valuemin="0" 
+              aria-valuemax="100">
+            </div>
           </div>
         </div>
       </div>
