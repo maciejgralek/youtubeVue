@@ -454,7 +454,6 @@ export default {
 .progress {
   height: 0.4rem !important;
   cursor: pointer;
-  pointer-events: none;
 }
 .progress-bar {
   transition: none;
