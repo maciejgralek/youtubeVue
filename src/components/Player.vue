@@ -92,50 +92,8 @@
 
       <!-- VOLUME -->
 
-      <div class="col-auto ml-auto pr-0">
-        <transition name="fade-fast" mode="out-in">
-          <i 
-            v-if="volume > 50 && !isMuted" 
-            @click="handleClickVolumeIcon" 
-            v-tippy="'Mute'"
-            class="mdi mdi-volume-high mdi-player-icon"
-          ></i>
-          <i 
-            v-else-if="volume <= 50 && volume > 0 && !isMuted" 
-            @click="handleClickVolumeIcon" 
-            v-tippy="'Mute'"
-            class="mdi mdi-volume-medium mdi-player-icon"
-          ></i>
-          <i 
-            v-else-if="volume == 0 || isMuted" 
-            @click="handleClickVolumeIcon" 
-            v-tippy="'Mute'"
-            class="mdi mdi-volume-off mdi-player-icon"
-          ></i>
-        </transition>
-      </div>
-      <div class="col-auto d-none d-md-block">
-        <div 
-          @click="handleClickVolume" 
-          class="progress-container pt-2 pb-1"
-        >
-          <div 
-            class="progress bg-secondary" 
-            style="width: 150px"
-          >
-            <div 
-              class="progress-bar bg-danger" 
-              role="progressbar" 
-              style="pointer-events: none"
-              :style="{'width': volume +'%'}" 
-              aria-valuenow="0" 
-              aria-valuemin="0" 
-              aria-valuemax="100">
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <PlayerVolume />
+      
       <!-- COMMENTS FULLSCREEN -->
 
       <div class="col-auto d-none d-md-block mr-1">
@@ -195,12 +153,16 @@
 
 <script>
 import { ref, computed, onMounted, watchEffect, watch } from 'vue'
+import PlayerVolume from './PlayerVolume'
 import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
 import { ifMinAddDigit } from '../tools'
 
 export default {
+  components: {
+    PlayerVolume,
+  },
   setup(props) {
 
     let showHours = false;
@@ -352,15 +314,6 @@ export default {
       );
     }
 
-    function handleClickVolume(ev) {
-      let volume = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * 100;
-      setVolume(volume);
-    }
-
-    function handleClickVolumeIcon() {
-      toggleMute();
-    }
-
     function handleClickPrevious() {
       if (currentTime.value > 5 || playMode.value == 3) {
         seekTo(0);
@@ -403,8 +356,6 @@ export default {
       formatedTime,
       durationTime,
       duration,
-      volume,
-      isMuted,
       playerStates,
       playerPlaymodes,
       playerState,
@@ -416,8 +367,6 @@ export default {
       handleYoutubeWindowClick,
       handleClickProgress,
       handleWheel,
-      handleClickVolume,
-      handleClickVolumeIcon,
       handleClickPlayMode,
       handleProgressMouseMove,
       handleMouseleaveProgress,
