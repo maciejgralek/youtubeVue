@@ -1,43 +1,45 @@
 <template>
-  <div class="col-auto ml-auto pr-0">
-    <transition name="fade-fast" mode="out-in">
-      <i 
-        v-if="volume > 50 && !isMuted" 
-        @click="handleClickVolumeIcon" 
-        v-tippy="'Mute'"
-        class="mdi mdi-volume-high mdi-player-icon"
-      ></i>
-      <i 
-        v-else-if="volume <= 50 && volume > 0 && !isMuted" 
-        @click="handleClickVolumeIcon" 
-        v-tippy="'Mute'"
-        class="mdi mdi-volume-medium mdi-player-icon"
-      ></i>
-      <i 
-        v-else-if="volume == 0 || isMuted" 
-        @click="handleClickVolumeIcon" 
-        v-tippy="'Mute'"
-        class="mdi mdi-volume-off mdi-player-icon"
-      ></i>
-    </transition>
-  </div>
-  <div class="col-auto d-none d-md-block">
-    <div 
-      @click="handleClickVolume" 
-      class="progress-container pt-2 pb-1"
-    >
+  <div class="row align-items-center g-2">
+    <div class="col-auto">
+      <transition name="fade-fast" mode="out-in">
+        <i 
+          v-if="volume > 50 && !isMuted" 
+          @click="handleClickVolumeIcon" 
+          v-tippy="'Mute'"
+          class="mdi mdi-volume-high mdi-player-icon"
+        ></i>
+        <i 
+          v-else-if="volume <= 50 && volume > 0 && !isMuted" 
+          @click="handleClickVolumeIcon" 
+          v-tippy="'Mute'"
+          class="mdi mdi-volume-medium mdi-player-icon"
+        ></i>
+        <i 
+          v-else-if="volume == 0 || isMuted" 
+          @click="handleClickVolumeIcon" 
+          v-tippy="'Mute'"
+          class="mdi mdi-volume-off mdi-player-icon"
+        ></i>
+      </transition>
+    </div>
+    <div class="col-auto d-none d-md-block">
       <div 
-        class="progress bg-secondary" 
-        style="width: 150px"
+        @click="handleClickVolume" 
+        class="progress-container pt-2 pb-2"
       >
         <div 
-          class="progress-bar bg-danger" 
-          role="progressbar" 
-          style="pointer-events: none"
-          :style="{'width': volume +'%'}" 
-          aria-valuenow="0" 
-          aria-valuemin="0" 
-          aria-valuemax="100">
+          class="progress bg-secondary" 
+          style="width: 150px"
+        >
+          <div 
+            class="progress-bar bg-danger" 
+            role="progressbar" 
+            style="pointer-events: none"
+            :style="{'width': volume +'%'}" 
+            aria-valuenow="0" 
+            aria-valuemin="0" 
+            aria-valuemax="100">
+          </div>
         </div>
       </div>
     </div>

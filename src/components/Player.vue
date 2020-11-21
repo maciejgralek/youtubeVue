@@ -92,7 +92,9 @@
 
       <!-- VOLUME -->
 
-      <PlayerVolume />
+      <div class="col-auto ml-auto">
+        <PlayerVolume />
+      </div>
       
       <!-- COMMENTS FULLSCREEN -->
 
