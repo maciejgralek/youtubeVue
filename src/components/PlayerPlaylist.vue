@@ -96,4 +96,11 @@ export default {
   font-size: 36px;
   line-height: normal;
 }
+
+.fade-fast-enter-active, .fade-fast-leave-active {
+  transition: opacity .05s;
+}
+.fade-fast-enter-from, .fade-fast-leave-to {
+  opacity: 0;
+}
 </style>
