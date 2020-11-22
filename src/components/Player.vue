@@ -29,9 +29,7 @@
         v-if="currentVideo.title && duration" 
         class="col-auto border-right border-secondary"
       >
-        <span class="timer font-weight-bold mx-3">
-          {{ formatedTime }} - {{ durationTime }}
-        </span>
+        <PlayerTimer />
       </div>
 
       <!-- NEXT -->
@@ -156,6 +154,7 @@
 <script>
 import { ref, computed, onMounted, watchEffect, watch } from 'vue'
 import PlayerVolume from './PlayerVolume'
+import PlayerTimer from './PlayerTimer'
 import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
@@ -163,12 +162,11 @@ import { ifMinAddDigit } from '../tools'
 
 export default {
   components: {
+    PlayerTimer,
     PlayerVolume,
   },
   setup(props) {
 
-    let showHours = false;
-    let showMinutes = false;
     let isProgressDragging = false;
 
     // DATA
@@ -207,49 +205,7 @@ export default {
       setComments,
     } = useUI();
 
-    // WATCH
-    
-    watchEffect(() => {
-      showHours = false;
-      showMinutes = false;
-      let hours = Math.trunc((Math.floor(duration.value) / 60 / 60) % 60);
-      let minutes = Math.trunc((duration.value / 60) % 60);
-      if (hours) {
-        showHours = true;
-        showMinutes = true;
-      }
-      if (minutes) showMinutes = true;
-    })
-
     // COMPUTED
-
-    let durationTime = computed(() => {
-      let hours = Math.trunc((Math.floor(duration.value) / 60 / 60) % 60);
-      let minutes = Math.trunc((duration.value / 60) % 60);
-      let seconds = duration.value % 60;
-      hours > 0 ? (hours = hours < 10 ? '0' + hours : hours) : '';
-      minutes = ifMinAddDigit(minutes);
-      seconds = ifMinAddDigit(seconds);
-      return (hours ? hours + ':' : '') + minutes + ':' + seconds;
-    })
-
-    let formatedTime = computed(() => {
-      let time = "";
-      if (currentTime.value == undefined) currentTime.value = 0;
-      if (showHours) {
-        let hours = Math.trunc((Math.floor(currentTime.value) / 60 / 60) % 60);
-        hours = ifMinAddDigit(hours);
-        time = hours + ':';
-      }
-      if (showMinutes) {
-        let minutes = Math.trunc((Math.floor(currentTime.value) / 60) % 60);
-        minutes = ifMinAddDigit(minutes);
-        time += minutes + ':';
-      }
-      let seconds = Math.floor(currentTime.value) % 60;
-      seconds = ifMinAddDigit(seconds);
-      return time + seconds;
-    })
 
     let playButtonMode = computed(() => {
       return playerState.value == playerStates.PAUSED || 
@@ -355,8 +311,6 @@ export default {
       progressRef,
       currentVideo,
       currentTime,
-      formatedTime,
-      durationTime,
       duration,
       playerStates,
       playerPlaymodes,
