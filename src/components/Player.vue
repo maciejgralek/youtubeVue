@@ -38,39 +38,7 @@
         v-if="currentVideo.title" 
         class="col-auto border-right border-secondary"
       >
-        <i 
-          @click="handleClickPrevious"
-          v-tippy="'Previous'"
-          class="mdi mdi-skip-previous mdi-player-icon-play"
-        ></i>
-        <i 
-          @click="handleClickNext"
-          v-tippy="'Next'"
-          class="mdi mdi-skip-next mdi-player-icon-play"
-        ></i>
-        <transition name="fade-fast" mode="out-in">
-          <i 
-            v-if="playMode == playerPlaymodes.NEXT" 
-            @click="handleClickPlayMode" 
-            key="next"
-            v-tippy="'Next'"
-            class="mdi mdi-shuffle-disabled mdi-player-icon"
-          ></i>
-          <i 
-            v-else-if="playMode == playerPlaymodes.SHUFFLE" 
-            @click="handleClickPlayMode" 
-            key="shuffle"
-            v-tippy="'Shuffle'"
-            class="mdi mdi-shuffle mdi-player-icon"
-          ></i>
-          <i 
-            v-else-if="playMode == playerPlaymodes.REPEAT"
-            @click="handleClickPlayMode" 
-            key="repeat"
-            v-tippy="'Repeat'"
-            class="mdi mdi-repeat mdi-player-icon"
-          ></i>
-        </transition>
+        <PlayerPlaylist />
       </div>
 
       <!-- TITLE -->
@@ -147,6 +115,7 @@ import { ref, computed, onMounted, watchEffect, watch } from 'vue'
 import PlayerVolume from './PlayerVolume'
 import PlayerTimer from './PlayerTimer'
 import PlayerTitle from './PlayerTitle'
+import PlayerPlaylist from './PlayerPlaylist'
 import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
@@ -156,6 +125,7 @@ export default {
   components: {
     PlayerTimer,
     PlayerTitle,
+    PlayerPlaylist,
     PlayerVolume,
   },
   setup(props) {
@@ -242,13 +212,6 @@ export default {
       setVolume(i > 100 ? 100 : i < 0 ? 0 : i);
     }
 
-    function handleClickPlayMode() {
-      playMode.value++;
-      if (playMode.value > 3) {
-        playMode.value = 1;
-      }
-    }
-
     function handleMouseleaveProgress() {
       isProgressDragging = false;
     }
@@ -301,11 +264,8 @@ export default {
       handleYoutubeWindowClick,
       handleClickProgress,
       handleWheel,
-      handleClickPlayMode,
       handleProgressMouseMove,
       handleMouseleaveProgress,
-      handleClickPrevious,
-      handleClickNext,
       showComments,
       setComments,
     }
