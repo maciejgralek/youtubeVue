@@ -80,7 +80,7 @@
       <div class="col text-truncate">
         <transition name="fade" mode="out-in">
           <span 
-            @click="scrollToCurrentVideo" 
+            @click="handleClickTitle" 
             v-tippy-player="tippyVideoDescriptionContent" 
             :key="currentVideo.title" 
             class="video-title font-weight-bold mx-3"
@@ -346,7 +346,7 @@ export default {
     }
     
 
-    function scrollToCurrentVideo() {
+    function handleClickTitle() {
       currentVideo.value.el.scrollIntoView({ block: "center" });
     }
 
@@ -374,8 +374,8 @@ export default {
       handleMouseleaveProgress,
       handleClickPrevious,
       handleClickNext,
+      handleClickTitle,
       tippyVideoDescriptionContent,
-      scrollToCurrentVideo,
       showComments,
       setComments,
     }
