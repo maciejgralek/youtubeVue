@@ -2,7 +2,7 @@
   <div class="playlist-header d-flex align-items-center pl-3 py-2 mb-1" >
     <span class="font-weight-bold">
       {{ playlist.title }} 
-      <span class="badge bg-secondary mx-1">
+      <span v-show="playlist.items.length" class="badge bg-secondary mx-1">
         {{ playlist.filteredItems.length }}
       </span>
       <i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
