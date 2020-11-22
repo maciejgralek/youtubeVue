@@ -76,16 +76,7 @@
       <!-- TITLE -->
 
       <div class="col text-truncate">
-        <transition name="fade" mode="out-in">
-          <span 
-            @click="handleClickTitle" 
-            v-tippy-player="tippyVideoDescriptionContent" 
-            :key="currentVideo.title" 
-            class="video-title font-weight-bold mx-3"
-          >
-            {{ currentVideo.title }}
-          </span>
-        </transition>
+        <PlayerTitle />
       </div>
 
       <!-- VOLUME -->
@@ -155,6 +146,7 @@
 import { ref, computed, onMounted, watchEffect, watch } from 'vue'
 import PlayerVolume from './PlayerVolume'
 import PlayerTimer from './PlayerTimer'
+import PlayerTitle from './PlayerTitle'
 import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
@@ -163,6 +155,7 @@ import { ifMinAddDigit } from '../tools'
 export default {
   components: {
     PlayerTimer,
+    PlayerTitle,
     PlayerVolume,
   },
   setup(props) {
@@ -291,21 +284,6 @@ export default {
       play();
     }
 
-    function tippyVideoDescriptionContent () {
-      let videoId = currentVideo.value.resourceId ? 
-        currentVideo.value.resourceId.videoId : '';
-      let youtubeUrl = `<a href="https://youtube.com/watch?v=${videoId}">Watch on YouTube</a>`
-      let videoDescritpion = currentVideo.value.description ? 
-        currentVideo.value.description.replace(/(?:\r\n|\r|\n)/g, '<br>') : 
-        'No description'
-      return `<div class="mb-2">${videoDescritpion} <hr> ${youtubeUrl}</div>`
-    }
-    
-
-    function handleClickTitle() {
-      currentVideo.value.el.scrollIntoView({ block: "center" });
-    }
-
     return {
       playerRef,
       progressRef,
@@ -328,8 +306,6 @@ export default {
       handleMouseleaveProgress,
       handleClickPrevious,
       handleClickNext,
-      handleClickTitle,
-      tippyVideoDescriptionContent,
       showComments,
       setComments,
     }
@@ -350,12 +326,6 @@ export default {
 }
 .timer {
   font-size: 1.55em;
-}
-.video-title {
-  font-size: 1em;
-}
-.video-title:hover {
-  cursor: pointer;
 }
 .progress-container {
   cursor: pointer;
