@@ -124,28 +124,18 @@ export default {
       currentTime, 
       duration, 
       volume,
-      isMuted,
       playerState, 
-      playerWindowState,
       play, 
       stop, 
       pause,
       seekTo,
       prev,
       next,
-      loadVideo,
-      playMode,
-      getTime,
       setVolume,
-      toggleMute,
-      setYoutubeWindow,
-      toggleYoutubeWindow,
     } = useYoutubePlayer();
 
     let { 
       setPlayerHeight,
-      showComments,
-      setComments,
     } = useUI();
 
     // COMPUTED
@@ -204,25 +194,6 @@ export default {
       );
     }
 
-    function handleClickPrevious() {
-      if (currentTime.value > 5 || playMode.value == 3) {
-        seekTo(0);
-      }
-      else {
-        let video = prev();
-        video.el.scrollIntoView({ block: 'center' });
-        loadVideo(video);
-        play();
-      }
-    }
-
-    function handleClickNext() {
-      let video = next();
-      video.el.scrollIntoView({ block: 'center' });
-      loadVideo(video);
-      play();
-    }
-
     return {
       playerRef,
       progressRef,
@@ -232,9 +203,7 @@ export default {
       playerStates,
       playerPlaymodes,
       playerState,
-      playerWindowState,
       playButtonMode,
-      playMode,
       handleClickPlay,
       handleClickPause,
       handleClickProgress,
