@@ -56,31 +56,9 @@
       <!-- COMMENTS FULLSCREEN -->
 
       <div class="col-auto d-none d-md-block mr-1">
-        <i 
-          v-if="showComments" 
-          @click="setComments" 
-          v-tippy="'Show comments'" 
-          class="mdi mdi-comment-outline mdi-player-icon-mini"
-        ></i>
-        <i 
-          v-else 
-          @click="setComments" 
-          v-tippy="'Show comments'" 
-          class="mdi mdi-comment-remove-outline mdi-player-icon-mini"
-        ></i>
-        <i 
-          v-if="playerWindowState == 1" 
-          @click="handleYoutubeWindowClick" 
-          v-tippy="'Fullscreen'" 
-          class="mdi mdi-square-rounded-outline mdi-player-icon"
-        ></i>
-        <i 
-          v-else 
-          @click="handleYoutubeWindowClick" 
-          v-tippy="'Fullscreen'" 
-          class="mdi mdi-arrow-top-left-thick mdi-player-icon"
-        ></i>
+        <PlayerIcons />
       </div>
+
     </div>
 
     <div class="row">
@@ -116,6 +94,7 @@ import PlayerVolume from './PlayerVolume'
 import PlayerTimer from './PlayerTimer'
 import PlayerTitle from './PlayerTitle'
 import PlayerPlaylist from './PlayerPlaylist'
+import PlayerIcons from './PlayerIcons'
 import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
@@ -127,6 +106,7 @@ export default {
     PlayerTitle,
     PlayerPlaylist,
     PlayerVolume,
+    PlayerIcons,
   },
   setup(props) {
 
@@ -189,10 +169,6 @@ export default {
 
     function handleClickPause() {
       pause();
-    }
-
-    function handleYoutubeWindowClick() {
-      toggleYoutubeWindow();
     }
 
     function handleClickProgress(ev) {
@@ -261,13 +237,10 @@ export default {
       playMode,
       handleClickPlay,
       handleClickPause,
-      handleYoutubeWindowClick,
       handleClickProgress,
       handleWheel,
       handleProgressMouseMove,
       handleMouseleaveProgress,
-      showComments,
-      setComments,
     }
   }
 }
