@@ -63,26 +63,7 @@
 
     <div class="row">
       <div class="col mx-1">
-        <div 
-          ref="progressRef" 
-          @mousedown="handleClickProgress" 
-          @mouseup="handleClickProgress" 
-          @mousemove="handleProgressMouseMove" 
-          @mouseleave="handleMouseleaveProgress"
-          v-tippy-progress 
-          class="progress-container pt-2 pb-1"
-        >
-          <div class="progress bg-secondary">
-            <div 
-              class="progress-bar bg-danger" 
-              role="progressbar" 
-              :style="{'width': (currentTime/duration) * 100 +'%'}" 
-              aria-valuenow="0" 
-              aria-valuemin="0" 
-              aria-valuemax="100">
-            </div>
-          </div>
-        </div>
+        <PlayerProgress />
       </div>
     </div>
   </div>
@@ -95,6 +76,7 @@ import PlayerTimer from './PlayerTimer'
 import PlayerTitle from './PlayerTitle'
 import PlayerPlaylist from './PlayerPlaylist'
 import PlayerIcons from './PlayerIcons'
+import PlayerProgress from './PlayerProgress'
 import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
 import useUI from '../use-UI'
 import { ifMinAddDigit } from '../tools'
@@ -106,28 +88,24 @@ export default {
     PlayerPlaylist,
     PlayerVolume,
     PlayerIcons,
+    PlayerProgress,
   },
   setup(props) {
-
-    let isProgressDragging = false;
 
     // DATA
 
     let playerRef = ref(null);
-    let progressRef = ref(null);
 
     // COMPOSITION
 
     let { 
       currentVideo, 
-      currentTime, 
       duration, 
       volume,
       playerState, 
       play, 
       stop, 
       pause,
-      seekTo,
       prev,
       next,
       setVolume,
@@ -160,52 +138,19 @@ export default {
       pause();
     }
 
-    function handleClickProgress(ev) {
-      if (!currentVideo.value) return;
-      if (ev.type == 'mousedown') {
-        let seconds = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
-        isProgressDragging = true;
-        seekTo(seconds);
-      }
-      else if (ev.type == 'mouseup') {
-        isProgressDragging = false;
-      }
-    }
-
     function handleWheel(ev) {
       let i = volume.value + ev.deltaY/200 * -1 * 5;
       setVolume(i > 100 ? 100 : i < 0 ? 0 : i);
     }
 
-    function handleMouseleaveProgress() {
-      isProgressDragging = false;
-    }
-
-    function handleProgressMouseMove(ev) {
-      let seconds = Math.floor(((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value);
-      if (isProgressDragging) {
-        seekTo(seconds);
-      }
-      progressRef.value.tippyProgress.setContent(
-        ifMinAddDigit(Math.trunc(seconds/60/60)%60) + ':' + 
-        ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + 
-        ifMinAddDigit(Math.trunc(seconds%60))
-      );
-    }
-
     return {
       playerRef,
-      progressRef,
       currentVideo,
-      currentTime,
       duration,
       playButtonMode,
       handleClickPlay,
       handleClickPause,
-      handleClickProgress,
       handleWheel,
-      handleProgressMouseMove,
-      handleMouseleaveProgress,
     }
   }
 }
@@ -224,17 +169,6 @@ export default {
 }
 .timer {
   font-size: 1.55em;
-}
-.progress-container {
-  cursor: pointer;
-}
-.progress {
-  height: 0.4rem !important;
-  cursor: pointer;
-  pointer-events: none;
-}
-.progress-bar {
-  transition: none;
 }
 
 /* MDI */
