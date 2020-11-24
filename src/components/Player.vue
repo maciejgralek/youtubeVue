@@ -167,9 +167,6 @@ export default {
   box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
   z-index: 1020;
 }
-.timer {
-  font-size: 1.55em;
-}
 
 /* MDI */
 

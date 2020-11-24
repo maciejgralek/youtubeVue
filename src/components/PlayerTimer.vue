@@ -68,5 +68,7 @@ export default {
 </script>
 
 <style scoped>
-
+.timer {
+  font-size: 1.55em;
+}
 </style>
