@@ -262,7 +262,7 @@ export default {
 }
 
 input[type=checkbox] {
-  transform: scale(1.2);
+  transform: scale(1.25);
 }
 
 .mdi-icon-orange:before {
