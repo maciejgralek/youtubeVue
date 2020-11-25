@@ -261,6 +261,10 @@ export default {
   border-right-color: var(--border-color) !important;
 }
 
+.dropdown-menu .form-control {
+  background: var(--background)
+}
+
 input[type=checkbox] {
   transform: scale(1.25);
 }
