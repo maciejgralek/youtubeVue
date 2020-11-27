@@ -33,30 +33,36 @@ async function getPlaylistRemote(playlist, nextPage) {
 
   playlist.isLoading = true;
 
-  let res = await axios.get(queryUrl);
+  try {
+    let res = await axios.get(queryUrl);
 
-  playlist.isLoading = false;
+    for(let video of res.data.items) {
+      video.snippet.el = ref(null);
+      video.snippet.description = video.snippet.description.replace(
+        regexpTime, match => {
+          return '<a href="">' + match + '</a>';
+        });
+    }
 
-  for(let video of res.data.items) {
-    video.snippet.el = ref(null);
-    video.snippet.description = video.snippet.description.replace(
-      regexpTime, match => {
-        return '<a href="">' + match + '</a>';
-      });
+    playlist.items = playlist.items.concat(res.data.items.filter(
+      item => item.snippet.title != "Private video"
+    ));
+    playlist.filteredItems = computed(() => {
+      let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
+      return playlist.items.filter(
+        item => item.snippet.title.search(regexp) >= 0
+      );
+    });
+    playlist.results = res.data.pageInfo.totalResults;
+
+    playlist.nextPageToken = res.data.nextPageToken;
   }
+  catch (err) {
 
-  playlist.items = playlist.items.concat(res.data.items.filter(
-    item => item.snippet.title != "Private video"
-  ));
-  playlist.filteredItems = computed(() => {
-    let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
-    return playlist.items.filter(
-      item => item.snippet.title.search(regexp) >= 0
-    );
-  });
-  playlist.results = res.data.pageInfo.totalResults;
-
-  playlist.nextPageToken = res.data.nextPageToken;
+  }
+  finally {
+    playlist.isLoading = false;
+  }
 }
 
 async function _getPlaylistPropertiesRemote(playlist) {
