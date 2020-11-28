@@ -71,9 +71,13 @@ async function _getPlaylistPropertiesRemote(playlist) {
   }
   let queryUrl = createUrl(googleApiRemote + 'playlists?', query);
 
-  let res = await axios.get(queryUrl);
+  try {
+    let res = await axios.get(queryUrl);
+    playlist.title = res.data.items[0].snippet.title;
+  }
+  catch (err) {
 
-  playlist.title = res.data.items[0].snippet.title;
+  }
 }
 
 async function getChannelPlaylists(id) {
