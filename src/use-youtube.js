@@ -110,12 +110,9 @@ async function getCommentsRemote(videoId, nextPage) {
   let queryUrl = createUrl(googleApiRemote + 'comments?', query);
   try {
     let res = await axios.get(queryUrl);
-    if (nextPage && _commentsNextPageToken) {
-      comments.value = comments.value.concat(res.data.items);
-    }
-    else {
-      comments.value = res.data.items;
-    }
+
+    comments.value = comments.value.concat(res.data.items);
+
     _commentsNextPageToken = res.data.nextPageToken;
   }
   catch (err) {
