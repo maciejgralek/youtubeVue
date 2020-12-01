@@ -152,8 +152,6 @@ function addPlaylist(id, local) {
     isLoading: false,
     isExported: true,
   })
-  getPlaylistRemote(playlist);
-  _getPlaylistPropertiesRemote(playlist);
 
   return playlist;
 }
@@ -161,6 +159,8 @@ function addPlaylist(id, local) {
 function addPlaylistToPlaylists(id, local) {
   let playlist = addPlaylist(id, local);
   playlists.value.push(playlist);
+  getPlaylistRemote(playlist);
+  _getPlaylistPropertiesRemote(playlist);
 }
 
 function addSavedPlaylists() {
@@ -168,6 +168,8 @@ function addSavedPlaylists() {
   for (let p of pl) {
     let playlist = addPlaylist(p.id, true);
     playlists.value.push(playlist);
+    getPlaylistRemote(playlist);
+    _getPlaylistPropertiesRemote(playlist);
   }
 }
 
@@ -175,6 +177,8 @@ function addUrlPlaylists(request) {
   for (let i of request) {
     let playlist = addPlaylist(i);
     playlists.value.push(playlist);
+    getPlaylistRemote(playlist);
+    _getPlaylistPropertiesRemote(playlist);
   }
 }
 
@@ -187,6 +191,8 @@ function reloadPlaylist(playlist) {
   let index = findPlaylistIndex(playlist);
   let reloadedPlaylist = addPlaylist(playlist.id)
   playlists.value[index] = reloadedPlaylist;
+  getPlaylistRemote(reloadedPlaylist);
+  _getPlaylistPropertiesRemote(reloadedPlaylist);
 }
 
 function removeSearch() {
