@@ -52,7 +52,7 @@ export default {
 }
 
 .nav-item {
-  font-size: 1.1em !important;
+  font-size: 1.0em !important;
 }
 
 .nav-item-active {
