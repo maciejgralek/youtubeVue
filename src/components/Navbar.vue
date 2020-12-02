@@ -7,9 +7,6 @@
     </button>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto ml-2 mb-0 my-1">
-        <li class="nav-item nav-item-active">
-          <a class="nav-link active" aria-current="page" href="#">Playlists</a>
-        </li>
         <li class="nav-item">
           <a @click.prevent="handleClickAbout" class="nav-link" aria-current="page" href="#">About</a>
         </li>
