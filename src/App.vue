@@ -35,7 +35,7 @@ export default {
   // light
 
   --bg-light:                       #{$light};
-  --bg-light-2:                     #{$light};
+  --bg-light-2:                     #f4f4f4;
   --background-player-light:        #eaeaea;
   --text-color-light:               #212529;
   --icon-color-light:               #212529;
