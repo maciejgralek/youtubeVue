@@ -41,7 +41,7 @@ export default {
     function handleClickProgress(ev) {
       if (!currentVideo.value) return;
       if (ev.type == 'mousedown') {
-        let seconds = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
+        let seconds = ((ev.x - progressRef.value.offsetLeft)/progressRef.value.clientWidth) * duration.value;
         isProgressDragging = true;
         seekTo(seconds);
       }
@@ -85,7 +85,6 @@ export default {
 .progress {
   height: 0.4rem !important;
   cursor: pointer;
-  pointer-events: none;
 }
 .progress-bar {
   transition: none;
