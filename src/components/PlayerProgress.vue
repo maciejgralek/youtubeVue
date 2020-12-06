@@ -84,9 +84,12 @@ export default {
 }
 .progress {
   height: 0.4rem !important;
+  overflow: visible;
   cursor: pointer;
 }
 .progress-bar {
   transition: none;
+}
+.progress-container:hover .progress .progress-bar {
 }
 </style>
