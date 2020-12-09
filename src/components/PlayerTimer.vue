@@ -1,5 +1,5 @@
 <template>
-  <span class="timer font-weight-bold mx-3">
+  <span class="timer fw-bold mx-3">
     {{ formatedTime }} - {{ durationTime }}
   </span>
 </template>

@@ -8,7 +8,7 @@
 
       <!-- PLAY -->
 
-      <div class="col-auto border-right border-secondary pr-1">
+      <div class="col-auto border-right border-secondary pe-1">
         <transition name="fade-fast" mode="out-in">
           <i 
             v-if="playButtonMode" 
@@ -49,13 +49,13 @@
 
       <!-- VOLUME -->
 
-      <div class="col-auto ml-auto">
+      <div class="col-auto ms-auto">
         <PlayerVolume />
       </div>
       
       <!-- COMMENTS FULLSCREEN -->
 
-      <div class="col-auto d-none d-md-block mr-1">
+      <div class="col-auto d-none d-md-block me-1">
         <PlayerIcons />
       </div>
 

@@ -1,12 +1,12 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark py-0">
   <div class="container-fluid">
-    <a class="navbar-brand font-weight-bold" href="#">YTPlay</a>
+    <a class="navbar-brand fw-bold" href="#">YTPlay</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ml-auto ml-2 py-1">
+      <ul class="navbar-nav ms-auto ms-2 py-1">
         <li class="nav-item">
           <a @click.prevent="handleClickAbout" class="nav-link" aria-current="page" href="#">About</a>
         </li>

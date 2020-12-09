@@ -1,9 +1,9 @@
 <template>
-  <div class="row align-items-center py-3 pt-4 pr-3">
+  <div class="row align-items-center py-3 pt-4 pe-3">
 
     <!-- FILTER -->
 
-    <div class="col-4 ml-auto border-right">
+    <div class="col-4 ms-auto border-right">
       <input 
         @input="debounceFilterInput"
         type="search" 
@@ -30,10 +30,10 @@
 
     <!-- PLAYLIST DROPDOWN -->
 
-    <div class="col-auto ml-auto pr-1">
+    <div class="col-auto ms-auto pe-1">
       <div class="dropdown">
         <i 
-          data-toggle="dropdown"
+          data-bs-toggle="dropdown"
           class="mdi mdi-playlist-music mdi-24px" 
         ></i>
         <div class="dropdown-menu dropdown-menu-right" style="width: 300px">
@@ -46,10 +46,10 @@
               placeholder="Playlist id"
             >
           </div>
-          <div class="d-flex w-100 pr-3">
+          <div class="d-flex w-100 pe-3">
             <button 
               @click="addPlaylistToPlaylists(playlistId)" 
-              class="btn btn-primary btn-sm ml-auto"
+              class="btn btn-primary btn-sm ms-auto"
             >
               Add Playlist
             </button>
@@ -64,7 +64,7 @@
                 v-model="compactMode" 
                 type="checkbox" 
                 id="checkboxCompactMode"
-                class="ml-auto" 
+                class="ms-auto" 
               >
             </li>
             <li class="list-group-item d-flex align-items-center border-0">
@@ -76,21 +76,21 @@
               </label>
               <input 
                 v-model="darkTheme" 
-                class="ml-auto" 
+                class="ms-auto" 
                 type="checkbox" 
                 id="checkboxDarkMode"
               >
             </li>
             <li class="list-group-item d-flex align-items-center border-0">
               <label 
-                class="form-check-label pr-4"
+                class="form-check-label pe-4"
               >
                 Overlay opacity
               </label>
               <input 
                 v-model.number="overlayOpacity" 
                 type="range" 
-                class="ml-auto" 
+                class="ms-auto" 
                 min="0" 
                 max="100" 
                 step="10" 
@@ -98,14 +98,14 @@
             </li>
             <li class="list-group-item d-flex align-items-center border-0">
               <label 
-                class="form-check-label pr-4"
+                class="form-check-label pe-4"
               >
                 Comments duration ({{ commentsDuration }}s)
               </label>
               <input 
                 v-model.number="commentsDuration" 
                 type="range" 
-                class="ml-auto" 
+                class="ms-auto" 
                 min="3" 
                 max="15" 
                 step="1" 
@@ -160,7 +160,7 @@
               v-model="playlist.isExported" 
               :id="'checkboxPlaylistExport' + index" 
               type="checkbox" 
-              class="ml-auto" 
+              class="ms-auto" 
             >
           </li>
         </ul>

@@ -4,7 +4,7 @@
       @click="handleClickTitle" 
       v-tippy-player="tippyVideoDescriptionContent" 
       :key="currentVideo.title" 
-      class="video-title font-weight-bold mx-3"
+      class="video-title fw-bold mx-3"
     >
       {{ currentVideo.title }}
     </span>

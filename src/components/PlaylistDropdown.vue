@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown">
-    <i class="mdi mdi-dots-vertical" style="font-size: 1.45em" data-toggle="dropdown"></i>
+    <i class="mdi mdi-dots-vertical" style="font-size: 1.45em" data-bs-toggle="dropdown"></i>
     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
       <li>
         <a @click.prevent="emit('close-playlist')" class="dropdown-item d-flex align-items-center" href="#">

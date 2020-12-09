@@ -1,13 +1,13 @@
 <template>
-  <div class="playlist-header d-flex align-items-center pl-3 py-2 mb-1" >
-    <span class="font-weight-bold">
+  <div class="playlist-header d-flex align-items-center ps-3 py-2 mb-1" >
+    <span class="fw-bold">
       {{ playlist.title }} 
       <span v-show="playlist.items.length" class="badge bg-secondary mx-1">
         {{ playlist.filteredItems.length }}
       </span>
       <i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
     </span>
-    <div class="ml-auto">
+    <div class="ms-auto">
       <PlaylistDropdown 
         :playlist="playlist"
         @close-playlist="handleClosePlaylist"
@@ -46,7 +46,7 @@
             :width="thumbnailWidth"
             :height="thumbnailHeight"
             alt=""
-            class="pr-2" 
+            class="pe-2" 
           >
           {{ item.snippet.title }}
         </li>
@@ -124,7 +124,7 @@ export default {
 
     function classListPlaylistItem(item) {
       return {
-        'font-weight-bold': item.snippet == currentVideo.value,
+        'fw-bold': item.snippet == currentVideo.value,
         'playlist-item-play': item.snippet == currentVideo.value,
         ['tippy-' + props.playlist.id]: true,
       }
