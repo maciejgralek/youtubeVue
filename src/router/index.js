@@ -1,14 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Youtube from '../components/Youtube.vue'
+import YoutubeView from '../components/YoutubeView.vue'
 
 const routes = [
   {
     path: '/',
-    component: Youtube,
+    component: YoutubeView,
   },
   {
     path: '/playlist/:params',
-    component: Youtube,
+    component: YoutubeView,
     props: true,
   },
 ]

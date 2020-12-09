@@ -1,37 +1,39 @@
 <template>
-  <transition name="fade-about">
-    <About v-if="isAboutVisible"></About>
-  </transition>
+  <!-- <transition name="fade&#45;about"> -->
+  <!--   <About v&#45;if="isAboutVisible"></About> -->
+  <!-- </transition> -->
 
-  <transition name="fade">
-    <div 
-      v-if="playerWindowState == 2" 
-      class="backdrop" 
-      :style="{ opacity: (100-overlayOpacity)/100 }"
-    >
+  <div>
+    <transition name="fade">
+      <div 
+        v-if="playerWindowState == 2" 
+        class="backdrop" 
+        :style="{ opacity: (100-overlayOpacity)/100 }"
+      >
+      </div>
+    </transition>
+    
+    <AppBar />
+    
+    <div class="row g-4 pt-1 ps-md-2 me-4 me-md-0" :class="'row-cols-lg-' + columns">
+      <div v-if="searchRes.length" class="col search">
+        <YoutubeSearch :items="searchRes" />
+      </div>
+    
+      <div 
+        v-for="(playlist, index) in playlists" 
+        class="col playlist"
+      >
+        <YoutubePlaylist :playlist="playlist"/>
+      </div>
     </div>
-  </transition>
-
-  <AppBar />
-
-  <div class="row g-4 pt-1 pl-md-2 mr-4 mr-md-0" :class="'row-cols-lg-' + columns">
-    <div v-if="searchRes.length" class="col search">
-      <YoutubeSearch :items="searchRes" />
+    
+    <transition name="fade-comment" mode="out-in">
+      <YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
+    </transition>
+    
+    <div :style="styleBottomMargin">
     </div>
-
-    <div 
-      v-for="(playlist, index) in playlists" 
-      class="col playlist"
-    >
-      <YoutubePlaylist :playlist="playlist"/>
-    </div>
-  </div>
-
-  <transition name="fade-comment" mode="out-in">
-    <YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
-  </transition>
-
-  <div :style="styleBottomMargin">
   </div>
 </template>
 

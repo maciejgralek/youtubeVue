@@ -24,7 +24,8 @@ export default {
     let { isAboutVisible } = useUI();
 
     function handleClickAbout () {
-      isAboutVisible.value = isAboutVisible.value ? false : true;
+      // isAboutVisible.value = isAboutVisible.value ? false : true;
+      isAboutVisible.value = isAboutVisible.value == 'Youtube' ? 'About' : 'Youtube';
     }
 
     return {
