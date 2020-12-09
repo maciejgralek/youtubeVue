@@ -45,7 +45,7 @@ export default {
 }
 
 .navbar-dark {
-  background-color: lighten($dark, 10) !important;
+  background-color: #4b545c;
 }
 
 .nav-item {

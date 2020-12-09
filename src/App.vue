@@ -34,33 +34,33 @@ export default {
 :root {
   // light
 
-  --bg-light:                       #{$light};
+  --bg-light:                       #{#f4f4f4};
   --bg-light-2:                     #f4f4f4;
   --background-player-light:        #eaeaea;
   --text-color-light:               #212529;
   --icon-color-light:               #212529;
-  --scroll-track-color-light:       #{$light};
+  --scroll-track-color-light:       #{#f8f9fa};
   --scroll-thumb-color-light:       #dae0e5;
   --border-color-light:             #dee2e6;
   --input-background-color-light:   #ffffff;
   --input-color-light:              #495057;
   --input-border-color-light:       #ced4da;
-  --modal-content-bg-light:         #{$light};
+  --modal-content-bg-light:         #{#f8f9fa};
 
   // dark
 
-  --bg-dark:                       #{$dark};
-  --bg-dark-2:                     #{lighten($dark, 2)};
-  --background-player-dark:        #{lighten($dark, 2)};
-  --text-color-dark:               #{darken($light, 3)};
-  --icon-color-dark:               #{darken($light, 6)};
-  --scroll-track-color-dark:       #{$dark};
-  --scroll-thumb-color-dark:       #{$secondary};
-  --border-color-dark:             #{$secondary};
-  --input-background-color-dark:   #{darken($dark, 3)};
-  --input-color-dark:              #{darken($light, 3)};
-  --input-border-color-dark:       #{lighten($dark, 10)};
-  --modal-content-bg-dark:         #{$dark};
+  --bg-dark:                       #{#343a40};
+  --bg-dark-2:                     #{#262a2f};
+  --background-player-dark:        #{#393f46};
+  --text-color-dark:               #{#eff1f4};
+  --icon-color-dark:               #{#e6eaed};
+  --scroll-track-color-dark:       #{#343a40};
+  --scroll-thumb-color-dark:       #{#6c757d};
+  --border-color-dark:             #{#6c757d};
+  --input-background-color-dark:   #{#2d3238};
+  --input-color-dark:              #{#eff1f4};
+  --input-border-color-dark:       #{#4b545c};
+  --modal-content-bg-dark:         #{#212529};
 
   // theme
 
