@@ -50,7 +50,7 @@ export default {
   // dark
 
   --bg-dark:                       #343a40;
-  --bg-dark-2:                     #262a2f;
+  --bg-dark-2:                     #393f46;
   --background-player-dark:        #393f46;
   --text-color-dark:               #eff1f4;
   --icon-color-dark:               #e6eaed;
