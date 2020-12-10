@@ -16,7 +16,7 @@ let darkTheme = ref(false);
 let overlayOpacity = ref(70);
 let commentsDuration = ref(6);
 let columns = ref(3);
-let isAboutVisible = ref('Youtube');
+let isAboutVisible = ref(false);
 
 watch(darkTheme, () => {
   setTheme(darkTheme.value);

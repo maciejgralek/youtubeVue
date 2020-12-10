@@ -25,7 +25,7 @@ export default {
 
     function handleClickAbout () {
       // isAboutVisible.value = isAboutVisible.value ? false : true;
-      isAboutVisible.value = isAboutVisible.value == 'Youtube' ? 'About' : 'Youtube';
+      isAboutVisible.value = isAboutVisible.value == true ? false : true;
     }
 
     return {
