@@ -1,7 +1,7 @@
 <template>
-  <!-- <transition name="fade&#45;about"> -->
-  <!--   <About v&#45;if="isAboutVisible"></About> -->
-  <!-- </transition> -->
+  <transition name="fade-about">
+    <About v-if="isAboutVisible"></About>
+  </transition>
 
   <div>
     <transition name="fade">
