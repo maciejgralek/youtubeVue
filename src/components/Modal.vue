@@ -1,6 +1,6 @@
 <template>
   <div 
-    id="exampleModal" 
+    :id="id"
     tabindex="-1" 
     aria-labelledby="ModalLabel" 
     aria-hidden="true"
@@ -46,6 +46,9 @@ import useUI from '../use-UI'
 import useStore from '../use-store'
 
 export default {
+  props: {
+    id: String,
+  },
   setup(props, { emit }) {
     let isModalOpen = ref(false);
     
