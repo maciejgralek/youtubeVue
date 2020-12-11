@@ -126,11 +126,13 @@
 
   <teleport to="body">
     <Modal id="exportModal">
+
       <template v-slot:header>
         <h5 class="modal-title" id="exampleModalLabel">
           Export playlists
         </h5>
       </template>
+
       <template v-slot:default>
         <textarea 
           ref="exportEl" 
@@ -171,6 +173,7 @@
           Copy to clipboard
         </a>
       </template>
+
     </Modal>
   </teleport>
 </template>
