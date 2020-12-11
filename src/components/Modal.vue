@@ -14,7 +14,7 @@
 
           <button 
             type="button" 
-            data-dismiss="modal" 
+            data-bs-dismiss="modal" 
             aria-label="Close"
             class="btn-close" 
           >
@@ -28,7 +28,7 @@
         <div class="modal-footer">
           <button 
             type="button" 
-            data-dismiss="modal"
+            data-bs-dismiss="modal"
             class="btn btn-secondary" 
           >
             Close

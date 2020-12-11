@@ -112,7 +112,7 @@
               >
             </li>
             <li class="list-group-item d-flex align-items-center border-0">
-              <a href="" data-toggle="modal" data-target="#exampleModal">
+              <a href="" data-bs-toggle="modal" data-bs-target="#exportModal">
                 Export playlists as URL
               </a>
             </li>
