@@ -1,6 +1,6 @@
 <template>
     <div class="playlist-header d-flex align-items-center pl-3 py-2 mb-1">
-        <span class="font-weight-bold">
+        <span class="fw-bold">
           Search
           <span class="badge bg-secondary ml-1">
             {{ items.length }}
@@ -86,7 +86,7 @@ export default {
 
     function classListPlaylistItem(item) {
       return {
-        'font-weight-bold': item.snippet == currentVideo.value,
+        'fw-bold': item.snippet == currentVideo.value,
         'playlist-item-play': item.snippet == currentVideo.value,
       }
     } 

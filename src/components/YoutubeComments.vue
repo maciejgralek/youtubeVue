@@ -16,7 +16,7 @@
         <div class="col">
           <transition name="fade" mode="out-in">
             <span :key="comments[commentIndex].id">
-              <span class="font-weight-bold">
+              <span class="fw-bold">
                 {{ authorComment }}
               </span>
               {{ textComment }}
