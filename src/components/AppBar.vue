@@ -125,7 +125,7 @@
   <!-- EXPORT MODAL -->
 
   <teleport to="body">
-    <Modal>
+    <Modal id="exportModal">
       <template v-slot:header>
         <h5 class="modal-title" id="exampleModalLabel">
           Export playlists
