@@ -8,7 +8,7 @@
 
       <!-- PLAY -->
 
-      <div class="col-auto border-right border-secondary pe-1">
+      <div class="col-auto border-end border-secondary pe-1">
         <transition name="fade-fast" mode="out-in">
           <i 
             v-if="playButtonMode" 
@@ -27,7 +27,7 @@
 
       <div 
         v-if="currentVideo.title && duration" 
-        class="col-auto border-right border-secondary"
+        class="col-auto border-end border-secondary"
       >
         <PlayerTimer />
       </div>
@@ -36,7 +36,7 @@
 
       <div 
         v-if="currentVideo.title" 
-        class="col-auto border-right border-secondary"
+        class="col-auto border-end border-secondary"
       >
         <PlayerPlaylist />
       </div>
