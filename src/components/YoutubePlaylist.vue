@@ -116,7 +116,7 @@ export default {
       tippyPlaylist = tippy('.tippy-' + props.playlist.id, {
         arrow: true,
         delay: [1000, null],
-        placement: 'right',
+        placement: 'right-start',
         plugins: [followCursor],
         followCursor: 'initial',
       });
