@@ -4,27 +4,27 @@
     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
       <li>
         <a @click.prevent="emit('close-playlist')" class="dropdown-item d-flex align-items-center" href="#">
-          <i class="mdi mdi-close mdi-dropdown-icon pr-1"></i>
+          <i class="mdi mdi-close mdi-dropdown-icon pe-1"></i>
           Close playlist
         </a>
       </li>
       <li><hr class="dropdown-divider"></li>
       <li>
         <a @click.prevent="emit('reload-playlist')" class="dropdown-item d-flex align-items-center" href="#">
-          <i class="mdi mdi-reload mdi-dropdown-icon pr-1"></i>
+          <i class="mdi mdi-reload mdi-dropdown-icon pe-1"></i>
           Reload playlist
         </a>
       </li>
       <li><hr class="dropdown-divider"></li>
       <li v-if="!playlist.local">
         <a @click.prevent="emit('save-playlist')" class="dropdown-item d-flex align-items-center" href="#">
-          <i class="mdi mdi-star mdi-dropdown-icon pr-1"></i>
+          <i class="mdi mdi-star mdi-dropdown-icon pe-1"></i>
           Save playlist
         </a>
       </li>
       <li v-else>
         <a @click.prevent="emit('delete-playlist')" class="dropdown-item d-flex align-items-center" href="#">
-          <i class="mdi mdi-star-outline mdi-dropdown-icon pr-1"></i>
+          <i class="mdi mdi-star-outline mdi-dropdown-icon pe-1"></i>
           Delete playlist
         </a>
       </li>
@@ -44,13 +44,13 @@
       <!-- <li v&#45;show="playlist.local"><hr class="dropdown&#45;divider"></li> -->
       <li>
         <a class="dropdown-item d-flex align-items-center" href="#">
-          <i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
+          <i class="mdi mdi-youtube mdi-dropdown-icon pe-1"></i>
           Open in youtube
         </a>
       </li>
       <li>
         <a @click.prevent="emit('edit-in-youtube')" class="dropdown-item d-flex align-items-center" href="#">
-          <i class="mdi mdi-youtube mdi-dropdown-icon pr-1"></i>
+          <i class="mdi mdi-youtube mdi-dropdown-icon pe-1"></i>
           Edit in youtube
         </a>
       </li>
