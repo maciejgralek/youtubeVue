@@ -60,7 +60,7 @@ export default {
   --input-background-color-dark:   #2d3238;
   --input-color-dark:              #eff1f4;
   --input-border-color-dark:       #4b545c;
-  --modal-content-bg-dark:         #212529;
+  --modal-content-bg-dark:         #343a40;
 
   // theme
 
