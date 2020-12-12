@@ -267,6 +267,7 @@ export default function useYoutube() {
     savePlaylist,
     loadPlaylists,
     deleteSavedPlaylist,
+    addPlaylist,
   }
 
 }
