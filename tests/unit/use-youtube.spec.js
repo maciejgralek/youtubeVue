@@ -25,7 +25,8 @@ describe('useYoutube', () => {
       }
     })
 
-    let playlist = await addPlaylist('test', false);
+    let playlist = addPlaylist('test', false);
+    await getPlaylistRemote(playlist);
     console.log(playlist)
   })
 })
