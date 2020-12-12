@@ -5,7 +5,6 @@
     @mouseup="handleClickProgress" 
     @mousemove="debounceProgressMouseMove($event), handleProgressMouseMoveUpdateTooltip($event)" 
     @mouseleave="handleMouseleaveProgress"
-    @drag="() => console.log('drag')"
     v-tippy-progress 
     class="progress-container pt-2 pb-1"
   >
