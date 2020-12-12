@@ -53,6 +53,7 @@ export default {
       seconds.value = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
       if (ev.type == 'mousedown') {
         isProgressDragging.value = true;
+        document.getSelection().removeAllRanges();
         seekTo(seconds.value);
       }
       else if (ev.type == 'mouseup') {
