@@ -63,7 +63,10 @@ export default {
     }
 
     function handleMouseleaveProgress() {
-      isProgressDragging.value = false;
+      if (isProgressDragging.value) {
+        isProgressDragging.value = false;
+        seekTo(seconds.value);
+      }
     }
 
     function handleProgressMouseMove(ev) {
