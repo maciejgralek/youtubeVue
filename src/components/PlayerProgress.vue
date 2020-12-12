@@ -3,16 +3,18 @@
     ref="progressRef" 
     @mousedown="handleClickProgress" 
     @mouseup="handleClickProgress" 
-    @mousemove="handleProgressMouseMove" 
+    @mousemove="debounceProgressMouseMove($event), handleProgressMouseMoveUpdateTooltip($event)" 
     @mouseleave="handleMouseleaveProgress"
+    @drag="() => console.log('drag')"
     v-tippy-progress 
     class="progress-container pt-2 pb-1"
   >
     <div class="progress bg-secondary">
       <div 
+        ref="progressbarRef"
         class="progress-bar bg-danger" 
         role="progressbar" 
-        :style="{'width': (currentTime/duration) * 100 +'%'}" 
+        :style="{'width': ((isProgressDragging ? seconds : currentTime)/duration) * 100 +'%'}" 
         aria-valuenow="0" 
         aria-valuemin="0" 
         aria-valuemax="100">
@@ -25,11 +27,14 @@
 import { ref } from 'vue'
 import useYoutubePlayer from '../use-youtube-player.js'
 import { ifMinAddDigit } from '../tools'
+import { debounce } from 'lodash'
 
 export default {
   setup() {
-    let isProgressDragging = false;
+    let isProgressDragging = ref(false);
     let progressRef = ref(null);
+    let progressbarRef = ref(null);
+    let seconds = ref(0);
 
     let { 
       currentVideo,
@@ -38,41 +43,55 @@ export default {
       seekTo,
     } = useYoutubePlayer();
 
+    let debounceProgressMouseMove = debounce(ev => {
+      handleProgressMouseMove(ev);
+    }, 100)
+
     function handleClickProgress(ev) {
       if (!currentVideo.value) return;
+      seconds.value = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
       if (ev.type == 'mousedown') {
-        let seconds = ((ev.x - progressRef.value.offsetLeft)/progressRef.value.clientWidth) * duration.value;
-        isProgressDragging = true;
-        seekTo(seconds);
+        isProgressDragging.value = true;
+        seekTo(seconds.value);
       }
       else if (ev.type == 'mouseup') {
-        isProgressDragging = false;
+        isProgressDragging.value = false;
+        currentTime.value = seconds.value;
       }
     }
 
     function handleMouseleaveProgress() {
-      isProgressDragging = false;
+      isProgressDragging.value = false;
     }
 
     function handleProgressMouseMove(ev) {
-      let seconds = Math.floor(((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value);
-      if (isProgressDragging) {
-        seekTo(seconds);
+      if (isProgressDragging.value) {
+        seekTo(seconds.value)
       }
+    }
+
+    function handleProgressMouseMoveUpdateTooltip(ev) {
+      seconds.value = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
+      let secondsTooltip = Math.floor(seconds.value);
       progressRef.value.tippyProgress.setContent(
-        ifMinAddDigit(Math.trunc(seconds/60/60)%60) + ':' + 
-        ifMinAddDigit((Math.trunc(seconds/60)%60)) + ':' + 
-        ifMinAddDigit(Math.trunc(seconds%60))
+        ifMinAddDigit(Math.trunc(secondsTooltip/60/60)%60) + ':' + 
+        ifMinAddDigit((Math.trunc(secondsTooltip/60)%60)) + ':' + 
+        ifMinAddDigit(Math.trunc(secondsTooltip%60))
       );
     }
 
     return {
       progressRef,
+      progressbarRef,
       currentTime,
       duration,
       handleClickProgress,
       handleMouseleaveProgress,
       handleProgressMouseMove,
+      debounceProgressMouseMove,
+      handleProgressMouseMoveUpdateTooltip,
+      seconds,
+      isProgressDragging,
     }
   }
 }
@@ -86,6 +105,7 @@ export default {
   height: 0.4rem !important;
   overflow: visible;
   cursor: pointer;
+  pointer-events: none;
 }
 .progress-bar {
   transition: none;
