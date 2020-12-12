@@ -3,7 +3,7 @@
     ref="progressRef" 
     @mousedown="handleClickProgress" 
     @mouseup="handleClickProgress" 
-    @mousemove="debounceProgressMouseMove($event), handleProgressMouseMoveUpdateTooltip($event)" 
+    @mousemove="debounceProgressMouseMove($event), handleProgressMouseMove($event)" 
     @mouseleave="handleMouseleaveProgress"
     v-tippy-progress 
     class="progress-container pt-2 pb-1"
@@ -43,7 +43,9 @@ export default {
     } = useYoutubePlayer();
 
     let debounceProgressMouseMove = debounce(ev => {
-      handleProgressMouseMove(ev);
+      if (isProgressDragging.value) {
+        seekTo(seconds.value)
+      }
     }, 100)
 
     function handleClickProgress(ev) {
@@ -64,12 +66,6 @@ export default {
     }
 
     function handleProgressMouseMove(ev) {
-      if (isProgressDragging.value) {
-        seekTo(seconds.value)
-      }
-    }
-
-    function handleProgressMouseMoveUpdateTooltip(ev) {
       seconds.value = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
       let secondsTooltip = Math.floor(seconds.value);
       progressRef.value.tippyProgress.setContent(
@@ -88,7 +84,6 @@ export default {
       handleMouseleaveProgress,
       handleProgressMouseMove,
       debounceProgressMouseMove,
-      handleProgressMouseMoveUpdateTooltip,
       seconds,
       isProgressDragging,
     }
