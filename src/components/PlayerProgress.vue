@@ -1,9 +1,9 @@
 <template>
   <div 
     ref="progressRef" 
-    @mousedown="handleClickProgress" 
+    @mousedown.prevent="handleClickProgress" 
     @mouseup="handleClickProgress" 
-    @mousemove="debounceProgressMouseMove($event), handleProgressMouseMove($event)" 
+    @mousemove.prevent="debounceProgressMouseMove($event), handleProgressMouseMove($event)" 
     @mouseleave="handleMouseleaveProgress"
     v-tippy-progress 
     class="progress-container pt-2 pb-1"
@@ -53,7 +53,6 @@ export default {
       seconds.value = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
       if (ev.type == 'mousedown') {
         isProgressDragging.value = true;
-        document.getSelection().removeAllRanges();
         seekTo(seconds.value);
       }
       else if (ev.type == 'mouseup') {
