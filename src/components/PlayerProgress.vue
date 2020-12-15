@@ -51,9 +51,9 @@ export default {
     function handleClickProgress(ev) {
       if (!currentVideo.value) return;
       seconds.value = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
+      seekTo(seconds.value);
       if (ev.type == 'mousedown') {
         isProgressDragging.value = true;
-        seekTo(seconds.value);
       }
       else if (ev.type == 'mouseup') {
         isProgressDragging.value = false;
