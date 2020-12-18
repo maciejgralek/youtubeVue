@@ -3,7 +3,7 @@
     ref="progressRef" 
     @mousedown.prevent="handleClickProgress" 
     @mouseup="handleClickProgress" 
-    @mousemove.prevent="debounceProgressMouseMove($event), handleProgressMouseMove($event)" 
+    @mousemove.prevent="handleProgressMouseMove($event)" 
     @mouseleave="handleMouseleaveProgress"
     v-tippy-progress 
     class="progress-container pt-2 pb-1"
@@ -69,6 +69,7 @@ export default {
     }
 
     function handleProgressMouseMove(ev) {
+      debounceProgressMouseMove(ev);
       seconds.value = ((ev.x - ev.target.offsetLeft)/ev.target.clientWidth) * duration.value;
       let secondsTooltip = Math.floor(seconds.value);
       progressRef.value.tippyProgress.setContent(
