@@ -31,7 +31,7 @@
 <script>
 import { ref, computed, onMounted, watchEffect, watch } from 'vue'
 import useYoutube from '../use-youtube'
-import useYoutubePlayer from '../use-youtube-player'
+import useYoutubePlayer, { playerStates } from '../use-youtube-player'
 import useUI from '../use-UI'
 
 export default {
@@ -49,7 +49,8 @@ export default {
     } = useYoutube();
 
     let { 
-      currentVideo, 
+      currentVideo,
+      playerState,
     } = useYoutubePlayer();
 
     let { 
@@ -62,9 +63,16 @@ export default {
 
     watch(currentVideo, () => {
       commentIndex.value = 0;
-      pauseComments();
-      playComments();
     });
+
+    watch(playerState, () => {
+      if (playerState.value == playerStates.PLAYING) {
+        playComments();
+      }
+      if (playerState.value == playerStates.PAUSED) {
+        pauseComments();
+      }
+    })
 
     let textComment = computed(() => {
       return comments.value[commentIndex.value].snippet.topLevelComment.snippet.textOriginal;
