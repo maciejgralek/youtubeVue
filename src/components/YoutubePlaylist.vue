@@ -174,7 +174,6 @@ export default {
     return {
       currentVideo,
       removePlaylist,
-      // filteredPlaylist,
       move,
       play,
       handleClickPlaylistItem,
