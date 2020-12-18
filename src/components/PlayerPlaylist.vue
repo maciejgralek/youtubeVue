@@ -63,17 +63,21 @@ export default {
       }
       else {
         let video = prev();
-        video.el.scrollIntoView({ block: 'center' });
-        loadVideo(video);
-        play();
+        if (video) {
+          video.el.scrollIntoView({ block: 'center' });
+          loadVideo(video);
+          play();
+        }
       }
     }
 
     function handleClickNext() {
       let video = next();
-      video.el.scrollIntoView({ block: 'center' });
-      loadVideo(video);
-      play();
+      if (video) {
+        video.el.scrollIntoView({ block: 'center' });
+        loadVideo(video);
+        play();
+      }
     }
 		
 		return {

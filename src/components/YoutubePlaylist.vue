@@ -140,8 +140,11 @@ export default {
       }
     }
 
-    function handleReloadPlaylist() {
-      reloadPlaylist(props.playlist);
+    async function handleReloadPlaylist() {
+      if (currentPlaylist.value == props.playlist) {
+        currentPlaylist.value = null;
+      }
+      await reloadPlaylist(props.playlist);
     }
 
     function handleClosePlaylist() {

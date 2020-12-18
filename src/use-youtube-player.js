@@ -145,11 +145,13 @@ function getTime() {
 
 function prev() {
   if (playMode.value == playerPlaymodes.NEXT) {
+    if (!currentPlaylist.value) return null;
     let index = findVideoIndex(currentPlaylist.value, currentVideo.value);
     index = index < 0 ? 0 : index - 1;
     return currentPlaylist.value.items[index].snippet;
   }
   else if (playMode.value == playerPlaymodes.SHUFFLE) {
+    if (!currentPlaylist.value) return null;
     let index = getRandomInteger(0, currentPlaylist.value.items.length - 1);
     return currentPlaylist.value.items[index].snippet;
   }
@@ -160,11 +162,13 @@ function prev() {
 
 function next() {
   if (playMode.value == playerPlaymodes.NEXT) {
+    if (!currentPlaylist.value) return null;
     let index = findVideoIndex(currentPlaylist.value, currentVideo.value);
     index = index >= currentPlaylist.value.items.length - 1 ? 0 : index + 1;
     return currentPlaylist.value.items[index].snippet;
   }
   else if (playMode.value == playerPlaymodes.SHUFFLE) {
+    if (!currentPlaylist.value) return null;
     let index = getRandomInteger(0, currentPlaylist.value.items.length - 1);
     return currentPlaylist.value.items[index].snippet;
   }
