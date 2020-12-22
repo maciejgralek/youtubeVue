@@ -157,6 +157,7 @@ function addPlaylist(id, local) {
 }
 
 function addPlaylistToPlaylists(id, local) {
+  if (playlistLoaded(id)) return;
   let playlist = addPlaylist(id, local);
   playlists.value.push(playlist);
   getPlaylistRemote(playlist);
@@ -166,6 +167,7 @@ function addPlaylistToPlaylists(id, local) {
 function addSavedPlaylists() {
   let pl = loadPlaylists();
   for (let p of pl) {
+    if (playlistLoaded(p.id)) continue;
     let playlist = addPlaylist(p.id, true);
     playlists.value.push(playlist);
     getPlaylistRemote(playlist);
@@ -175,6 +177,7 @@ function addSavedPlaylists() {
 
 function addUrlPlaylists(request) {
   for (let i of request) {
+    if (playlistLoaded(i)) continue;
     let playlist = addPlaylist(i);
     playlists.value.push(playlist);
     getPlaylistRemote(playlist);
@@ -206,6 +209,14 @@ function move(playlist, dir) {
   let to = index + dir;
   let i = playlists.value.splice(index, 1);
   playlists.value.splice(to, 0, i[0]);
+}
+
+function playlistLoaded(id) {
+  for(let playlist of playlists.value) {
+    if (playlist.id == id) {
+      return true;
+    }
+  }
 }
 
 function findPlaylistIndex(playlist) {
