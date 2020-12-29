@@ -1,7 +1,7 @@
 <template>
   <div class="playlist-header d-flex align-items-center ps-3 py-2 mb-1" >
     <span class="fw-bold">
-      {{ playlist.title }} 
+      {{ playlist.title || "Untitled" }} 
       <span v-show="playlist.items.length" class="badge bg-secondary mx-1">
         {{ playlist.filteredItems.length }}
       </span>
@@ -9,6 +9,7 @@
     </span>
     <div class="ms-auto">
       <PlaylistDropdown 
+        v-if="!playlist.error"
         :playlist="playlist"
         @close-playlist="handleClosePlaylist"
         @reload-playlist="handleReloadPlaylist"
@@ -19,7 +20,11 @@
     </div>
   </div>
 
-  <div v-scroll="handleScroll" class="playlist p-3">
+  <div v-if="playlist.error" class="alert alert-warning mx-3 mt-3">
+    {{ playlist.error }}
+  </div>
+
+  <div v-else v-scroll="handleScroll" class="playlist p-3">
     <div v-show="playlist.isLoading && !playlist.items.length">
       <div class="d-flex justify-content-center">
         <div class="spinner-border text-primary" role="status">

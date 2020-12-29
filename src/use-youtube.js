@@ -58,7 +58,9 @@ async function getPlaylistRemote(playlist, nextPage) {
     playlist.nextPageToken = res.data.nextPageToken;
   }
   catch (err) {
-
+    if (err.response.status == 404) {
+      playlist.error = `Playlist ${playlist.id} not found.`;
+    }
   }
   finally {
     playlist.isLoading = false;
@@ -151,6 +153,7 @@ function addPlaylist(id, local) {
     nextPageToken: null,
     isLoading: false,
     isExported: true,
+    error: null,
   })
 
   return playlist;
