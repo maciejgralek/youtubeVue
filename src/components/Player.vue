@@ -162,9 +162,9 @@ export default {
   bottom: 0px;
   width: 100%;
   background-color: var(--background-player);
-  -webkit-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
-  -moz-box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
-  box-shadow: 0px -7px 12px -10px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px -7px 12px -12px rgba(0,0,0,0.5);
+  -moz-box-shadow: 0px -7px 12px -12px rgba(0,0,0,0.5);
+  box-shadow: 0px -7px 12px -12px rgba(0,0,0,0.5);
   z-index: 1020;
 }
 
