@@ -31,6 +31,10 @@
     <!-- PLAYLIST DROPDOWN -->
 
     <div class="col-auto ms-auto pe-1">
+      <i 
+        @click="handleShowPanel"
+        class="mdi mdi-playlist-music mdi-24px" 
+      ></i>
     </div>
   </div>
 
@@ -121,6 +125,7 @@ export default {
       darkTheme,
       overlayOpacity,
       commentsDuration,
+      toggleSidePanel,
     } = useUI();
 
     let state = useStore();
@@ -146,6 +151,10 @@ export default {
       window.getSelection().removeAllRanges();
     }
 
+    function handleShowPanel() {
+      toggleSidePanel()
+    }
+
     return {
       exportEl,
       playlistId,
@@ -164,6 +173,7 @@ export default {
       commentsDuration,
       handleSearch,
       debounceFilterInput,
+      handleShowPanel,
     }
   }
 }

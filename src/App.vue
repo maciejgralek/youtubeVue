@@ -6,6 +6,9 @@
       <router-view></router-view>
     </div>
 
+    <transition name="fade-side-panel">
+      <SidePanel v-show="isSidePanelShow" />
+    </transition>
     <Player />
   </div>
 </template>
@@ -13,16 +16,24 @@
 <script>
 import Navbar from './components/Navbar.vue'
 import Player from './components/Player.vue'
+import SidePanel from './components/SidePanel.vue'
 import useKey from './use-key'
+import useUI from './use-UI.js'
 
 export default {
   components: {
     Navbar,
     Player,
+    SidePanel,
   },
   setup() {
+    let { isSidePanelShow } = useUI();
     document.title = "YTPlay";
     useKey();
+
+    return {
+      isSidePanelShow,
+    }
   }
 }
 </script>
@@ -130,6 +141,14 @@ div[data-tippy-root]::-webkit-scrollbar {
 
 .tippy-content {
   text-overflow: ellipsis;
+}
+
+.fade-side-panel-enter-active, .fade-side-panel-leave-active {
+  transition: all .3s ease;
+}
+.fade-side-panel-enter-from, .fade-side-panel-leave-to {
+  opacity: 0 !important;
+  transform: translateX(20px);
 }
 
 // DROPDOWN

@@ -17,6 +17,7 @@ let overlayOpacity = ref(70);
 let commentsDuration = ref(6);
 let columns = ref(3);
 let isAboutVisible = ref(false);
+let isSidePanelShow = ref(false);
 
 watch(darkTheme, () => {
   setTheme(darkTheme.value);
@@ -138,6 +139,10 @@ function setTheme(theme) {
   }
 }
 
+function toggleSidePanel() {
+  isSidePanelShow.value = isSidePanelShow.value ? false : true;
+}
+
 function setCompact(value) {
   if (!value) {
     thumbnailWidth.value = _normalThumbnailWidth;
@@ -179,5 +184,7 @@ export default function useUI() {
     commentsDuration,
     columns,
     isAboutVisible,
+    toggleSidePanel,
+    isSidePanelShow,
   }
 }
