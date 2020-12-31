@@ -193,4 +193,9 @@ input[type=checkbox] {
 .mdi-icon-orange:before {
   color: orange;
 }
+
+.mdi-appbar-icon {
+  font-size: 1.8em;
+  line-height: 1.2em;
+}
 </style>
