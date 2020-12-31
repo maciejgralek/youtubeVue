@@ -60,32 +60,6 @@ export default {
 
   // dark
 
-  /* --bg-dark:                       #343a40; */
-  /* --bg-dark-2:                     #393f46; */
-  /* --background-player-dark:        #393f46; */
-  /* --text-color-dark:               #eff1f4; */
-  /* --icon-color-dark:               #e6eaed; */
-  /* --scroll-track-color-dark:       #343a40; */
-  /* --scroll-thumb-color-dark:       #6c757d; */
-  /* --border-color-dark:             #6c757d; */
-  /* --input-background-color-dark:   #2d3238; */
-  /* --input-color-dark:              #eff1f4; */
-  /* --input-border-color-dark:       #4b545c; */
-  /* --modal-content-bg-dark:         #343a40; */
-
-  /* --bg-dark:                       #17191c; */
-  /* --bg-dark-2:                     #22262a; */
-  /* --background-player-dark:        #22262a; */
-  /* --text-color-dark:               #dddddd; */
-  /* --icon-color-dark:               #e6eaed; */
-  /* --scroll-track-color-dark:       #17191c; */
-  /* --scroll-thumb-color-dark:       #6c757d; */
-  /* --border-color-dark:             #6c757d; */
-  /* --input-background-color-dark:   #22262a; */
-  /* --input-color-dark:              #eff1f4; */
-  /* --input-border-color-dark:       #4b545c; */
-  /* --modal-content-bg-dark:         #343a40; */
-
   --bg-dark:                       #292d32;
   --bg-dark-2:                     #33383f;
   --background-player-dark:        #33383f;
