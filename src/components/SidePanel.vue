@@ -1,15 +1,34 @@
 <template>
-  <div class="panel position-fixed top-0 end-0">
+  <div class="panel position-fixed top-0 end-0 px-4">
     <div class="d-flex justify-content-end w-100">
       <button 
         @click="handleCloseSideBar"
         type="button" 
-        class="btn-close btn-close-white m-3" 
+        class="btn-close btn-close-white my-3" 
         aria-label="Close">
       </button>
     </div>
-    <ul class="px-4">
-      <li class="d-flex align-items-center py-2">
+
+    <input 
+      v-model="playlistId" 
+      type="email" 
+      class="form-control 
+      form-control-sm" 
+      placeholder="Playlist id"
+    >
+    <div class="d-flex w-100 mt-2">
+      <button 
+        @click="addPlaylistToPlaylists(playlistId)" 
+        class="btn btn-primary btn-sm ms-auto"
+      >
+        Add Playlist
+      </button>
+    </div>
+
+    <hr class="my-4">
+
+    <ul class="p-0">
+      <li class="d-flex align-items-center pb-2">
         <label for="checkboxCompactMode" class="form-check-label">
           Compact view
         </label>
@@ -75,10 +94,17 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
+import useYoutube from '../use-youtube'
 import useUI from '../use-UI.js'
 
 export default {
 	setup(props) {
+    let playlistId = ref('');
+
+    let { 
+      addPlaylistToPlaylists, 
+    } = useYoutube();
+
     let { 
       toggleSidePanel, 
       compactMode,
@@ -99,6 +125,8 @@ export default {
       overlayOpacity,
       commentsDuration,
 		  handleCloseSideBar,
+		  playlistId,
+		  addPlaylistToPlaylists,
 		}
 	}
 }
