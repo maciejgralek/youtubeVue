@@ -48,6 +48,7 @@ export default {
   --bg-light:                       #f8f9fa;
   --bg-light-2:                     #f4f4f4;
   --background-player-light:        #eaeaea;
+  --background-side-panel-light:    #f8f9fa;
   --text-color-light:               #212529;
   --icon-color-light:               #212529;
   --scroll-track-color-light:       #f8f9fa;
@@ -63,6 +64,7 @@ export default {
   --bg-dark:                       #292d32;
   --bg-dark-2:                     #33383f;
   --background-player-dark:        #33383f;
+  --background-side-panel-dark:    #343a40;
   --text-color-dark:               #eff1f4;
   --icon-color-dark:               #e6eaed;
   --scroll-track-color-dark:       #292d32;
@@ -80,6 +82,7 @@ export default {
   --text-color:               var(--text-color-light);
   --icon-color:               var(--icon-color-liht);
   --background-player:        var(--background-player-light);
+  --background-side-panel:    var(--background-side-panel-light);
   --scroll:                   var(--scroll-color-light);
   --scroll-track:             var(--scroll-track-color-light);
   --scroll-thumb:             var(--scroll-thumb-color-light);

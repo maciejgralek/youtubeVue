@@ -4,7 +4,8 @@
       <button 
         @click="handleCloseSideBar"
         type="button" 
-        class="btn-close btn-close-white my-3" 
+        class="btn-close my-3" 
+        :class="{'btn-close-white': darkTheme}"
         aria-label="Close">
       </button>
     </div>
@@ -136,7 +137,7 @@ export default {
 .panel {
   width: 30em;
   height: 100vh;
-  background-color: #343a40;
+  background-color: var(--background-side-panel);
   -webkit-box-shadow: -10px 0px 12px -12px rgba(0,0,0,0.5);
   -moz-box-shadow: -10px 0px 12px -12px rgba(0,0,0,0.5);
   box-shadow: -10px 0px 12px -12px rgba(0,0,0,0.5);

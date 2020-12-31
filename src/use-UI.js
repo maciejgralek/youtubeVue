@@ -83,6 +83,10 @@ function setTheme(theme) {
       '--background-2', 
       'var(--bg-dark-2)'
     );
+    document.documentElement.style.setProperty(
+      '--background-side-panel', 
+      'var(--background-side-panel-dark)'
+    );
     darkTheme.value = true;
   }
   else {
@@ -134,6 +138,10 @@ function setTheme(theme) {
     document.documentElement.style.setProperty(
       '--background-2', 
       'var(--bg-light-2)'
+    );
+    document.documentElement.style.setProperty(
+      '--background-side-panel', 
+      'var(--background-side-panel-light)'
     );
     darkTheme.value = false;
   }
