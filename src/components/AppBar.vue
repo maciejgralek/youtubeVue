@@ -33,7 +33,7 @@
     <div class="col-auto ms-auto pe-1">
       <i 
         @click="handleShowPanel"
-        class="mdi mdi-playlist-music mdi-24px" 
+        class="mdi mdi-playlist-music mdi-appbar-icon" 
       ></i>
     </div>
   </div>
