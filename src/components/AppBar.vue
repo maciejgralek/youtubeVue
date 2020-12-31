@@ -108,7 +108,6 @@ export default {
   },
   setup(props) {
     let exportEl = ref(null);
-    let playlistId = ref('');
     let searchString = ref('');
     let appUrl = "https://ytplay.netlify.app"
 
@@ -120,11 +119,6 @@ export default {
     } = useYoutube();
 
     let {
-      compactMode,
-      setCompact,
-      darkTheme,
-      overlayOpacity,
-      commentsDuration,
       toggleSidePanel,
     } = useUI();
 
@@ -157,20 +151,14 @@ export default {
 
     return {
       exportEl,
-      playlistId,
       searchString,
-      overlayOpacity,
       state,
       // youtube
       playlists,
       addPlaylistToPlaylists,
-      setCompact,
-      compactMode,
-      darkTheme,
       handleExportCopyToClipboard,
       searchRemote,
       exportString,
-      commentsDuration,
       handleSearch,
       debounceFilterInput,
       handleShowPanel,
