@@ -113,7 +113,6 @@ export default {
 
     let { 
       playlists,
-      addPlaylistToPlaylists, 
       searchRemote,
       loadPlaylists 
     } = useYoutube();
@@ -155,7 +154,6 @@ export default {
       state,
       // youtube
       playlists,
-      addPlaylistToPlaylists,
       handleExportCopyToClipboard,
       searchRemote,
       exportString,
