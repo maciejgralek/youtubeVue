@@ -155,7 +155,6 @@ export default {
 	setup(props) {
     let playlistId = ref('');
     let exportEl = ref(null);
-    let playlistsModal = ref([]);
     let isExportShow = ref(false);
     let appUrl = "https://ytplay.netlify.app"
 
