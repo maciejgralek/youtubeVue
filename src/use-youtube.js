@@ -160,7 +160,7 @@ function addPlaylist(id, local) {
 }
 
 function addPlaylistToPlaylists(id, local) {
-  if (playlistLoaded(id)) return;
+  if (playlistLoaded(id)) return -1;
   let playlist = addPlaylist(id, local);
   playlists.value.push(playlist);
   getPlaylistRemote(playlist);
