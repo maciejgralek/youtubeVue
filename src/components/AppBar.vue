@@ -38,83 +38,21 @@
     </div>
   </div>
 
-  <!-- EXPORT MODAL -->
-
-  <teleport to="body">
-    <Modal id="exportModal">
-
-      <template v-slot:header>
-        <h5 class="modal-title" id="exampleModalLabel">
-          Export playlists
-        </h5>
-      </template>
-
-      <template v-slot:default>
-        <textarea 
-          ref="exportEl" 
-          :value="exportString" 
-          rows="3" 
-          class="form-control w-100 mb-3"
-        >
-        </textarea>
-        <ul class="list-group mb-3">
-          <li 
-            v-for="(playlist, index) in playlists"
-            class="list-group-item d-flex align-items-center border-0"
-          >
-            <label 
-              :for="'checkboxPlaylistExport' + index" 
-              class="form-check-label"
-            >
-              <span>
-                {{ playlist.title }}
-                <i 
-                  v-show="playlist.local" 
-                  class="mdi mdi-star mdi-icon-orange"
-                ></i>
-              </span>
-            </label>
-            <input 
-              v-model="playlist.isExported" 
-              :id="'checkboxPlaylistExport' + index" 
-              type="checkbox" 
-              class="ms-auto" 
-            >
-          </li>
-        </ul>
-        <a 
-          href="" 
-          @click.prevent="handleExportCopyToClipboard"
-        >
-          Copy to clipboard
-        </a>
-      </template>
-
-    </Modal>
-  </teleport>
 </template>
 
 <script>
 import { ref, onMounted, computed } from 'vue'
-import Modal from './Modal.vue'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI'
 import useStore from '../use-store'
 import { debounce } from 'lodash'
 
 export default {
-  components: {
-    Modal,
-  },
   setup(props) {
-    let exportEl = ref(null);
     let searchString = ref('');
-    let appUrl = "https://ytplay.netlify.app"
 
     let { 
-      playlists,
       searchRemote,
-      loadPlaylists 
     } = useYoutube();
 
     let {
@@ -122,13 +60,6 @@ export default {
     } = useUI();
 
     let state = useStore();
-
-    let exportString = computed(() => {
-      let playlistsId = playlists.value
-        .filter(item => item.isExported)
-        .map(item => item.id)
-      return `${appUrl}/playlist/${playlistsId.join(',')}`
-    });
 
     let debounceFilterInput = debounce(e => {
       state.filter = e.target.value;
@@ -138,25 +69,15 @@ export default {
       searchRemote(searchString.value);
     }
 
-    function handleExportCopyToClipboard() {
-      exportEl.value.select();
-      document.execCommand('copy');
-      window.getSelection().removeAllRanges();
-    }
-
     function handleShowPanel() {
       toggleSidePanel()
     }
 
     return {
-      exportEl,
       searchString,
       state,
       // youtube
-      playlists,
-      handleExportCopyToClipboard,
       searchRemote,
-      exportString,
       handleSearch,
       debounceFilterInput,
       handleShowPanel,
@@ -170,14 +91,6 @@ export default {
   border-right-width: 1px;
   border-right-style: solid;
   border-right-color: var(--border-color) !important;
-}
-
-input[type=checkbox] {
-  transform: scale(1.25);
-}
-
-.mdi-icon-orange:before {
-  color: orange;
 }
 
 .mdi-appbar-icon {
