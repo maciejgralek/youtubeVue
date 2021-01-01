@@ -159,12 +159,13 @@ function addPlaylist(id, local) {
   return playlist;
 }
 
-function addPlaylistToPlaylists(id, local) {
+async function addPlaylistToPlaylists(id, local) {
   if (playlistLoaded(id)) return -1;
   let playlist = addPlaylist(id, local);
   playlists.value.push(playlist);
-  getPlaylistRemote(playlist);
-  _getPlaylistPropertiesRemote(playlist);
+  await getPlaylistRemote(playlist);
+  await _getPlaylistPropertiesRemote(playlist);
+  if (playlist.error) return -2;
 }
 
 function addSavedPlaylists() {
