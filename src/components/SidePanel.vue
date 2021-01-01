@@ -98,15 +98,23 @@
 
         <hr class="my-4">
 
-        <textarea 
-          ref="exportEl" 
-          :value="exportString" 
-          rows="3" 
-          class="form-control w-100 mb-3"
-        >
-        </textarea>
+        <div class="text-end">
+          <textarea 
+            ref="exportEl" 
+            :value="exportString" 
+            rows="3" 
+            class="form-control w-100 mb-2"
+          >
+          </textarea>
+          <a 
+            href="" 
+            @click.prevent="handleExportCopyToClipboard"
+          >
+            Copy to clipboard
+          </a>
+        </div>
 
-        <ul class="p-0">
+        <ul class="p-0 mt-3">
           <li 
             v-for="(playlist, index) in playlists"
             class="d-flex align-items-center py-2"
