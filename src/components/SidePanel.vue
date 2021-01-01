@@ -84,12 +84,56 @@
           step="1" 
         >
       </li>
-      <li class="d-flex align-items-center py-2">
-        <a href="" data-bs-toggle="modal" data-bs-target="#exportModal">
+      <li class="d-flex align-items-center pt-2">
+        <a href="" @click.prevent="handleExportClick">
           Export playlists as URL
         </a>
       </li>
     </ul>
+
+
+    <transition name="fade-slide">
+      <div v-if="isExportShow">
+
+        <hr class="my-4">
+
+        <textarea 
+          ref="exportEl" 
+          :value="exportString" 
+          rows="3" 
+          class="form-control w-100 mb-3"
+        >
+        </textarea>
+
+        <ul class="p-0">
+          <li 
+            v-for="(playlist, index) in playlists"
+            class="d-flex align-items-center py-2"
+          >
+            <label 
+              :for="'checkboxPlaylistExport' + index" 
+              class="form-check-label"
+            >
+              <span>
+                {{ playlist.title }}
+                <i 
+                  v-show="playlist.local" 
+                  class="mdi mdi-star mdi-icon-orange"
+                ></i>
+              </span>
+            </label>
+            <input 
+              v-model="playlist.isExported" 
+              :id="'checkboxPlaylistExport' + index" 
+              type="checkbox" 
+              class="ms-auto" 
+            >
+          </li>
+        </ul>
+
+      </div>
+    </transition>
+
   </div>
 </template>
 
@@ -101,8 +145,13 @@ import useUI from '../use-UI.js'
 export default {
 	setup(props) {
     let playlistId = ref('');
+    let exportEl = ref(null);
+    let playlistsModal = ref([]);
+    let isExportShow = ref(false);
+    let appUrl = "https://ytplay.netlify.app"
 
     let { 
+      playlists,
       addPlaylistToPlaylists, 
     } = useYoutube();
 
@@ -114,6 +163,23 @@ export default {
       overlayOpacity,
       commentsDuration,
     } = useUI();
+
+    let exportString = computed(() => {
+      let playlistsId = playlists.value
+        .filter(item => item.isExported)
+        .map(item => item.id)
+      return `${appUrl}/playlist/${playlistsId.join(',')}`
+    });
+
+    function handleExportCopyToClipboard() {
+      exportEl.value.select();
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+    }
+
+    function handleExportClick() {
+      isExportShow.value = !isExportShow.value;
+    }
 		
     function handleCloseSideBar() {
       toggleSidePanel()
@@ -126,8 +192,14 @@ export default {
       overlayOpacity,
       commentsDuration,
 		  handleCloseSideBar,
+		  handleExportCopyToClipboard,
+		  handleExportClick,
 		  playlistId,
 		  addPlaylistToPlaylists,
+		  playlists,
+		  exportString,
+		  exportEl,
+		  isExportShow,
 		}
 	}
 }
@@ -146,5 +218,17 @@ export default {
 
 input[type=checkbox] {
   transform: scale(1.25);
+}
+
+.mdi-icon-orange:before {
+  color: orange;
+}
+
+.fade-slide-enter-active, .fade-slide-leave-active {
+  transition: all .3s ease;
+}
+.fade-slide-enter-from, .fade-slide-leave-to {
+  opacity: 0 !important;
+  transform: translateY(-20px);
 }
 </style>
