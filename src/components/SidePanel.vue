@@ -18,7 +18,7 @@
     >
     <div class="d-flex w-100 mt-2">
       <button 
-        @click="addPlaylistToPlaylists(playlistId)" 
+        @click="handleAddPlaylist(playlistId)" 
         class="btn btn-primary btn-sm ms-auto"
       >
         Add Playlist
@@ -186,6 +186,10 @@ export default {
       window.getSelection().removeAllRanges();
     }
 
+    function handleAddPlaylist(playlistsId) {
+      addPlaylistToPlaylists(playlistsId);
+    }
+
     function handleExportClick() {
       isExportShow.value = !isExportShow.value;
     }
@@ -203,6 +207,7 @@ export default {
 		  handleCloseSideBar,
 		  handleExportCopyToClipboard,
 		  handleExportClick,
+		  handleAddPlaylist,
 		  playlistId,
 		  addPlaylistToPlaylists,
 		  playlists,
