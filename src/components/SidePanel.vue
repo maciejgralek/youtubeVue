@@ -214,6 +214,7 @@ export default {
   -webkit-box-shadow: -10px 0px 12px -12px rgba(0,0,0,0.5);
   -moz-box-shadow: -10px 0px 12px -12px rgba(0,0,0,0.5);
   box-shadow: -10px 0px 12px -12px rgba(0,0,0,0.5);
+  overflow-y: auto;
   z-index: 1200;
 }
 
