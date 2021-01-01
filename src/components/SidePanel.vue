@@ -16,6 +16,12 @@
       class="form-control form-control-sm" 
       placeholder="Playlist id"
     >
+    <span 
+      v-show="errorMessage"
+      class="text-danger small"
+    >
+      {{ errorMessage }}
+    </span>
     <div class="d-flex w-100 mt-2">
       <button 
         @click="handleAddPlaylist(playlistId)" 
@@ -147,7 +153,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import useYoutube from '../use-youtube'
 import useUI from '../use-UI.js'
 
@@ -156,6 +162,7 @@ export default {
     let playlistId = ref('');
     let exportEl = ref(null);
     let isExportShow = ref(false);
+    let errorMessage = ref('');
     let appUrl = "https://ytplay.netlify.app"
 
     let { 
@@ -172,6 +179,10 @@ export default {
       commentsDuration,
     } = useUI();
 
+    watch(playlistId, () => {
+      errorMessage.value = '';
+    })
+
     let exportString = computed(() => {
       let playlistsId = playlists.value
         .filter(item => item.isExported)
@@ -185,8 +196,18 @@ export default {
       window.getSelection().removeAllRanges();
     }
 
-    function handleAddPlaylist(playlistsId) {
-      addPlaylistToPlaylists(playlistsId);
+    async function handleAddPlaylist(playlistsId) {
+      let status = await addPlaylistToPlaylists(playlistsId)
+
+      if (status == -1) {
+        errorMessage.value = 'Playlist already loaded.';
+      }
+      else if (status == -2) {
+        errorMessage.value = 'Playlist not found';
+      }
+      else {
+        errorMessage.value = '';
+      };
     }
 
     function handleExportClick() {
@@ -213,6 +234,7 @@ export default {
 		  exportString,
 		  exportEl,
 		  isExportShow,
+		  errorMessage,
 		}
 	}
 }
