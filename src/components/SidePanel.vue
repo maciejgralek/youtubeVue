@@ -13,8 +13,7 @@
     <input 
       v-model="playlistId" 
       type="email" 
-      class="form-control 
-      form-control-sm" 
+      class="form-control form-control-sm" 
       placeholder="Playlist id"
     >
     <div class="d-flex w-100 mt-2">
@@ -93,7 +92,9 @@
 
 
     <transition name="fade-slide">
-      <div v-if="isExportShow">
+      <div 
+        v-if="isExportShow"
+      >
 
         <hr class="my-4">
 
