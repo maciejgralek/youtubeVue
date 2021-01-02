@@ -102,6 +102,7 @@ async function getChannelPlaylists(id) {
 
 async function getCommentsRemote(videoId, nextPage) {
   if (nextPage && !_commentsNextPageToken) return;
+  if (!nextPage) comments.value = [];
 
   let query = {
     id: videoId,
