@@ -19,6 +19,7 @@ import Player from './components/Player.vue'
 import SidePanel from './components/SidePanel.vue'
 import useKey from './use-key'
 import useUI from './use-UI.js'
+import useSpotify from './use-spotify'
 
 export default {
   components: {
@@ -28,6 +29,8 @@ export default {
   },
   setup() {
     let { isSidePanelShow } = useUI();
+    let { authorize } = useSpotify();
+    authorize();
     document.title = "YTPlay";
     useKey();
 
