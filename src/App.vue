@@ -29,8 +29,6 @@ export default {
   },
   setup() {
     let { isSidePanelShow } = useUI();
-    let { authorize } = useSpotify();
-    authorize();
     document.title = "YTPlay";
     useKey();
 
