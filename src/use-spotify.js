@@ -1,17 +1,16 @@
-import { ref } from 'vue'
 import axios from 'axios'
 import { createUrl } from './tools.js'
 
 let clientId = '9913b1c9730a485090db34513d4b3d3a';
 let clientSecret = 'e6a284527e4249d4b1cfee4ce9034e5b';
 let spotifyAuthorizationURL = 'https://accounts.spotify.com/api/token';
-let spotifyAuthorizationHeaders = {
+llet spotifyAuthorizationHeaders = {
+  'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
+}et spotifyAuthorizationHeaders = {
   'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
 }
 let accessToken = '';
 let player = null;
-let spotifyUserAuthorizationURL = ref('')
-let redirectUri = 'http://localhost:3000/callback';
 
 window.onSpotifyWebPlaybackSDKReady = async () => {
   // await authorizeClient();
@@ -25,11 +24,11 @@ window.onSpotifyWebPlaybackSDKReady = async () => {
   //   volume: 0.5
   // });
 
-//   player.connect().then(success => {
-//   if (success) {
-//     console.log('The Web Playback SDK successfully connected to Spotify!');
-//   }
-// })
+  //   player.connect().then(success => {
+  //   if (success) {
+  //     console.log('The Web Playback SDK successfully connected to Spotify!');
+  //   }
+  // })
 
   // axios.put(
   //   'https://api.spotify.com/v1/me/player/play', 
@@ -46,15 +45,7 @@ window.onSpotifyWebPlaybackSDKReady = async () => {
 };
 
 async function authorizeUser() {
-  // let res = await axios.get('http://localhost:3000/spotifyvue/login')
-  let query = {
-    client_id: clientId,
-    response_type: 'code',
-    redirect_uri: redirectUri,
-  }
-
-  spotifyUserAuthorizationURL.value = createUrl('https://accounts.spotify.com/authorize?', query);
-  console.log(spotifyUserAuthorizationURL)
+  let res = await axios.get('http://localhost:3000/spotifyvue/login')
 }
 
 async function authorizeClient() {
@@ -75,6 +66,6 @@ async function authorizeClient() {
 
 export default function useSpotify() {
   return {
-    spotifyUserAuthorizationURL,
+    
   }
 }

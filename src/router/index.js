@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Youtube from '../components/Youtube.vue'
+import Spotify from '../components/Spotify.vue'
 
 const routes = [
   {
@@ -9,6 +10,11 @@ const routes = [
   {
     path: '/playlist/:params',
     component: Youtube,
+    props: true,
+  },
+  {
+    path: '/spotify',
+    component: Spotify,
     props: true,
   },
 ]

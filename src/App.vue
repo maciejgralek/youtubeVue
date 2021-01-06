@@ -3,7 +3,6 @@
     <Navbar />
 
     <div class="container-fluid">
-      <a :href="spotifyUserAuthorizationURL">login</a>
       <router-view></router-view>
     </div>
 
@@ -20,7 +19,7 @@ import Player from './components/Player.vue'
 import SidePanel from './components/SidePanel.vue'
 import useKey from './use-key'
 import useUI from './use-UI.js'
-import useSpotify from './use-spotify'
+// import useSpotify from './use-spotify'
 
 export default {
   components: {
@@ -30,13 +29,11 @@ export default {
   },
   setup() {
     let { isSidePanelShow } = useUI();
-    let { spotifyUserAuthorizationURL } = useSpotify();
     document.title = "YTPlay";
     useKey();
 
     return {
       isSidePanelShow,
-      spotifyUserAuthorizationURL,
     }
   }
 }
