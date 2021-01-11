@@ -1,21 +1,17 @@
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { createUrl } from './tools.js'
 
 let clientId = '9913b1c9730a485090db34513d4b3d3a';
 let clientSecret = 'e6a284527e4249d4b1cfee4ce9034e5b';
-let spotifyAuthorizationURL = 'https://accounts.spotify.com/api/token';
-llet spotifyAuthorizationHeaders = {
-  'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
-}et spotifyAuthorizationHeaders = {
-  'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
-}
-let accessToken = '';
+// let herokuRemote = 'https://youtube-vue-server.herokuapp.com/spotifyvue/login'
+let herokuRemote = 'http://localhost:3000/spotifyvue'
+let accessToken = ref('');
+let refreshToken = ref('');
+let playlist = ref({});
 let player = null;
 
 window.onSpotifyWebPlaybackSDKReady = async () => {
-  // await authorizeClient();
-  await authorizeUser();
-
   // player = new Spotify.Player({
   //   name: 'Carly Rae Jepsen Player',
   //   getOAuthToken: callback => {
@@ -44,28 +40,43 @@ window.onSpotifyWebPlaybackSDKReady = async () => {
   //   .catch((err) => { console.log(err.response) })
 };
 
-async function authorizeUser() {
-  let res = await axios.get('http://localhost:3000/spotifyvue/login')
+function authorizeUser() {
+  window.location.href = herokuRemote + '/login';
 }
 
-async function authorizeClient() {
-  try {
-    let res = await axios.post(
-      spotifyAuthorizationURL, 
-      'grant_type=client_credentials', 
-      {
-        headers: spotifyAuthorizationHeaders
-      }
-    )
-    accessToken = res.data.access_token;
+function getAccessToken() {
+  return axios.post(
+    herokuRemote + '/refresh_token', 
+    {
+      refresh_token: refreshToken.value
+    })
+    .then((res) => {
+      accessToken.value = res.data.access_token;
+    })
+}
+
+function getPlaylist() {
+  let authorizationHeaders = {
+    'Authorization': 'Bearer ' + accessToken.value,
   }
-  catch (err) {
-    console.log(err)
-  }
+  let res =  axios.get(
+    'https://api.spotify.com/v1/playlists/0JlDui20DRDOVUqhzA2na4', 
+    {
+      headers: authorizationHeaders 
+    })
+    .then((res) => {
+      playlist.value = res.data;
+      console.log(res)
+    })
 }
 
 export default function useSpotify() {
   return {
-    
+    authorizeUser,
+    accessToken,
+    playlist,
+    getPlaylist,
+    refreshToken,
+    getAccessToken,
   }
 }

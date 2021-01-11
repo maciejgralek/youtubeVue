@@ -1,48 +1,72 @@
 <template>
-	<div class="rounded">
-		
-	</div>
+  <div class="row g-4 pt-1 ps-md-2 me-4 me-md-0 row-cols-lg-3">
+    <div 
+      class="col playlist"
+    >
+      <SpotifyPlaylist :playlist="playlist" />
+    </div>
+  </div>
 </template>
 
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import SpotifyPlaylist from './SpotifyPlaylist.vue'
 import useYoutube from '../use-youtube.js'
 import useYoutubePlayer from '../use-youtube-player.js'
 import useUI from '../use-UI.js'
+import useSpotify from '../use-spotify'
 import axios from 'axios'
 import { createUrl } from '../tools.js'
 
 export default {
-	setup(props) {
-    let clientId = '9913b1c9730a485090db34513d4b3d3a';
-    let redirectUri = 'http://localhost:8080/spotify';
-    // let herokuRemote = 'https://youtube-vue-server.herokuapp.com/spotifyvue/'
-    let herokuRemote = 'http://localhost:3000/spotifyvue/login'
+  components: {
+    SpotifyPlaylist,
+  },
+  setup(props) {
+
     let route = useRoute();
+    let { 
+      authorizeUser,
+      accessToken,
+      playlist,
+      getPlaylist,
+      refreshToken,
+      getAccessToken,
+    } = useSpotify();
 
-    let query = {
-      client_id: clientId,
-      response_type: 'code',
-      redirect_uri: redirectUri,
-    }
+    let cookie = document.cookie
+      .split('; ')
+      .map(item => item.split('='));
+    cookie = Object.fromEntries(cookie);
 
-    let queryUrl = createUrl('https://accounts.spotify.com/authorize?', query);
-
-    if (!route.query.code) {
-      window.location.href = queryUrl;
+    if (cookie.refreshToken) {
+      refreshToken.value = cookie.refreshToken;
+      getAccessToken()
     }
     else {
-      axios.get(herokuRemote + '?code=' + route.query.code);
+      if (!route.query.access_token) {
+        authorizeUser();
+      }
+      else {
+        accessToken.value = route.query.access_token;
+        refreshToken.value = route.query.refresh_token;
+        document.cookie = "refreshToken=" + route.query.refresh_token;
+      }
     }
-		
-		return {
-			
-		}
-	}
+
+    return {
+      playlist,
+    }
+  }
 }
 </script>
 
 <style scoped>
-
+.playlist {
+  text-align: left;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: var(--border-color);
+}
 </style>
