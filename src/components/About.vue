@@ -1,6 +1,6 @@
 <template>
   <div class="row p-3 m-4">
-    <div class="col">
+    <div class="col-8">
         <h5>
           Display and listen to multiple YouTube playlists. It will try to entertain by playing comments.
         </h5>
