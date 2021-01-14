@@ -1,38 +1,41 @@
 <template>
-  <transition name="fade-about">
+  <transition name="fade-about" mode="out-in">
+
     <About v-if="isAboutVisible"></About>
-  </transition>
 
-  <transition name="fade">
-    <div 
-      v-if="playerWindowState == 2" 
-      class="backdrop" 
-      :style="{ opacity: (100-overlayOpacity)/100 }"
-    >
+    <div v-else>
+      <transition name="fade">
+        <div 
+          v-if="playerWindowState == 2" 
+          class="backdrop" 
+          :style="{ opacity: (100-overlayOpacity)/100 }"
+        >
+        </div>
+      </transition>
+
+      <AppBar />
+
+      <div class="row g-4 pt-1 ps-md-2 me-4 me-md-0" :class="'row-cols-lg-' + columns">
+        <div v-if="searchRes.length" class="col search">
+          <YoutubeSearch :items="searchRes" />
+        </div>
+
+        <div 
+          v-for="(playlist, index) in playlists" 
+          class="col playlist"
+        >
+          <YoutubePlaylist :playlist="playlist"/>
+        </div>
+      </div>
+
+      <transition name="fade-comment" mode="out-in">
+        <YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
+      </transition>
+
+      <div :style="styleBottomMargin">
+      </div>
     </div>
   </transition>
-
-  <AppBar />
-
-  <div class="row g-4 pt-1 ps-md-2 me-4 me-md-0" :class="'row-cols-lg-' + columns">
-    <div v-if="searchRes.length" class="col search">
-      <YoutubeSearch :items="searchRes" />
-    </div>
-
-    <div 
-      v-for="(playlist, index) in playlists" 
-      class="col playlist"
-    >
-      <YoutubePlaylist :playlist="playlist"/>
-    </div>
-  </div>
-
-  <transition name="fade-comment" mode="out-in">
-    <YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
-  </transition>
-
-  <div :style="styleBottomMargin">
-  </div>
 </template>
 
 <script>
@@ -159,7 +162,7 @@ export default {
   opacity: 0 !important;
 }
 .fade-about-enter-active, .fade-about-leave-active {
-  transition: opacity .5s !important;
+  transition: opacity .23s !important;
 }
 .fade-about-enter-from, .fade-about-leave-to {
   opacity: 0 !important;
