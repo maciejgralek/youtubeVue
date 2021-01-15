@@ -39,5 +39,8 @@ export default {
 </script>
 
 <style scoped>
-
+.about {
+  position: absolute;
+  width: 50%;
+}
 </style>
