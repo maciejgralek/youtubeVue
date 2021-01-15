@@ -96,6 +96,7 @@ export default {
 body {
   background-color: var(--background);
   color: var(--text-color);
+  overflow-y: scroll;
 }
 
 i {
