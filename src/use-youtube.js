@@ -45,7 +45,8 @@ async function getPlaylistRemote(playlist, nextPage) {
     }
 
     playlist.items = playlist.items.concat(res.data.items.filter(
-      item => item.snippet.title != "Private video"
+      item => item.snippet.title != "Private video" 
+        && item.snippet.title != "Deleted video"
     ));
     playlist.filteredItems = computed(() => {
       let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
