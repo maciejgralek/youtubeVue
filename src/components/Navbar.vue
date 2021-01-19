@@ -1,17 +1,38 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark py-0">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold" href="#">YTPlay</a>
+  <div class="container-fluid align-items-stretch">
+    <a class="navbar-brand fw-bold py-2" href="#">YTPlay</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto ms-2 py-1">
-        <li class="nav-item">
-          <a @click.prevent="handleClickAbout" class="nav-link" aria-current="page" href="#">About</a>
+      <ul class="navbar-nav ms-auto ms-2 py-0 my-0">
+        <li 
+          class="nav-item d-flex align-items-center"
+          :class="{'nav-item-active': !isAboutVisible}"
+        >
+          <a 
+            @click.prevent="handleClickPlaylists" 
+            class="nav-link py-0 px-3 my-0" 
+            aria-current="page" 
+            href="#"
+          >
+            Playlists
+          </a>
+        </li>
+        <li 
+          class="nav-item d-flex align-items-center"
+          :class="{'nav-item-active': isAboutVisible}"
+        >
+          <a 
+            @click.prevent="handleClickAbout" 
+            class="nav-link py-0 px-3 my-0" 
+            aria-current="page" 
+            href="#"
+          >
+            About
+          </a>
         </li>
       </ul>
-      </div>
   </div>
 </nav>
 </template>
@@ -26,16 +47,21 @@ export default {
     function handleClickAbout () {
       isAboutVisible.value = !isAboutVisible.value;
     }
+
+    function handleClickPlaylists() {
+      isAboutVisible.value = false;
     }
 
     return {
       handleClickAbout,
+      handleClickPlaylists,
+      isAboutVisible,
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../theme.scss';
 @import 'bootstrap/scss/bootstrap.scss';
 
