@@ -24,8 +24,8 @@ export default {
     let { isAboutVisible } = useUI();
 
     function handleClickAbout () {
-      // isAboutVisible.value = isAboutVisible.value ? false : true;
-      isAboutVisible.value = isAboutVisible.value == true ? false : true;
+      isAboutVisible.value = !isAboutVisible.value;
+    }
     }
 
     return {
