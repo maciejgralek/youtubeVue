@@ -80,6 +80,7 @@ export default {
 }
 
 .nav-item-active {
+  margin-top: 2px;
   border-bottom: solid #0d6efd 2px;
 }
 </style>
