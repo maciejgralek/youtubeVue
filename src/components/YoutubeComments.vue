@@ -94,6 +94,7 @@ export default {
     }
 
     function playComments() {
+      clearInterval(commentTimer);
       commentTimer = setInterval(() => {
         commentIndex.value++;
         if (commentIndex.value > comments.value.length - 5) {
