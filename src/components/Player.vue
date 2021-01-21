@@ -1,23 +1,18 @@
 <template>
-  <div 
-    ref="playerRef" 
-    @wheel.prevent="handleWheel" 
-    class="player p-2"
-  >
+  <div ref="playerRef" @wheel.prevent="handleWheel" class="player p-2">
     <div class="row align-items-center py-0">
-
       <!-- PLAY -->
 
       <div class="col-auto border-end border-secondary pe-1">
         <transition name="fade-fast" mode="out-in">
-          <i 
-            v-if="playButtonMode" 
-            @click="handleClickPlay" 
-            class="mdi mdi-play mdi-player-icon-play" 
+          <i
+            v-if="playButtonMode"
+            @click="handleClickPlay"
+            class="mdi mdi-play mdi-player-icon-play"
           ></i>
-          <i 
-            v-else 
-            @click="handleClickPause" 
+          <i
+            v-else
+            @click="handleClickPause"
             class="mdi mdi-pause mdi-player-icon-play"
           ></i>
         </transition>
@@ -25,8 +20,8 @@
 
       <!-- TIMER -->
 
-      <div 
-        v-if="currentVideo.title && duration" 
+      <div
+        v-if="currentVideo.title && duration"
         class="col-auto border-end border-secondary"
       >
         <PlayerTimer />
@@ -34,8 +29,8 @@
 
       <!-- NEXT -->
 
-      <div 
-        v-if="currentVideo.title" 
+      <div
+        v-if="currentVideo.title"
         class="col-auto border-end border-secondary"
       >
         <PlayerPlaylist />
@@ -52,13 +47,12 @@
       <div class="col-auto ms-auto">
         <PlayerVolume />
       </div>
-      
+
       <!-- COMMENTS FULLSCREEN -->
 
       <div class="col-auto d-none d-md-block me-1">
         <PlayerIcons />
       </div>
-
     </div>
 
     <div class="row">
@@ -70,16 +64,19 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watchEffect, watch } from 'vue'
-import PlayerVolume from './PlayerVolume'
-import PlayerTimer from './PlayerTimer'
-import PlayerTitle from './PlayerTitle'
-import PlayerPlaylist from './PlayerPlaylist'
-import PlayerIcons from './PlayerIcons'
-import PlayerProgress from './PlayerProgress'
-import useYoutubePlayer, { playerStates, playerPlaymodes } from '../use-youtube-player'
-import useUI from '../use-UI'
-import { ifMinAddDigit } from '../tools'
+import { ref, computed, onMounted, watchEffect, watch } from "vue";
+import PlayerVolume from "./PlayerVolume";
+import PlayerTimer from "./PlayerTimer";
+import PlayerTitle from "./PlayerTitle";
+import PlayerPlaylist from "./PlayerPlaylist";
+import PlayerIcons from "./PlayerIcons";
+import PlayerProgress from "./PlayerProgress";
+import useYoutubePlayer, {
+  playerStates,
+  playerPlaymodes,
+} from "../use-youtube-player";
+import useUI from "../use-UI";
+import { ifMinAddDigit } from "../tools";
 
 export default {
   components: {
@@ -91,43 +88,42 @@ export default {
     PlayerProgress,
   },
   setup(props) {
-
     // DATA
 
     let playerRef = ref(null);
 
     // COMPOSITION
 
-    let { 
-      currentVideo, 
-      duration, 
+    let {
+      currentVideo,
+      duration,
       volume,
-      playerState, 
-      play, 
-      stop, 
+      playerState,
+      play,
+      stop,
       pause,
       prev,
       next,
       setVolume,
     } = useYoutubePlayer();
 
-    let { 
-      setPlayerHeight,
-    } = useUI();
+    let { setPlayerHeight } = useUI();
 
     // COMPUTED
 
     let playButtonMode = computed(() => {
-      return playerState.value == playerStates.PAUSED || 
-        playerState.value == playerStates.UNSTARTED || 
-        playerState.value == playerStates.ENDED;
-    })
+      return (
+        playerState.value == playerStates.PAUSED ||
+        playerState.value == playerStates.UNSTARTED ||
+        playerState.value == playerStates.ENDED
+      );
+    });
 
     // METHODS
 
     onMounted(() => {
       setPlayerHeight(playerRef.value);
-    })
+    });
 
     function handleClickPlay() {
       if (!currentVideo.value.resourceId) return;
@@ -139,7 +135,7 @@ export default {
     }
 
     function handleWheel(ev) {
-      let i = volume.value + ev.deltaY/200 * -1 * 5;
+      let i = volume.value + (ev.deltaY / 200) * -1 * 5;
       setVolume(i > 100 ? 100 : i < 0 ? 0 : i);
     }
 
@@ -151,9 +147,9 @@ export default {
       handleClickPlay,
       handleClickPause,
       handleWheel,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -162,9 +158,9 @@ export default {
   bottom: 0px;
   width: 100%;
   background-color: var(--background-player);
-  -webkit-box-shadow: 0px -7px 12px -12px rgba(0,0,0,0.5);
-  -moz-box-shadow: 0px -7px 12px -12px rgba(0,0,0,0.5);
-  box-shadow: 0px -7px 12px -12px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px -7px 12px -12px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px -7px 12px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px -7px 12px -12px rgba(0, 0, 0, 0.5);
   z-index: 1020;
 }
 
@@ -189,17 +185,21 @@ export default {
 
 /* TRANSITION */
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
-.fade-fast-enter-active, .fade-fast-leave-active {
-  transition: opacity .05s;
+.fade-fast-enter-active,
+.fade-fast-leave-active {
+  transition: opacity 0.05s;
 }
-.fade-fast-enter-from, .fade-fast-leave-to {
+.fade-fast-enter-from,
+.fade-fast-leave-to {
   opacity: 0;
 }
 </style>

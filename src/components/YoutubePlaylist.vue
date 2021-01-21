@@ -1,14 +1,14 @@
 <template>
-  <div class="playlist-header d-flex align-items-center ps-3 py-2 mb-1" >
+  <div class="playlist-header d-flex align-items-center ps-3 py-2 mb-1">
     <span class="fw-bold">
-      {{ playlist.title || "Untitled" }} 
+      {{ playlist.title || "Untitled" }}
       <span v-show="playlist.items.length" class="badge bg-secondary mx-1">
         {{ playlist.filteredItems.length }}
       </span>
       <i v-if="playlist.local" class="mdi mdi-star mdi-icon-playlist"></i>
     </span>
     <div class="ms-auto">
-      <PlaylistDropdown 
+      <PlaylistDropdown
         v-if="!playlist.error"
         :playlist="playlist"
         @close-playlist="handleClosePlaylist"
@@ -37,22 +37,26 @@
     </div>
     <ul class="list-unstyled">
       <transition-group name="list" tag="p">
-        <li 
-          v-for="(item, index) in playlist.filteredItems" 
-          :ref="el => { playlist.items.length && (playlist.items[index].snippet.el = el) }"
-          @click="handleClickPlaylistItem(item)" 
+        <li
+          v-for="(item, index) in playlist.filteredItems"
+          :ref="
+            (el) => {
+              playlist.items.length && (playlist.items[index].snippet.el = el);
+            }
+          "
+          @click="handleClickPlaylistItem(item)"
           :key="item.id"
           :data-tippy-content="item.snippet.title"
           :class="classListPlaylistItem(item)"
-          class="playlist-item text-truncate p-1" 
+          class="playlist-item text-truncate p-1"
         >
-          <img 
-            :src="srcThumbnail(item)" 
+          <img
+            :src="srcThumbnail(item)"
             :width="thumbnailWidth"
             :height="thumbnailHeight"
             alt=""
-            class="pe-2" 
-          >
+            class="pe-2"
+          />
           {{ item.snippet.title }}
         </li>
       </transition-group>
@@ -68,13 +72,13 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUpdated } from 'vue'
-import PlaylistDropdown from './PlaylistDropdown.vue'
-import useYoutube from '../use-youtube'
-import useYoutubePlayer from '../use-youtube-player'
-import useUI from '../use-UI'
-import useStore from '../use-store'
-import tippy, { followCursor } from 'tippy.js';
+import { ref, computed, onMounted, onUpdated } from "vue";
+import PlaylistDropdown from "./PlaylistDropdown.vue";
+import useYoutube from "../use-youtube";
+import useYoutubePlayer from "../use-youtube-player";
+import useUI from "../use-UI";
+import useStore from "../use-store";
+import tippy, { followCursor } from "tippy.js";
 
 export default {
   components: {
@@ -84,12 +88,11 @@ export default {
     playlist: Object,
   },
   setup(props) {
-
     // COMPOSITION
 
-    let { 
+    let {
       getPlaylistRemote,
-      removePlaylist, 
+      removePlaylist,
       move,
       reloadPlaylist,
       showComments,
@@ -97,17 +100,9 @@ export default {
       deleteSavedPlaylist,
     } = useYoutube();
 
-    let { 
-      currentVideo, 
-      play,
-      loadVideo,
-      currentPlaylist,
-    } = useYoutubePlayer();
+    let { currentVideo, play, loadVideo, currentPlaylist } = useYoutubePlayer();
 
-    let {
-      thumbnailWidth,
-      thumbnailHeight,
-    } = useUI();
+    let { thumbnailWidth, thumbnailHeight } = useUI();
 
     let state = useStore();
 
@@ -116,31 +111,36 @@ export default {
     // METHODS
 
     onUpdated(() => {
-      tippyPlaylist.forEach(i => i.destroy());
+      tippyPlaylist.forEach((i) => i.destroy());
       tippyPlaylist = [];
-      tippyPlaylist = tippy('.tippy-' + props.playlist.id, {
+      tippyPlaylist = tippy(".tippy-" + props.playlist.id, {
         arrow: true,
         delay: [1000, null],
-        placement: 'right-start',
+        placement: "right-start",
         plugins: [followCursor],
-        followCursor: 'initial',
+        followCursor: "initial",
       });
-    })
+    });
 
     function classListPlaylistItem(item) {
       return {
-        'fw-bold': item.snippet == currentVideo.value,
-        'playlist-item-play': item.snippet == currentVideo.value,
-        ['tippy-' + props.playlist.id]: true,
-      }
-    } 
+        "fw-bold": item.snippet == currentVideo.value,
+        "playlist-item-play": item.snippet == currentVideo.value,
+        ["tippy-" + props.playlist.id]: true,
+      };
+    }
 
     function srcThumbnail(item) {
-      return item.snippet.thumbnails.default ? item.snippet.thumbnails.default.url : '';
+      return item.snippet.thumbnails.default
+        ? item.snippet.thumbnails.default.url
+        : "";
     }
 
     function handleScroll(ev) {
-      if (ev.target.scrollTop >= ev.target.scrollHeight - ev.target.offsetHeight) {
+      if (
+        ev.target.scrollTop >=
+        ev.target.scrollHeight - ev.target.offsetHeight
+      ) {
         getPlaylistRemote(props.playlist, true);
       }
     }
@@ -192,14 +192,14 @@ export default {
       thumbnailHeight,
       classListPlaylistItem,
       srcThumbnail,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">
-@import '../theme.scss';
-@import 'bootstrap/scss/bootstrap.scss';
+@import "../theme.scss";
+@import "bootstrap/scss/bootstrap.scss";
 
 .playlist {
   max-height: 70vh;
@@ -244,10 +244,10 @@ export default {
 // TRANSITION
 
 .list-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .list-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .list-enter-from {
   transform: translateX(10px);

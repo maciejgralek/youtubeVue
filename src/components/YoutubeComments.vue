@@ -1,17 +1,14 @@
 <template>
-  <div 
-    @mouseenter="pauseComments" 
-    @mouseleave="playComments" 
+  <div
+    @mouseenter="pauseComments"
+    @mouseleave="playComments"
     :style="{ bottom: playerHeight + marginUI + 'px' }"
     class="comments-container shadow rounded p-1 pr-1 pt-2"
   >
     <div class="comments">
-      <div 
-        v-if="comments.length" 
-        class="row p-2 g-2"
-      >
+      <div v-if="comments.length" class="row p-2 g-2">
         <div class="col-auto">
-          <img :src="srcProfileImage" alt="">
+          <img :src="srcProfileImage" alt="" />
         </div>
         <div class="col">
           <transition name="fade" mode="out-in">
@@ -29,35 +26,24 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watchEffect, watch } from 'vue'
-import useYoutube from '../use-youtube'
-import useYoutubePlayer, { playerStates } from '../use-youtube-player'
-import useUI from '../use-UI'
+import { ref, computed, onMounted, watchEffect, watch } from "vue";
+import useYoutube from "../use-youtube";
+import useYoutubePlayer, { playerStates } from "../use-youtube-player";
+import useUI from "../use-UI";
 
 export default {
-  props: {
-  },
+  props: {},
   setup(props) {
     let commentIndex = ref(0);
     let commentTimer = null;
 
     // COMPOSITION
 
-    let { 
-      comments,
-      getCommentsRemote,
-    } = useYoutube();
+    let { comments, getCommentsRemote } = useYoutube();
 
-    let { 
-      currentVideo,
-      playerState,
-    } = useYoutubePlayer();
+    let { currentVideo, playerState } = useYoutubePlayer();
 
-    let { 
-      marginUI,
-      commentsDuration,
-      playerHeight,
-    } = useUI();
+    let { marginUI, commentsDuration, playerHeight } = useUI();
 
     // COMPUTED
 
@@ -72,20 +58,22 @@ export default {
       if (playerState.value == playerStates.PAUSED) {
         pauseComments();
       }
-    })
+    });
 
     let textComment = computed(() => {
-      return comments.value[commentIndex.value].snippet.topLevelComment.snippet.textOriginal;
-    })
+      return comments.value[commentIndex.value].snippet.topLevelComment.snippet
+        .textOriginal;
+    });
 
     let authorComment = computed(() => {
-      return comments.value[commentIndex.value].snippet.topLevelComment.snippet.authorDisplayName;
-    })
+      return comments.value[commentIndex.value].snippet.topLevelComment.snippet
+        .authorDisplayName;
+    });
 
     let srcProfileImage = computed(() => {
-      return comments.value[commentIndex.value].snippet.topLevelComment.snippet.authorProfileImageUrl;
-    })
-
+      return comments.value[commentIndex.value].snippet.topLevelComment.snippet
+        .authorProfileImageUrl;
+    });
 
     // METHODS
 
@@ -103,7 +91,7 @@ export default {
         if (commentIndex.value > comments.value.length - 1) {
           commentIndex.value = 0;
         }
-      }, commentsDuration.value * 1000)
+      }, commentsDuration.value * 1000);
     }
 
     return {
@@ -116,14 +104,14 @@ export default {
       textComment,
       authorComment,
       srcProfileImage,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">
-@import '../theme.scss';
-@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+@import "../theme.scss";
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 .comments {
   height: 110px;
@@ -150,10 +138,12 @@ export default {
   background-color: var(--scroll-thumb);
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .2s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

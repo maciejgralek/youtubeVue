@@ -6,49 +6,49 @@
   <transition name="fade-about" mode="out-in">
     <div v-show="!isAboutVisible">
       <transition name="fade">
-        <div 
-          v-if="playerWindowState == 2" 
-          class="backdrop" 
-          :style="{ opacity: (100-overlayOpacity)/100 }"
-        >
-        </div>
+        <div
+          v-if="playerWindowState == 2"
+          class="backdrop"
+          :style="{ opacity: (100 - overlayOpacity) / 100 }"
+        ></div>
       </transition>
-      
+
       <AppBar />
-      
-      <div class="row g-4 pt-1 ps-md-2 me-4 me-md-0" :class="'row-cols-lg-' + columns">
+
+      <div
+        class="row g-4 pt-1 ps-md-2 me-4 me-md-0"
+        :class="'row-cols-lg-' + columns"
+      >
         <div v-if="searchRes.length" class="col search">
           <YoutubeSearch :items="searchRes" />
         </div>
-      
-        <div 
-          v-for="(playlist, index) in playlists" 
-          class="col playlist"
-        >
-          <YoutubePlaylist :playlist="playlist"/>
+
+        <div v-for="(playlist, index) in playlists" class="col playlist">
+          <YoutubePlaylist :playlist="playlist" />
         </div>
       </div>
-      
+
       <transition name="fade-comment" mode="out-in">
-        <YoutubeComments v-show="comments.length && showComments && showCommentsPause" />
+        <YoutubeComments
+          v-show="comments.length && showComments && showCommentsPause"
+        />
       </transition>
-      
-      <div :style="styleBottomMargin">
-      </div>
+
+      <div :style="styleBottomMargin"></div>
     </div>
   </transition>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
-import AppBar from './AppBar.vue'
-import YoutubePlaylist from './YoutubePlaylist.vue'
-import YoutubeSearch from './YoutubeSearch.vue'
-import About from './About.vue'
-import useYoutube from '../use-youtube'
-import useYoutubePlayer from '../use-youtube-player'
-import YoutubeComments from './YoutubeComments.vue'
-import useUI from '../use-UI'
+import { ref, computed, onMounted } from "vue";
+import AppBar from "./AppBar.vue";
+import YoutubePlaylist from "./YoutubePlaylist.vue";
+import YoutubeSearch from "./YoutubeSearch.vue";
+import About from "./About.vue";
+import useYoutube from "../use-youtube";
+import useYoutubePlayer from "../use-youtube-player";
+import YoutubeComments from "./YoutubeComments.vue";
+import useUI from "../use-UI";
 
 export default {
   components: {
@@ -62,19 +62,18 @@ export default {
     params: String,
   },
   setup(props) {
-
     // DATA
 
     let query = null;
 
     if (props.params) {
-      query = props.params.split(',');
+      query = props.params.split(",");
     }
 
     // COMPOSITION
 
-    let { 
-      playlists, 
+    let {
+      playlists,
       loadPlaylists,
       addUrlPlaylists,
       addSavedPlaylists,
@@ -82,9 +81,7 @@ export default {
       comments,
     } = useYoutube();
 
-    let {
-      playerWindowState,
-    } = useYoutubePlayer();
+    let { playerWindowState } = useYoutubePlayer();
 
     let {
       showComments,
@@ -103,13 +100,13 @@ export default {
       if (query) {
         addUrlPlaylists(query);
       }
-    })
+    });
 
     let styleBottomMargin = computed(() => {
-      return { 
-        'min-height': playerHeight.value + 120 + 2*marginUI + 'px' 
-      }
-    })
+      return {
+        "min-height": playerHeight.value + 120 + 2 * marginUI + "px",
+      };
+    });
 
     return {
       playlists,
@@ -123,21 +120,21 @@ export default {
       overlayOpacity,
       styleBottomMargin,
       isAboutVisible,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style scoped>
 .backdrop {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: #000000;
-    pointer-events: none;
-    z-index: 1000;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  pointer-events: none;
+  z-index: 1000;
 }
 
 .search {
@@ -156,22 +153,28 @@ export default {
 
 /* TRANSITION */
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .7s !important;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.7s !important;
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0 !important;
 }
-.fade-about-enter-active, .fade-about-leave-active {
-  transition: opacity .23s !important;
+.fade-about-enter-active,
+.fade-about-leave-active {
+  transition: opacity 0.23s !important;
 }
-.fade-about-enter-from, .fade-about-leave-to {
+.fade-about-enter-from,
+.fade-about-leave-to {
   opacity: 0 !important;
 }
-.fade-comment-enter-active, .fade-comment-leave-active {
-  transition: opacity .3s !important;
+.fade-comment-enter-active,
+.fade-comment-leave-active {
+  transition: opacity 0.3s !important;
 }
-.fade-comment-enter-from, .fade-comment-leave-to {
+.fade-comment-enter-from,
+.fade-comment-leave-to {
   opacity: 0 !important;
 }
 </style>

@@ -1,9 +1,9 @@
-import { ref, onMounted, watch, reactive, computed } from 'vue'
-import axios from 'axios'
-import { createUrl } from './tools.js'
-import useStore from './use-store.js'
+import { ref, onMounted, watch, reactive, computed } from "vue";
+import axios from "axios";
+import { createUrl } from "./tools.js";
+import useStore from "./use-store.js";
 
-let googleApiRemote = 'https://youtube-vue-server.herokuapp.com/youtubevue/'
+let googleApiRemote = "https://youtube-vue-server.herokuapp.com/youtubevue/";
 
 let _commentsNextPageToken = null;
 let _searchNextPageToken = null;
@@ -12,7 +12,7 @@ let playlists = ref([]);
 let channelPlaylists = ref([]);
 let searchRes = ref([]);
 let comments = ref([]);
-let regexpTime = /[0-9]?[0-9]?:?[0-9]?[0-9]:[0-9][0-9]/ig;
+let regexpTime = /[0-9]?[0-9]?:?[0-9]?[0-9]:[0-9][0-9]/gi;
 
 let state = useStore();
 
@@ -23,11 +23,11 @@ async function getPlaylistRemote(playlist, nextPage) {
 
   let query = {
     id: playlist.id,
-  }
+  };
   if (nextPage && playlist.nextPageToken) {
     query.nextPageToken = playlist.nextPageToken;
   }
-  let queryUrl = createUrl(googleApiRemote + 'playlist?', query);
+  let queryUrl = createUrl(googleApiRemote + "playlist?", query);
 
   playlist.nextPageToken = null;
 
@@ -36,34 +36,40 @@ async function getPlaylistRemote(playlist, nextPage) {
   try {
     let res = await axios.get(queryUrl);
 
-    for(let video of res.data.items) {
+    for (let video of res.data.items) {
       video.snippet.el = ref(null);
       video.snippet.description = video.snippet.description.replace(
-        regexpTime, match => {
-          return '<a href="">' + match + '</a>';
-        });
+        regexpTime,
+        (match) => {
+          return '<a href="">' + match + "</a>";
+        }
+      );
     }
 
-    playlist.items = playlist.items.concat(res.data.items.filter(
-      item => item.snippet.title != "Private video" 
-        && item.snippet.title != "Deleted video"
-    ));
+    playlist.items = playlist.items.concat(
+      res.data.items.filter(
+        (item) =>
+          item.snippet.title != "Private video" &&
+          item.snippet.title != "Deleted video"
+      )
+    );
     playlist.filteredItems = computed(() => {
-      let regexp = new RegExp(state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "i");
+      let regexp = new RegExp(
+        state.filter.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&"),
+        "i"
+      );
       return playlist.items.filter(
-        item => item.snippet.title.search(regexp) >= 0
+        (item) => item.snippet.title.search(regexp) >= 0
       );
     });
     playlist.results = res.data.pageInfo.totalResults;
 
     playlist.nextPageToken = res.data.nextPageToken;
-  }
-  catch (err) {
+  } catch (err) {
     if (err.response.status == 404) {
       playlist.error = `Playlist ${playlist.id} not found.`;
     }
-  }
-  finally {
+  } finally {
     playlist.isLoading = false;
   }
 }
@@ -71,25 +77,22 @@ async function getPlaylistRemote(playlist, nextPage) {
 async function _getPlaylistPropertiesRemote(playlist) {
   let query = {
     id: playlist.id,
-  }
-  let queryUrl = createUrl(googleApiRemote + 'playlists?', query);
+  };
+  let queryUrl = createUrl(googleApiRemote + "playlists?", query);
 
   try {
     let res = await axios.get(queryUrl);
     playlist.title = res.data.items[0].snippet.title;
-  }
-  catch (err) {
-
-  }
+  } catch (err) {}
 }
 
 async function getChannelPlaylists(id) {
   let query = {
-    part: 'snippet',
+    part: "snippet",
     channelId: id,
     key: apiKey,
     maxResults: 50,
-  }
+  };
   let queryUrl = createUrl(googleApiPlaylists, query);
 
   let res = await axios.get(queryUrl);
@@ -97,7 +100,7 @@ async function getChannelPlaylists(id) {
   channelPlaylists = res.data.items;
 
   for (let i of channelPlaylists) {
-    addPlaylist(i.id, i.snippet.title)
+    addPlaylist(i.id, i.snippet.title);
   }
 }
 
@@ -107,19 +110,18 @@ async function getCommentsRemote(videoId, nextPage) {
 
   let query = {
     id: videoId,
-  }
+  };
   if (nextPage && _commentsNextPageToken) {
     query.nextPageToken = _commentsNextPageToken;
   }
-  let queryUrl = createUrl(googleApiRemote + 'comments?', query);
+  let queryUrl = createUrl(googleApiRemote + "comments?", query);
   try {
     let res = await axios.get(queryUrl);
 
     comments.value = comments.value.concat(res.data.items);
 
     _commentsNextPageToken = res.data.nextPageToken;
-  }
-  catch (err) {
+  } catch (err) {
     comments.value = [];
   }
 }
@@ -128,18 +130,18 @@ async function searchRemote(value, nextPage) {
   _searchLast = nextPage ? _searchLast : value;
   let query = {
     q: _searchLast,
-  }
+  };
   if (nextPage && _searchNextPageToken) {
     query.nextPageToken = _searchNextPageToken;
   }
-  let queryUrl = createUrl(googleApiRemote + 'search?', query);
+  let queryUrl = createUrl(googleApiRemote + "search?", query);
 
   let res = await axios.get(queryUrl);
 
   searchRes.value = searchRes.value.concat(
-    res.data.items.filter(item => item.id.kind == "youtube#video")
+    res.data.items.filter((item) => item.id.kind == "youtube#video")
   );
-  searchRes.value.map(item => item.snippet.resourceId = item.id);
+  searchRes.value.map((item) => (item.snippet.resourceId = item.id));
 
   _searchNextPageToken = res.data.nextPageToken;
 }
@@ -156,7 +158,7 @@ function addPlaylist(id, local) {
     isLoading: false,
     isExported: true,
     error: null,
-  })
+  });
 
   return playlist;
 }
@@ -198,7 +200,7 @@ function removePlaylist(playlist) {
 
 function reloadPlaylist(playlist) {
   let index = findPlaylistIndex(playlist);
-  let reloadedPlaylist = addPlaylist(playlist.id)
+  let reloadedPlaylist = addPlaylist(playlist.id);
   playlists.value[index] = reloadedPlaylist;
   getPlaylistRemote(reloadedPlaylist);
   _getPlaylistPropertiesRemote(reloadedPlaylist);
@@ -210,15 +212,18 @@ function removeSearch() {
 
 function move(playlist, dir) {
   let index = playlists.value.indexOf(playlist);
-  if ((index == 0 && dir == -1) || 
-    (index == playlists.value.length && dir == 1)) return;
+  if (
+    (index == 0 && dir == -1) ||
+    (index == playlists.value.length && dir == 1)
+  )
+    return;
   let to = index + dir;
   let i = playlists.value.splice(index, 1);
   playlists.value.splice(to, 0, i[0]);
 }
 
 function playlistLoaded(id) {
-  for(let playlist of playlists.value) {
+  for (let playlist of playlists.value) {
     if (playlist.id == id) {
       return true;
     }
@@ -226,38 +231,38 @@ function playlistLoaded(id) {
 }
 
 function findPlaylistIndex(playlist) {
-  return playlists.value.findIndex(item => item == playlist)
+  return playlists.value.findIndex((item) => item == playlist);
 }
 
 function findVideoIndex(playlist, video) {
-  return playlist.items.findIndex(item => item.snippet == video);
+  return playlist.items.findIndex((item) => item.snippet == video);
 }
 
 // LOCAL STORAGE
 
 function savePlaylist(playlist) {
   let savedPlaylists = loadPlaylists();
-  if (!savedPlaylists.some(item => item.id == playlist.id)) {
+  if (!savedPlaylists.some((item) => item.id == playlist.id)) {
     savedPlaylists.push(playlist);
-    savedPlaylists = JSON.stringify(savedPlaylists, ['id', 'title'], 1);
-    localStorage.setItem('playlists', savedPlaylists);
+    savedPlaylists = JSON.stringify(savedPlaylists, ["id", "title"], 1);
+    localStorage.setItem("playlists", savedPlaylists);
   }
   playlist.local = 1;
 }
 
 function deleteSavedPlaylist(playlist) {
   let savedPlaylists = loadPlaylists();
-  let index = savedPlaylists.findIndex(item => item.id == playlist.id);
+  let index = savedPlaylists.findIndex((item) => item.id == playlist.id);
   if (index != -1) {
     savedPlaylists.splice(index, 1);
-    savedPlaylists = JSON.stringify(savedPlaylists, ['id', 'title'], 1);
-    localStorage.setItem('playlists', savedPlaylists);
+    savedPlaylists = JSON.stringify(savedPlaylists, ["id", "title"], 1);
+    localStorage.setItem("playlists", savedPlaylists);
   }
   playlist.local = 0;
 }
 
 function loadPlaylists() {
-  let pl = localStorage.getItem('playlists');
+  let pl = localStorage.getItem("playlists");
   pl = JSON.parse(pl);
   return pl || [];
 }
@@ -285,6 +290,5 @@ export default function useYoutube() {
     loadPlaylists,
     deleteSavedPlaylist,
     addPlaylist,
-  }
-
+  };
 }
