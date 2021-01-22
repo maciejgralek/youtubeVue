@@ -2,6 +2,7 @@
   <div
     @mouseenter="pauseComments"
     @mouseleave="playComments"
+    @wheel.prevent="handleWheel"
     :style="{ bottom: playerHeight + marginUI + 'px' }"
     class="comments-container shadow rounded p-1 pr-1 pt-2"
   >
@@ -77,6 +78,19 @@ export default {
 
     // METHODS
 
+    function handleWheel(ev) {
+      let index = ev.deltaY / 200;
+      commentIndex.value += index;
+      if (commentIndex.value > comments.value.length - 5) {
+        getCommentsRemote(currentVideo.value.resourceId.videoId, true);
+      }
+      if (commentIndex.value > comments.value.length - 1) {
+        commentIndex.value = 0;
+      } else if (commentIndex.value < 0) {
+        commentIndex.value = 0;
+      }
+    }
+
     function pauseComments() {
       clearInterval(commentTimer);
     }
@@ -104,6 +118,7 @@ export default {
       textComment,
       authorComment,
       srcProfileImage,
+      handleWheel,
     };
   },
 };
