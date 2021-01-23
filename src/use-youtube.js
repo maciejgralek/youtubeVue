@@ -36,15 +36,16 @@ async function getPlaylistRemote(playlist, nextPage) {
   try {
     let res = await axios.get(queryUrl);
 
-    for (let video of res.data.items) {
-      video.snippet.el = ref(null);
-      video.snippet.description = video.snippet.description.replace(
+    res.data.items.map((item) => {
+      item.snippet.el = ref(null);
+      item.snippet.description = item.snippet.description.replace(
         regexpTime,
         (match) => {
           return '<a href="">' + match + "</a>";
         }
       );
-    }
+      return item;
+    });
 
     playlist.items = playlist.items.concat(
       res.data.items.filter(
