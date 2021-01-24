@@ -197,17 +197,11 @@ export default {
     }
 
     async function handleAddPlaylist(playlistsId) {
-      let status = await addPlaylistToPlaylists(playlistsId)
-
-      if (status == -1) {
-        errorMessage.value = 'Playlist already loaded.';
+      try {
+        await addPlaylistToPlaylists(playlistsId);
+      } catch (err) {
+        errorMessage.value = err;
       }
-      else if (status == -2) {
-        errorMessage.value = 'Playlist not found';
-      }
-      else {
-        errorMessage.value = '';
-      };
     }
 
     function handleExportClick() {

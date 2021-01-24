@@ -165,12 +165,14 @@ function addPlaylist(id, local) {
 }
 
 async function addPlaylistToPlaylists(id, local) {
-  if (playlistLoaded(id)) return -1;
+  if (playlistLoaded(id)) throw "Playlist already loaded";
+
   let playlist = addPlaylist(id, local);
   playlists.value.push(playlist);
   await getPlaylistRemote(playlist);
   await _getPlaylistPropertiesRemote(playlist);
-  if (playlist.error) return -2;
+
+  if (playlist.error) throw playlist.error;
 }
 
 function addSavedPlaylists() {
