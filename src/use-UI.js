@@ -169,11 +169,7 @@ function setPlayerHeight(el) {
 }
 
 function setComments() {
-  if (showComments.value) {
-    showComments.value = false;
-  } else {
-    showComments.value = true;
-  }
+  showComments.value = !showComments.value;
 }
 
 export default function useUI() {
